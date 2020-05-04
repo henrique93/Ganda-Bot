@@ -121,7 +121,7 @@ def pickFile(name):
         return (path + files[index])
     elif ((name in catchFrase_list) or (name + "⛔" in catchFrase_list)):
         return ("audio//" + name + ".mp3")
-    return
+    return None
 #-----------------------------------------------------------------------------------
 
 #roulette
