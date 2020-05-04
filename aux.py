@@ -50,22 +50,24 @@ def set_roles(roles):
 
 #getNickname
 def getNickname(ID):
-    if (ID == Henrique_id):
-        return "M4ST3R 🌊"
-    elif (ID == Valdemar_id):
-        return "Like Always 🔥"
-    elif (ID == Touret_id):
-        return "RKO 💩"
-    elif (ID == Wilson_id):
-        return "Wilson 🌈"
+    if (ID == Daniel_id):
+        return "Maverick 🐧"
     elif (ID == Frangueiro_id):
         return "ZeFrangueiro 🌌"
-    elif (ID == Daniel_id):
-        return "Maverick 🐧"
-    elif (ID == Verde_id):
-        return "MrVerdinsky 💚"
+    elif (ID == Henrique_id):
+        return "M4ST3R 🌊"
     elif (ID == Joao_id):
         return "Mr.WOLF 🐺"
+    elif (ID == Touret_id):
+        return "RKO 💩"
+    elif (ID == Valdemar_id):
+        return "Like Always 🔥"
+    elif (ID == Verde_id):
+        return "MrVerdinsky 💚"
+    elif (ID == Wilson_id):
+        return "Wilson 🌈"
+    elif (ID == Yusuke_id):
+        return "Yusukeeee 🎸"
     return None
 #-----------------------------------------------------------------------------------
 

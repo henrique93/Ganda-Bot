@@ -1,1 +1,1 @@
-worker: python GandaBot.py
+worker: python3 GandaBot.py

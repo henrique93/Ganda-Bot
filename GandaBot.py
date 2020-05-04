@@ -31,6 +31,7 @@ async def on_ready():
         servers.append(guild.name)
     print(f'connected to {len(servers)} guilds: {servers}')
     print('------')
+    return
 
 
 #////////////////////////////////////////////////////////////////
@@ -50,6 +51,7 @@ async def init(ctx):
     else:
         voice = await channel.connect()
         print(f'Bot connected to {channel} in guild {voice.guild}')
+    return
 #-----------------------------------------------------------------------------------
 
 
@@ -65,6 +67,7 @@ async def destroy(ctx):
         print(f'Bot disconnected from {channel} in guild {voice.guild}')
     else:
         print(f'Bot was told to disconnect but was not connected to any channel')
+    return
 #-----------------------------------------------------------------------------------
 
 
@@ -72,7 +75,7 @@ async def destroy(ctx):
 #play
 @bot.command(name='play', help='Makes the bot play a sound. Follow by the sound name to play a pecific sound, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
-    global voice
+    #global voice
     if (arg == "random"):
         fileName = pickFile("random")
     elif (arg == "ariana"):
@@ -81,18 +84,9 @@ async def play(ctx, arg):
         fileName = pickFile(arg)
         if (fileName is None):
             #play youtube
-    #play_sound(fileName, ctx.author.voice.channel)
-    inited = 1
-    if (voice == None):
-        inited = 0
-        voice = get(bot.voice_clients, guild=ctx.guild)
-        voice = await ctx.author.voice.channel.connect()
-    voice.play(discord.FFmpegPCMAudio(fileName,executable='ffmpeg'))
-    while(voice.is_playing()):
-        await asyncio.sleep(1)
-    if (inited == 0 and not voice.is_playing()):
-        await voice.disconnect()
-        voice = None
+            return
+    await play_file(fileName, ctx)
+    return
 
 #pause
 @bot.command(name='pause', help='Makes the bot pause the current sound')
@@ -102,6 +96,7 @@ async def pause(ctx):
         voice.pause()
     else:
         print("Bot tried to pause but was not playing")
+    return
 
 #resume
 @bot.command(name='resume', help='Makes the bot resume the current sound')
@@ -111,6 +106,7 @@ async def resume(ctx):
         voice.resume()
     else:
         print("Bot tried to resume the sound but was not playing")
+    return
 
 #stop
 @bot.command(name='stop', help='Makes the bot stop playing the current sound')
@@ -120,6 +116,7 @@ async def stop(ctx):
         voice.stop()
     else:
         print("Bot tried to stop playing but nothing was playing before")
+    return
 #-----------------------------------------------------------------------------------
 
 
@@ -128,6 +125,7 @@ async def stop(ctx):
 @bot.command(name='rroulette', help='Makes the bot kick one random member from its current voice channel.⛔')
 async def rroulette(ctx):
     await roulette(bot, ctx, 1)
+    return
 #-----------------------------------------------------------------------------------
 
 
@@ -136,6 +134,7 @@ async def rroulette(ctx):
 @bot.command(name='highlander', help='Makes the bot kick every member from its current voice channel except for one chosen at random.⛔')
 async def highlander(ctx):
     await roulette(bot, ctx, 2)
+    return
 #-----------------------------------------------------------------------------------
 
 
@@ -167,6 +166,7 @@ async def on_voice_state_update(member, before, after):
         if(voice.channel == ch and len(ch.members) == 1):
             await voice.disconnect()
             print(f'Bot disconnected from {ch} in guild {voice.guild} because it was the only member connected')
+    return
 #-----------------------------------------------------------------------------------
 
 
@@ -178,23 +178,28 @@ async def on_voice_state_update(member, before, after):
 async def on_member_join(member):
     await give_roles(member)
     await change_nickname(member)
+    return
 #-----------------------------------------------------------------------------------
 
 
+#////////////////////////////////////////////////////////////////
+#////////////////////////// PLAY FILE ///////////////////////////
+#////////////////////////////////////////////////////////////////
 #play_sound
-async def play_sound(fileName, ch):
+async def play_file(fileName, ctx):
     global voice
     inited = 1
     if (voice == None):
         inited = 0
         voice = get(bot.voice_clients, guild=ctx.guild)
-        voice = await ch.connect()
+        voice = await ctx.author.voice.channel.connect()
     voice.play(discord.FFmpegPCMAudio(fileName,executable='ffmpeg'))
     while(voice.is_playing()):
         await asyncio.sleep(1)
     if (inited == 0 and not voice.is_playing()):
         await voice.disconnect()
         voice = None
+    return
 
 
 
