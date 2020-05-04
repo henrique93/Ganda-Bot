@@ -125,7 +125,7 @@ async def stop(ctx):
 @bot.command(name='rroulette', help='Makes the bot kick one random member from its current voice channel.⛔')
 async def rroulette(ctx):
     fileName = pickFile("rroulette")
-    await play(fileName, ctx)
+    await play_file(fileName, ctx.author.voice.channel, ctx.guild)
     await roulette(bot, ctx, 1)
     return
 #-----------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ async def rroulette(ctx):
 @bot.command(name='highlander', help='Makes the bot kick every member from its current voice channel except for one chosen at random.⛔')
 async def highlander(ctx):
     fileName = pickFile("highlander")
-    await play(fileName, ctx)
+    await play_file(fileName, ctx.author.voice.channel, ctx.guild)
     await roulette(bot, ctx, 2)
     return
 #-----------------------------------------------------------------------------------
@@ -191,7 +191,9 @@ async def on_member_join(member):
 #////////////////////////////////////////////////////////////////
 #on_voice_state_update
 @bot.event
-async def on_voice_state_update(member, before, after)
+async def on_voice_state_update(member, before, after):
+    if (member.bot):
+        return
     before_vc = before.channel
     after_vc = after.channel
     id = member.id
@@ -199,7 +201,8 @@ async def on_voice_state_update(member, before, after)
         fileName = pickSoundJoin(id)
         if (fileName == None):
             return
-        await play(fileName, after_vc, after_vc.guild)
+        await play_file(fileName, after_vc, after_vc.guild)
+    return
 #-----------------------------------------------------------------------------------
 
 

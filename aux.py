@@ -114,9 +114,7 @@ def pickFile(name):
         rand = random.randint(0, len(catchFrase_list)-1)
         trackName = catchFrase_list[rand]
         return ("audio//" + trackName + ".mp3")
-    elif (name == 'jajao'):
-        return ("audio//last_surprise.mp3")
-    elif (name == 'rroulette'):
+    elif (name == 'jajao' or name == 'rroulette'):
         return ("audio//last_surprise.mp3")
     elif (name =='highlander'):
         rand = random.randint(0, len(highlander_sounds)-1)
