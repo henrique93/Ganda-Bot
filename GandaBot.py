@@ -124,6 +124,8 @@ async def stop(ctx):
 #rroulette
 @bot.command(name='rroulette', help='Makes the bot kick one random member from its current voice channel.⛔')
 async def rroulette(ctx):
+    fileName = pickFile("rroulette")
+    await play(fileName, ctx)
     await roulette(bot, ctx, 1)
     return
 #-----------------------------------------------------------------------------------
@@ -133,6 +135,8 @@ async def rroulette(ctx):
 #highlander
 @bot.command(name='highlander', help='Makes the bot kick every member from its current voice channel except for one chosen at random.⛔')
 async def highlander(ctx):
+    fileName = pickFile("highlander")
+    await play(fileName, ctx)
     await roulette(bot, ctx, 2)
     return
 #-----------------------------------------------------------------------------------

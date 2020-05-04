@@ -116,6 +116,11 @@ def pickFile(name):
         return ("audio//" + trackName + ".mp3")
     elif (name == 'jajao'):
         return ("audio//last_surprise.mp3")
+    elif (name == 'rroulette'):
+        return ("audio//last_surprise.mp3")
+    elif (name =='highlander'):
+        rand = random.randint(0, len(highlander_sounds)-1)
+        return highlander_sounds[rand]
     elif (name == 'ariana'):
         path ='audio//Ariana Grande//'
         files = os.listdir('audio//Ariana Grande//')
