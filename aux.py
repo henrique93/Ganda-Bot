@@ -131,6 +131,64 @@ def pickFile(name):
     return None
 #-----------------------------------------------------------------------------------
 
+#picSoundJoin
+def pickSoundJoin(id):
+    #DANIEL
+    if (id == Daniel_id):
+        rand = random.randint(0, len(join_sounds_daniel)-1)
+        return join_sounds_daniel[rand]
+    #DAVID
+    elif (id == David_id):
+        rand = random.randint(0, len(join_sounds_david)-1)
+        return join_sounds_david[rand]
+    #HENRIQUE
+    elif (id == Henrique_id):
+        rand = random.randint(0, len(join_sounds_henrique)-1)
+        return join_sounds_henrique[rand]
+    #JOAO
+    elif (id == Joao_id):
+        rand = random.randint(0, len(join_sounds_joao)-1)
+        return join_sounds_joao[rand]
+    #KNIGHT
+    elif (id == Knight_id):
+        rand = random.randint(0, len(join_sounds_knight)-1)
+        return join_sounds_knight[rand]
+    #POSEIDON
+    elif (id == Poseidon_id):
+        rand = random.randint(0, len(join_sounds_poseidon)-1)
+        return join_sounds_poseidon[rand]
+    #RAFA
+    elif (id == Rafa_id):
+        rand = random.randint(0, len(join_sounds_rafa)-1)
+        return join_sounds_rafa[rand]
+    #TOURET
+    elif (id == Touret_id):
+        rand = random.randint(0, len(join_sounds_touret)-1)
+        return join_sounds_touret[rand]
+    #VALDEMAR
+    elif (id == Valdemar_id):
+        rand = random.randint(0, len(join_sounds_valdemar)-1)
+        return join_sounds_valdemar[rand]
+    #VERDE
+    elif (id == Verde_id):
+        rand = random.randint(0, len(join_sounds_verde)-1)
+        return join_sounds_verde[rand]
+    #WILSON
+    elif (id == Wilson_id):
+        rand = random.randint(0, len(join_sounds_wilson)-1)
+        return join_sounds_wilson[rand]
+    #YUSUKE
+    elif (id == Yusuke_id):
+        rand = random.randint(0, len(join_sounds_yusuke)-1)
+        return join_sounds_yusuke[rand]
+    #ZE
+    elif (id == Ze_id):
+        rand = random.randint(0, len(join_sounds_ze)-1)
+        return join_sounds_ze[rand]
+    return None
+#-----------------------------------------------------------------------------------
+
+
 #roulette
 async def roulette(bot, ctx, type):
     auth_id = ctx.author.id

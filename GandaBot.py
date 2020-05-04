@@ -85,7 +85,7 @@ async def play(ctx, arg):
         if (fileName is None):
             #play youtube
             return
-    await play_file(fileName, ctx)
+    await play_file(fileName, ctx.author.voice.channel, ctx.guild)
     return
 
 #pause
@@ -187,16 +187,33 @@ async def on_member_join(member):
 
 
 #////////////////////////////////////////////////////////////////
+#////////////////// MEMEBER JOIN VOICE CHANNEL //////////////////
+#////////////////////////////////////////////////////////////////
+#on_voice_state_update
+@bot.event
+async def on_voice_state_update(member, before, after)
+    before_vc = before.channel
+    after_vc = after.channel
+    id = member.id
+    if ((after_vc is not None) and (before_vc != after_vc)):
+        fileName = pickSoundJoin(id)
+        if (fileName == None):
+            return
+        await play(fileName, after_vc, after_vc.guild)
+#-----------------------------------------------------------------------------------
+
+
+#////////////////////////////////////////////////////////////////
 #////////////////////////// PLAY FILE ///////////////////////////
 #////////////////////////////////////////////////////////////////
 #play_sound
-async def play_file(fileName, ctx):
+async def play_file(fileName, ch, server):
     global voice
     inited = 1
     if (voice == None):
         inited = 0
-        voice = get(bot.voice_clients, guild=ctx.guild)
-        voice = await ctx.author.voice.channel.connect()
+        voice = get(bot.voice_clients, guild=server)
+        voice = await ch.connect()
     voice.play(discord.FFmpegPCMAudio(fileName,executable='ffmpeg'))
     while(voice.is_playing()):
         await asyncio.sleep(1)
