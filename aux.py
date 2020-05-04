@@ -9,6 +9,29 @@ import asyncio
 
 from consts import *
 
+#Keep muted
+keep_muted = []
+
+def getKeepMuted():
+    return keep_muted
+
+def addKeepMuted(name):
+    global keep_muted
+    if (name == "yusuke"):
+        keep_muted.append(Yusuke_id)
+    elif (name == "rko"):
+        keep_muted.append(Touret_id)
+    return
+
+def removeKeepMuted(name):
+    global keep_muted
+    if (name == "yusuke"):
+        del keep_muted(Yusuke_id)
+    elif (name == "rko"):
+        del keep_muted(Touret_id)
+    return
+
+
 #Sopas_de_cafe Roles
 magician_role = None
 mini_boss_role = None

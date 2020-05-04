@@ -75,7 +75,6 @@ async def destroy(ctx):
 #play
 @bot.command(name='play', help='Makes the bot play a sound. Follow by the sound name to play a pecific sound, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
-    #global voice
     if (arg == "random"):
         fileName = pickFile("random")
     elif (arg == "ariana"):
@@ -118,6 +117,15 @@ async def stop(ctx):
         print("Bot tried to stop playing but nothing was playing before")
     return
 #-----------------------------------------------------------------------------------
+#mute
+@bot.command(name='mute', help='Makes the bot keep a member muted')
+async def mute(ctx, arg):
+    addKeepMuted(arg)
+
+@bot.command(name='unmute', help='Makes stop keeping a member muted')
+async def unmute(ctx, arg):
+    removeKeepMuted(arg)
+
 
 
 #---------------------- RUSSIAN ROULETTE ----------------------
@@ -202,6 +210,8 @@ async def on_voice_state_update(member, before, after):
         if (fileName == None):
             return
         await play_file(fileName, after_vc, after_vc.guild)
+    if (member.id in getKeepMuted() and before.mute and not after.mute):
+        member.edit(mute = true)
     return
 #-----------------------------------------------------------------------------------
 
