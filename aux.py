@@ -7,7 +7,7 @@ import asyncio
 
 
 
-from consts import *
+import consts
 import lists
 
 #Sopas_de_cafe Roles
@@ -51,23 +51,23 @@ def set_roles(roles):
 
 #getNickname
 def getNickname(ID):
-    if (ID == Daniel_id):
+    if (ID == consts.Daniel_id):
         return "Maverick 🐧"
-    elif (ID == Frangueiro_id):
+    elif (ID == consts.Frangueiro_id):
         return "ZeFrangueiro 🌌"
-    elif (ID == Henrique_id):
+    elif (ID == consts.Henrique_id):
         return "M4ST3R 🌊"
-    elif (ID == Joao_id):
+    elif (ID == consts.Joao_id):
         return "Mr.WOLF 🐺"
-    elif (ID == Touret_id):
+    elif (ID == consts.Touret_id):
         return "RKO 💩"
-    elif (ID == Valdemar_id):
+    elif (ID == consts.Valdemar_id):
         return "Like Always 🔥"
-    elif (ID == Verde_id):
+    elif (ID == consts.Verde_id):
         return "MrVerdinsky 💚"
-    elif (ID == Wilson_id):
+    elif (ID == consts.Wilson_id):
         return "Wilson 🌈"
-    elif (ID == Yusuke_id):
+    elif (ID == consts.Yusuke_id):
         return "Yusukeeee 🎸"
     return None
 #-----------------------------------------------------------------------------------
@@ -75,23 +75,23 @@ def getNickname(ID):
 #give_roles
 async def give_roles(member):
     try:
-        if member.id in Mini_Boss:
+        if member.id in consts.Mini_Boss:
             await member.add_roles(mini_boss_role)
             await member.add_roles(bot_commander_role)
             await member.add_roles(a_team_role)
-        if member.id in Magician:
+        if member.id in consts.Magician:
             await member.add_roles(magician_role)
-        if member.id in CS:
+        if member.id in consts.CS:
             await member.add_roles(CS_role)
-        if member.id in Dead_by_Daylight:
+        if member.id in consts.Dead_by_Daylight:
             await member.add_roles(Dead_by_Dayilight_role)
-        if member.id in Dota2:
+        if member.id in consts.Dota2:
             await member.add_roles(Dota2_role)
-        if member.id in League_of_Legends:
+        if member.id in consts.League_of_Legends:
             await member.add_roles(League_of_Legends_role)
-        if member.id in Sea_of_Thieves:
+        if member.id in consts.Sea_of_Thieves:
             await member.add_roles(Sea_of_Thieves_role)
-        if member.id in Warframe:
+        if member.id in consts.Warframe:
             await member.add_roles(Warframe_role)
     except Exception as e:
         print(f'❗❗❗ERROR: Failed to add roles to user: {member.name} due to:\n{e}\n--------------------')
@@ -127,7 +127,7 @@ def pickFile(name):
         trackName = "audio//Sounds//" + lists.sounds[rand]
         return trackName
     elif (name == 'jajao' or name == 'rroulette'):
-        return (jajao)
+        return consts.jajao
     elif (name =='highlander'):
         rand = random.randint(0, len(lists.highlander)-1)
         trackName = "audio//Highlander//Play//" + lists.highlander[rand]
@@ -136,6 +136,8 @@ def pickFile(name):
         rand = random.randrange(0, len(lists.ariana)-1)
         trackName = "audio//Ariana Grande//" + lists.ariana[rand]
         return trackName
+    elif (name == 'self_deaf'):
+        return consts.self_deaf
     elif ((name + ".mp3") in lists.sounds):
         return ("audio//Sounds//" + name + ".mp3")
     return None
@@ -144,67 +146,67 @@ def pickFile(name):
 #picSoundJoin
 def pickSoundJoin(id):
     #DANIEL
-    if (id == Daniel_id):
+    if (id == consts.Daniel_id):
         rand = random.randint(0, len(lists.daniel)-1)
         trackName = "audio//Join//Daniel//" + lists.daniel[rand]
         return trackName
     #DAVID
-    elif (id == David_id):
+    elif (id == consts.David_id):
         rand = random.randint(0, len(lists.david)-1)
         trackName = "audio//Join//David//" + lists.david[rand]
         return trackName
     #HENRIQUE
-    elif (id == Henrique_id):
+    elif (id == consts.Henrique_id):
         rand = random.randint(0, len(lists.henrique)-1)
         trackName = "audio//Join//Henrique//" + lists.henrique[rand]
         return trackName
     #JOAO
-    elif (id == Joao_id):
+    elif (id == consts.Joao_id):
         rand = random.randint(0, len(lists.joao)-1)
         trackName = "audio//Join//Joao//" + lists.joao[rand]
         return trackName
     #KNIGHT
-    elif (id == Knight_id):
+    elif (id == consts.Knight_id):
         rand = random.randint(0, len(lists.knight)-1)
         trackName = "audio//Join//Knight//" + lists.knight[rand]
         return trackName
     #POSEIDON
-    elif (id == Poseidon_id):
+    elif (id == consts.Poseidon_id):
         rand = random.randint(0, len(lists.poseidon)-1)
         trackName = "audio//Join//Poseidon//" + lists.poseidon[rand]
         return trackName
     #RAFA
-    elif (id == Rafa_id):
+    elif (id == consts.Rafa_id):
         rand = random.randint(0, len(lists.rafa)-1)
         trackName = "audio//Join//Rafa//" + lists.rafa[rand]
         return trackName
     #TOURET
-    elif (id == Touret_id):
+    elif (id == consts.Touret_id):
         rand = random.randint(0, len(lists.touret)-1)
         trackName = "audio//Join//Touret//" + lists.touret[rand]
         return trackName
     #VALDEMAR
-    elif (id == Valdemar_id):
+    elif (id == consts.Valdemar_id):
         rand = random.randint(0, len(lists.valdemar)-1)
         trackName = "audio//Join//Valdemar//" + lists.valdemar[rand]
         return trackName
     #VERDE
-    elif (id == Verde_id):
+    elif (id == consts.Verde_id):
         rand = random.randint(0, len(lists.verde)-1)
         trackName = "audio//Join//Verde//" + lists.verde[rand]
         return trackName
     #WILSON
-    elif (id == Wilson_id):
+    elif (id == consts.Wilson_id):
         rand = random.randint(0, len(lists.wilson)-1)
         trackName = "audio//Join//Wilson//" + lists.wilson[rand]
         return trackName
     #YUSUKE
-    elif (id == Yusuke_id):
+    elif (id == consts.Yusuke_id):
         rand = random.randint(0, len(lists.yusuke)-1)
         trackName = "audio//Join//Yusuke//" + lists.yusuke[rand]
         return trackName
     #ZE
-    elif (id == Ze_id):
+    elif (id == consts.Ze_id):
         rand = random.randint(0, len(lists.ze)-1)
         trackName = "audio//Join//Ze//" + lists.ze[rand]
         return trackName
@@ -218,13 +220,13 @@ async def roulette(bot, ctx, type):
     voice_ch = ctx.author.voice.channel
     members = voice_ch.members
     guild = ctx.guild
-    if (auth_id in privileged_id_list):
+    if (auth_id in consts.privileged_id_list):
         for m in members[:]:
             if (m.bot or m.top_role.name == "Immune"):
                 members.remove(m)
     else:
         for m in members[:]:
-            if (m.bot or m.top_role.name == "Immune" or m.id in privileged_id_list):
+            if (m.bot or m.top_role.name == "Immune" or m.id in consts.privileged_id_list):
                 members.remove(m)
     if (type == 1):
         end_message = "Rip "

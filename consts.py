@@ -49,6 +49,9 @@ Warframe = [Castanheira_id, Henrique_id, Touret_id, Valdemar_id, Yusuke_id]
 #------------------------------------- SOUNDS --------------------------------------
 #jajao
 jajao = "audio//Highlander//Play//last_surprise.mp3"
+
+#self_deaf
+self_deaf = "audio//VoiceUpdate//Self//Deafen//ill_be_back.mp3"
 #-----------------------------------------------------------------------------------
 
 

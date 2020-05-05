@@ -218,6 +218,9 @@ async def on_voice_state_update(member, before, after):
     #Keep muting members in the keep_muted list
     if (member.id in lists.muted and not after.mute):
         await member.edit(mute=True)
+    #Play sound if user deafens himself
+    if (after_vc.self_deaf and not before_vc.self_deaf):
+        
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
         fileName = pickSoundJoin(id)
@@ -258,7 +261,7 @@ async def play_file(fileName, ch, server):
     voice.play(discord.FFmpegPCMAudio(fileName,executable='ffmpeg'))
     while(voice.is_playing()):
         await asyncio.sleep(1)
-    if (inited == 0 and not voice.is_playing()):
+    if (inited == 0 and not (voice.is_playing() or voice.is_paused())):
         await voice.disconnect()
         voice = None
     return
