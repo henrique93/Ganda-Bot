@@ -11,7 +11,7 @@ from aux import *
 
 TOKEN = os.environ['DISCORD_TOKEN']
 
-bot = commands.Bot(command_prefix='?')
+bot = commands.Bot(command_prefix='?', description='Ganda bot mano!')
 
 voice = None
 
@@ -40,7 +40,7 @@ async def on_ready():
 
 #---------------------------- INIT ----------------------------
 #init
-@bot.command(name='init', help='Makes the bot join your current voice channel and stay there.')
+@bot.command(name='init', help='Join your current voice channel and stay there.')
 async def init(ctx):
     global voice
     channel = ctx.author.voice.channel
@@ -57,7 +57,7 @@ async def init(ctx):
 
 #-------------------------- DESTROY ---------------------------
 #destroy
-@bot.command(name='destroy', help='Makes the bot disconnect from its current voice channel.')
+@bot.command(name='destroy', help='Disconnect from its current voice channel.')
 async def destroy(ctx):
     global voice
     channel = ctx.author.voice.channel
@@ -73,12 +73,14 @@ async def destroy(ctx):
 
 #--------------------------- SOUNDS ---------------------------
 #play
-@bot.command(name='play', help='Makes the bot play a sound. Follow by the sound name to play a pecific sound, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
+@bot.command(name='play', help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
     if (arg == "random"):
         fileName = pickFile("random")
     elif (arg == "ariana"):
         fileName = pickFile("ariana")
+    #elif (arg == "list"):
+        #send sound list
     else:
         fileName = pickFile(arg)
         if (fileName is None):
@@ -88,7 +90,7 @@ async def play(ctx, arg):
     return
 
 #pause
-@bot.command(name='pause', help='Makes the bot pause the current sound')
+@bot.command(name='pause', help='Pause the current sound')
 async def pause(ctx):
     global voice
     if (voice.is_playing()):
@@ -98,7 +100,7 @@ async def pause(ctx):
     return
 
 #resume
-@bot.command(name='resume', help='Makes the bot resume the current sound')
+@bot.command(name='resume', help='Resume the current sound')
 async def resume(ctx):
     global voice
     if (voice.is_paused()):
@@ -108,7 +110,7 @@ async def resume(ctx):
     return
 
 #stop
-@bot.command(name='stop', help='Makes the bot stop playing the current sound')
+@bot.command(name='stop', help='Stop playing the current sound')
 async def stop(ctx):
     global voice
     if (voice.is_playing() or voice.is_paused()):
@@ -117,31 +119,42 @@ async def stop(ctx):
         print("Bot tried to stop playing but nothing was playing before")
     return
 #-----------------------------------------------------------------------------------
+
+
+#---------------------------- MUTE ----------------------------
 #mute
-@bot.command(name='mute', help='Makes the bot keep a member muted')
+@bot.command(name='mute', help='Keep a member muted')
 async def mute(ctx, arg):
-    addKeepMuted(arg)
+    #get user from name using context
+    #addKeepMuted(arg)
+    member = getMemberFromCtxName(ctx, arg)
+    addKeepMuted(member.id)
+    await member.edit(mute=True)
+    print(f'Bot is now keeping {member.name} muted')
 
-@bot.command(name='unmute', help='Makes stop keeping a member muted')
+#--------------------------- UNMUTE ---------------------------
+#unmute
+@bot.command(name='unmute', help='Stops keeping a member muted')
 async def unmute(ctx, arg):
-    removeKeepMuted(arg)
-
+    member = getMemberFromCtxName(ctx, arg)
+    removeKeepMuted(member.id)
+    await member.edit(mute=False)
+    print(f'Bot is no longer keeping {member.name} muted')
+#-----------------------------------------------------------------------------------
 
 
 #---------------------- RUSSIAN ROULETTE ----------------------
 #rroulette
-@bot.command(name='rroulette', help='Makes the bot kick one random member from its current voice channel.⛔')
+@bot.command(name='rroulette', help='⛔ Kick one random member from its current voice channel.')
 async def rroulette(ctx):
     fileName = pickFile("rroulette")
     await play_file(fileName, ctx.author.voice.channel, ctx.guild)
     await roulette(bot, ctx, 1)
     return
-#-----------------------------------------------------------------------------------
-
 
 #------------------------- HIGHLANDER -------------------------
 #highlander
-@bot.command(name='highlander', help='Makes the bot kick every member from its current voice channel except for one chosen at random.⛔')
+@bot.command(name='highlander', help='⛔ Kick every member from its current voice channel except for one chosen at random.')
 async def highlander(ctx):
     fileName = pickFile("highlander")
     await play_file(fileName, ctx.author.voice.channel, ctx.guild)
@@ -211,7 +224,7 @@ async def on_voice_state_update(member, before, after):
             return
         await play_file(fileName, after_vc, after_vc.guild)
     if (member.id in getKeepMuted() and before.mute and not after.mute):
-        member.edit(mute = true)
+        await member.edit(mute=True)
     return
 #-----------------------------------------------------------------------------------
 

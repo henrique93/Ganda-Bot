@@ -15,20 +15,16 @@ keep_muted = []
 def getKeepMuted():
     return keep_muted
 
-def addKeepMuted(name):
+def addKeepMuted(id):
     global keep_muted
-    if (name == "yusuke"):
-        keep_muted.append(Yusuke_id)
-    elif (name == "rko"):
-        keep_muted.append(Touret_id)
+    if (id is not None):
+        keep_muted.append(id)
     return
 
-def removeKeepMuted(name):
+def removeKeepMuted(id):
     global keep_muted
-    if (name == "yusuke"):
-        del keep_muted(Yusuke_id)
-    elif (name == "rko"):
-        del keep_muted(Touret_id)
+    if (id is not None):
+        keep_muted.remove(id)
     return
 
 
@@ -119,6 +115,17 @@ async def give_roles(member):
         print(f'❗❗❗ERROR: Failed to add roles to user: {member.name} due to:\n{e}\n--------------------')
     return None
 #-----------------------------------------------------------------------------------
+
+
+#getMemberIdFromCtxName
+def getMemberFromCtxName(ctx, arg):
+    members = ctx.guild.members
+    for m in members:
+        if arg in m.name:
+            return m
+    return None
+#-----------------------------------------------------------------------------------
+
 
 #change_nickname
 async def change_nickname(member):
@@ -256,4 +263,3 @@ async def roulette(bot, ctx, type):
     await ctx.send(end_message)
     return None
 #-----------------------------------------------------------------------------------
-
