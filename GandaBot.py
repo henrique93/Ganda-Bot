@@ -126,10 +126,7 @@ async def stop(ctx):
 @bot.command(name='mute', help='Keep a member muted')
 async def mute(ctx, arg):
     target = getMemberFromCtxName(ctx, arg)
-    print(target)
-    print(getKeepMuted())
     if (ctx.author.top_role > target.top_role):
-        print("ola")
         addKeepMuted(target.id)
         await target.edit(mute=True)
         print(f'Bot is now keeping {target.name} muted')
@@ -145,7 +142,15 @@ async def mute(ctx, arg):
 @bot.command(name='unmute', help='Stops keeping a member muted')
 async def unmute(ctx, arg):
     target = getMemberFromCtxName(ctx, arg)
-    if (ctx.author.top_role > target.top_role):
+    if (arg == "all" and ctx.author.guild_permissions.administrator):
+        for i in getKeepMuted():
+            removeKeepMuted(i)
+            user = get(bot.get_all_members(), id=i)
+            await user.edit(mute=False)
+        print("Bot is no longer keeping anyone muted")
+    elif (target is None):
+        return
+    elif (ctx.author.top_role > target.top_role):
         removeKeepMuted(target.id)
         await target.edit(mute=False)
         print(f'Bot is no longer keeping {target.name} muted')
@@ -210,7 +215,6 @@ async def on_voice_state_update(member, before, after):
     id = member.id
     #Keep muting members in the keep_muted list
     if (member.id in getKeepMuted() and not after.mute):
-        print("adeus")
         await member.edit(mute=True)
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
