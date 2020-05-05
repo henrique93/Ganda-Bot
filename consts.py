@@ -55,6 +55,9 @@ self_deaf = "audio//VoiceUpdate//Self//Deafen//ill_be_back.mp3"
 
 #self_undeaf
 self_undeaf = "audio//VoiceUpdate//Self//Undeafen//back_baby.mp3"
+
+#leave
+leave = "audio//VoiceUpdate//Leave//bah_bye.mp3"
 #-----------------------------------------------------------------------------------
 
 
