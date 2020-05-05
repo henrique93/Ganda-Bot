@@ -184,13 +184,25 @@ async def highlander(ctx):
 #on_voice_state_update
 @bot.event
 async def on_voice_state_update(member, before, after):
-    ch = before.channel
-    voice = get(bot.voice_clients, guild=member.guild)
+    global voice
+    #Check if state update's origin is a bot
+    if (member.bot):
+        return
+    before_vc = before.channel
+    after_vc = after.channel
+    id = member.id
+    #Keep muting members in the keep_muted list
+    if (member.id in getKeepMuted() and not after.mute):
+        await member.edit(mute=True)
+    #Play join sound if member has one
+    if ((after_vc is not None) and (before_vc != after_vc)):
+        fileName = pickSoundJoin(id)
+        if (fileName is not None):
+            await play_file(fileName, after_vc, after_vc.guild)
     #Disconnect bot if he's the only member on the channel
-    if (ch is not None and voice is not None):
-        if(voice.channel == ch and len(ch.members) == 1):
-            await voice.disconnect()
-            print(f'Bot disconnected from {ch} in guild {voice.guild} because it was the only member connected')
+    if (voice is not None and voice.channel == before_vc and isBotAlone(before_vc)):
+        await voice.disconnect()
+        print(f'Bot disconnected from {before_vc.name} in guild {voice.guild.name} because it was the only member connected')
     return
 #-----------------------------------------------------------------------------------
 
@@ -203,28 +215,6 @@ async def on_voice_state_update(member, before, after):
 async def on_member_join(member):
     await give_roles(member)
     await change_nickname(member)
-    return
-#-----------------------------------------------------------------------------------
-
-
-#////////////////////////////////////////////////////////////////
-#////////////////// MEMEBER JOIN VOICE CHANNEL //////////////////
-#////////////////////////////////////////////////////////////////
-#on_voice_state_update
-@bot.event
-async def on_voice_state_update(member, before, after):
-    if (member.bot):
-        return
-    before_vc = before.channel
-    after_vc = after.channel
-    id = member.id
-    if ((after_vc is not None) and (before_vc != after_vc)):
-        fileName = pickSoundJoin(id)
-        if (fileName == None):
-            return
-        await play_file(fileName, after_vc, after_vc.guild)
-    if (member.id in getKeepMuted() and before.mute and not after.mute):
-        await member.edit(mute=True)
     return
 #-----------------------------------------------------------------------------------
 

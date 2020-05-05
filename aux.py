@@ -263,3 +263,16 @@ async def roulette(bot, ctx, type):
     await ctx.send(end_message)
     return None
 #-----------------------------------------------------------------------------------
+
+
+#isBotAlone
+def isBotAlone(ch):
+    bots = 0
+    num_members = len(ch.members)
+    for m in ch.members:
+        if (m.bot):
+            bots += 1
+    if ((num_members == 1) or (num_members == bots):
+        return true
+    return False
+#-----------------------------------------------------------------------------------
