@@ -132,7 +132,7 @@ def initValdemar():
 #Verde
 verde = []
 
-def initVerdeList():
+def initVerde():
     global verde
     path = "audio//Join//Verde//"
     verde = os.listdir(path)
