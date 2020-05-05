@@ -9,12 +9,14 @@ import random
 
 import lists
 from aux import *
+#-----------------------------------------------------------------------------------
 
 TOKEN = os.environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='?', description='Ganda bot mano!')
 
 voice = None
+#-----------------------------------------------------------------------------------
 
 
 #////////////////////////////////////////////////////////////////

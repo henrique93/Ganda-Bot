@@ -5,10 +5,9 @@ import discord
 from discord.utils import get
 import asyncio
 
-
-
 import consts
 import lists
+#-----------------------------------------------------------------------------------
 
 #Sopas_de_cafe Roles
 magician_role = None
