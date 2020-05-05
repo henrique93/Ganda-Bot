@@ -8,6 +8,7 @@ import asyncio
 import random
 
 from aux import *
+from soundLists import initLists
 
 TOKEN = os.environ['DISCORD_TOKEN']
 
@@ -29,6 +30,7 @@ async def on_ready():
     servers = []
     for guild in bot.guilds:
         servers.append(guild.name)
+    initLists()
     print(f'connected to {len(servers)} guilds: {servers}')
     print('------')
     return

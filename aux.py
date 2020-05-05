@@ -8,6 +8,7 @@ import asyncio
 
 
 from consts import *
+import soundLists
 
 #Keep muted
 keep_muted = []
@@ -143,21 +144,21 @@ async def change_nickname(member):
 #pickFile
 def pickFile(name):
     if (name == 'random'):
-        rand = random.randint(0, len(catchFrase_list)-1)
-        trackName = catchFrase_list[rand]
-        return ("audio//" + trackName + ".mp3")
+        rand = random.randint(0, len(soundLists.soundList)-1)
+        trackName = "audio//Sounds//" + soundLists.soundList[rand]
+        return trackName
     elif (name == 'jajao' or name == 'rroulette'):
-        return ("audio//last_surprise.mp3")
+        return (jajao)
     elif (name =='highlander'):
-        rand = random.randint(0, len(highlander_sounds)-1)
-        return highlander_sounds[rand]
+        rand = random.randint(0, len(soundLists.highlanderList)-1)
+        trackName = "audio//Highlander//Play//" + soundLists.highlanderList[rand]
+        return trackName
     elif (name == 'ariana'):
-        path ='audio//Ariana Grande//'
-        files = os.listdir('audio//Ariana Grande//')
-        index = random.randrange(0, len(files))
-        return (path + files[index])
-    elif ((name in catchFrase_list) or (name + "⛔" in catchFrase_list)):
-        return ("audio//" + name + ".mp3")
+        rand = random.randrange(0, len(soundLists.arianaList)-1)
+        trackName = "audio//Ariana Grande//" + soundLists.arianaList[rand]
+        return trackName
+    elif ((name + ".mp3") in soundLists.soundList):
+        return ("audio//Sounds//" + name + ".mp3")
     return None
 #-----------------------------------------------------------------------------------
 
@@ -165,56 +166,69 @@ def pickFile(name):
 def pickSoundJoin(id):
     #DANIEL
     if (id == Daniel_id):
-        rand = random.randint(0, len(join_sounds_daniel)-1)
-        return join_sounds_daniel[rand]
+        rand = random.randint(0, len(soundLists.danielList)-1)
+        trackName = "audio//Join//Daniel//" + soundLists.danielList[rand]
+        return trackName
     #DAVID
     elif (id == David_id):
-        rand = random.randint(0, len(join_sounds_david)-1)
-        return join_sounds_david[rand]
+        rand = random.randint(0, len(soundLists.davidList)-1)
+        trackName = "audio//Join//David//" + soundLists.davidList[rand]
+        return trackName
     #HENRIQUE
     elif (id == Henrique_id):
-        rand = random.randint(0, len(join_sounds_henrique)-1)
-        return join_sounds_henrique[rand]
+        rand = random.randint(0, len(soundLists.henriqueList)-1)
+        trackName = "audio//Join//Henrique//" + soundLists.henriqueList[rand]
+        return trackName
     #JOAO
     elif (id == Joao_id):
-        rand = random.randint(0, len(join_sounds_joao)-1)
-        return join_sounds_joao[rand]
+        rand = random.randint(0, len(soundLists.joaoList)-1)
+        trackName = "audio//Join//Joao//" + soundLists.joaoList[rand]
+        return trackName
     #KNIGHT
     elif (id == Knight_id):
-        rand = random.randint(0, len(join_sounds_knight)-1)
-        return join_sounds_knight[rand]
+        rand = random.randint(0, len(soundLists.knightList)-1)
+        trackName = "audio//Join//Knight//" + soundLists.knightList[rand]
+        return trackName
     #POSEIDON
     elif (id == Poseidon_id):
-        rand = random.randint(0, len(join_sounds_poseidon)-1)
-        return join_sounds_poseidon[rand]
+        rand = random.randint(0, len(soundLists.poseidonList)-1)
+        trackName = "audio//Join//Poseidon//" + soundLists.poseidonList[rand]
+        return trackName
     #RAFA
     elif (id == Rafa_id):
-        rand = random.randint(0, len(join_sounds_rafa)-1)
-        return join_sounds_rafa[rand]
+        rand = random.randint(0, len(soundLists.rafaList)-1)
+        trackName = "audio//Join//Rafa//" + soundLists.rafaList[rand]
+        return trackName
     #TOURET
     elif (id == Touret_id):
-        rand = random.randint(0, len(join_sounds_touret)-1)
-        return join_sounds_touret[rand]
+        rand = random.randint(0, len(soundLists.touretList)-1)
+        trackName = "audio//Join//Touret//" + soundLists.touretList[rand]
+        return trackName
     #VALDEMAR
     elif (id == Valdemar_id):
-        rand = random.randint(0, len(join_sounds_valdemar)-1)
-        return join_sounds_valdemar[rand]
+        rand = random.randint(0, len(soundLists.valdemarList)-1)
+        trackName = "audio//Join//Valdemar//" + soundLists.valdemarList[rand]
+        return trackName
     #VERDE
     elif (id == Verde_id):
-        rand = random.randint(0, len(join_sounds_verde)-1)
-        return join_sounds_verde[rand]
+        rand = random.randint(0, len(soundLists.verdeList)-1)
+        trackName = "audio//Join//Verde//" + soundLists.verdeList[rand]
+        return trackName
     #WILSON
     elif (id == Wilson_id):
-        rand = random.randint(0, len(join_sounds_wilson)-1)
-        return join_sounds_wilson[rand]
+        rand = random.randint(0, len(soundLists.wilsonList)-1)
+        trackName = "audio//Join//Wilson//" + soundLists.wilsonList[rand]
+        return trackName
     #YUSUKE
     elif (id == Yusuke_id):
-        rand = random.randint(0, len(join_sounds_yusuke)-1)
-        return join_sounds_yusuke[rand]
+        rand = random.randint(0, len(soundLists.yusukeList)-1)
+        trackName = "audio//Join//Yusuke//" + soundLists.yusukeList[rand]
+        return trackName
     #ZE
     elif (id == Ze_id):
-        rand = random.randint(0, len(join_sounds_ze)-1)
-        return join_sounds_ze[rand]
+        rand = random.randint(0, len(soundLists.zeList)-1)
+        trackName = "audio//Join//Ze//" + soundLists.zeList[rand]
+        return trackName
     return None
 #-----------------------------------------------------------------------------------
 
