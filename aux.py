@@ -23,9 +23,11 @@ def addKeepMuted(id):
 
 def removeKeepMuted(id):
     global keep_muted
-    if (id is not None):
+    if (id is None):
+        return
+    else:
         keep_muted.remove(id)
-    return
+        return
 
 
 #Sopas_de_cafe Roles
