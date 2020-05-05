@@ -25,6 +25,29 @@ sopas_de_cafe_id = 152057225316270081
 privileged_id_list = [Daniel_id, David_id, Henrique_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
 #-----------------------------------------------------------------------------------
 
+
+#-------------------------------------- ROLES --------------------------------------
+#Sopas
+Mini_Boss = [Castanheira_id, Daniel_id, David_id, Henrique_id, Joao_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
+
+Magician = [David_id, Verde_id]
+
+CS = [Castanheira_id, Daniel_id, Henrique_id, Joao_id, Touret_id, Valdemar_id, Verde_id, Yusuke_id]
+
+Dead_by_Daylight = [Daniel_id, Henrique_id, Touret_id, Valdemar_id, Verde_id, Wilson_id,]
+
+Dota2 = [Henrique_id, Rafa_id, Ze_id]
+
+League_of_Legends = [Daniel_id, David_id, Henrique_id, Valdemar_id, Verde_id, Yusuke_id]
+
+Sea_of_Thieves = [Castanheira_id, Daniel_id, Henrique_id, Verde_id]
+
+Warframe = [Castanheira_id, Henrique_id, Touret_id, Valdemar_id, Yusuke_id]
+#-----------------------------------------------------------------------------------
+
+
+#------------------------------------- SOUNDS --------------------------------------
+#jajao
 jajao = "audio//Highlander//Play//last_surprise.mp3"
 #-----------------------------------------------------------------------------------
 
@@ -50,24 +73,4 @@ jajao = "audio//Highlander//Play//last_surprise.mp3"
 #                   'numberone', 'dance', 'knockknock', 'daddy', 'coffin', 'dorime']
 
 restricted_sounds = ["nani", "wtfLoud", "reee", "womboCombo"]
-#-----------------------------------------------------------------------------------
-
-
-#-------------------------------------- ROLES --------------------------------------
-#Sopas
-Mini_Boss = [Castanheira_id, Daniel_id, David_id, Henrique_id, Joao_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
-
-Magician = [David_id, Verde_id]
-
-CS = [Castanheira_id, Daniel_id, Henrique_id, Joao_id, Touret_id, Valdemar_id, Verde_id, Yusuke_id]
-
-Dead_by_Daylight = [Daniel_id, Henrique_id, Touret_id, Valdemar_id, Verde_id, Wilson_id,]
-
-Dota2 = [Henrique_id, Rafa_id, Ze_id]
-
-League_of_Legends = [Daniel_id, David_id, Henrique_id, Valdemar_id, Verde_id, Yusuke_id]
-
-Sea_of_Thieves = [Castanheira_id, Daniel_id, Henrique_id, Verde_id]
-
-Warframe = [Castanheira_id, Henrique_id, Touret_id, Valdemar_id, Yusuke_id]
 #-----------------------------------------------------------------------------------

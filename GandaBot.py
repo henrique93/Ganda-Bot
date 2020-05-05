@@ -7,8 +7,8 @@ from discord.utils import get
 import asyncio
 import random
 
+import lists
 from aux import *
-from soundLists import initLists
 
 TOKEN = os.environ['DISCORD_TOKEN']
 
@@ -30,7 +30,7 @@ async def on_ready():
     servers = []
     for guild in bot.guilds:
         servers.append(guild.name)
-    initLists()
+    lists.initLists()
     print(f'connected to {len(servers)} guilds: {servers}')
     print('------')
     return
@@ -129,7 +129,7 @@ async def stop(ctx):
 async def mute(ctx, arg):
     target = getMemberFromCtxName(ctx, arg)
     if (ctx.author.top_role > target.top_role):
-        addKeepMuted(target.id)
+        lists.addMuted(target.id)
         await target.edit(mute=True)
         print(f'Bot is now keeping {target.name} muted')
         return
@@ -145,15 +145,15 @@ async def mute(ctx, arg):
 async def unmute(ctx, arg):
     target = getMemberFromCtxName(ctx, arg)
     if (arg == "all" and ctx.author.guild_permissions.administrator):
-        for i in getKeepMuted():
-            removeKeepMuted(i)
+        for i in lists.muted:
+            lists.removeMuted(i)
             user = get(bot.get_all_members(), id=i)
             await user.edit(mute=False)
         print("Bot is no longer keeping anyone muted")
     elif (target is None):
         return
     elif (ctx.author.top_role > target.top_role):
-        removeKeepMuted(target.id)
+        lists.removeMuted(target.id)
         await target.edit(mute=False)
         print(f'Bot is no longer keeping {target.name} muted')
     else:
@@ -216,7 +216,7 @@ async def on_voice_state_update(member, before, after):
     after_vc = after.channel
     id = member.id
     #Keep muting members in the keep_muted list
-    if (member.id in getKeepMuted() and not after.mute):
+    if (member.id in lists.muted and not after.mute):
         await member.edit(mute=True)
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):

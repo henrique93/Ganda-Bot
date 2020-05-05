@@ -8,28 +8,7 @@ import asyncio
 
 
 from consts import *
-import soundLists
-
-#Keep muted
-keep_muted = []
-
-def getKeepMuted():
-    return keep_muted
-
-def addKeepMuted(id):
-    global keep_muted
-    if (id is not None):
-        keep_muted.append(id)
-    return
-
-def removeKeepMuted(id):
-    global keep_muted
-    if (id is None):
-        return
-    else:
-        keep_muted.remove(id)
-        return
-
+import lists
 
 #Sopas_de_cafe Roles
 magician_role = None
@@ -144,20 +123,20 @@ async def change_nickname(member):
 #pickFile
 def pickFile(name):
     if (name == 'random'):
-        rand = random.randint(0, len(soundLists.soundList)-1)
-        trackName = "audio//Sounds//" + soundLists.soundList[rand]
+        rand = random.randint(0, len(lists.sounds)-1)
+        trackName = "audio//Sounds//" + lists.sounds[rand]
         return trackName
     elif (name == 'jajao' or name == 'rroulette'):
         return (jajao)
     elif (name =='highlander'):
-        rand = random.randint(0, len(soundLists.highlanderList)-1)
-        trackName = "audio//Highlander//Play//" + soundLists.highlanderList[rand]
+        rand = random.randint(0, len(lists.highlander)-1)
+        trackName = "audio//Highlander//Play//" + lists.highlander[rand]
         return trackName
     elif (name == 'ariana'):
-        rand = random.randrange(0, len(soundLists.arianaList)-1)
-        trackName = "audio//Ariana Grande//" + soundLists.arianaList[rand]
+        rand = random.randrange(0, len(lists.ariana)-1)
+        trackName = "audio//Ariana Grande//" + lists.ariana[rand]
         return trackName
-    elif ((name + ".mp3") in soundLists.soundList):
+    elif ((name + ".mp3") in lists.sounds):
         return ("audio//Sounds//" + name + ".mp3")
     return None
 #-----------------------------------------------------------------------------------
@@ -166,68 +145,68 @@ def pickFile(name):
 def pickSoundJoin(id):
     #DANIEL
     if (id == Daniel_id):
-        rand = random.randint(0, len(soundLists.danielList)-1)
-        trackName = "audio//Join//Daniel//" + soundLists.danielList[rand]
+        rand = random.randint(0, len(lists.daniel)-1)
+        trackName = "audio//Join//Daniel//" + lists.daniel[rand]
         return trackName
     #DAVID
     elif (id == David_id):
-        rand = random.randint(0, len(soundLists.davidList)-1)
-        trackName = "audio//Join//David//" + soundLists.davidList[rand]
+        rand = random.randint(0, len(lists.david)-1)
+        trackName = "audio//Join//David//" + lists.david[rand]
         return trackName
     #HENRIQUE
     elif (id == Henrique_id):
-        rand = random.randint(0, len(soundLists.henriqueList)-1)
-        trackName = "audio//Join//Henrique//" + soundLists.henriqueList[rand]
+        rand = random.randint(0, len(lists.henrique)-1)
+        trackName = "audio//Join//Henrique//" + lists.henrique[rand]
         return trackName
     #JOAO
     elif (id == Joao_id):
-        rand = random.randint(0, len(soundLists.joaoList)-1)
-        trackName = "audio//Join//Joao//" + soundLists.joaoList[rand]
+        rand = random.randint(0, len(lists.joao)-1)
+        trackName = "audio//Join//Joao//" + lists.joao[rand]
         return trackName
     #KNIGHT
     elif (id == Knight_id):
-        rand = random.randint(0, len(soundLists.knightList)-1)
-        trackName = "audio//Join//Knight//" + soundLists.knightList[rand]
+        rand = random.randint(0, len(lists.knight)-1)
+        trackName = "audio//Join//Knight//" + lists.knight[rand]
         return trackName
     #POSEIDON
     elif (id == Poseidon_id):
-        rand = random.randint(0, len(soundLists.poseidonList)-1)
-        trackName = "audio//Join//Poseidon//" + soundLists.poseidonList[rand]
+        rand = random.randint(0, len(lists.poseidon)-1)
+        trackName = "audio//Join//Poseidon//" + lists.poseidon[rand]
         return trackName
     #RAFA
     elif (id == Rafa_id):
-        rand = random.randint(0, len(soundLists.rafaList)-1)
-        trackName = "audio//Join//Rafa//" + soundLists.rafaList[rand]
+        rand = random.randint(0, len(lists.rafa)-1)
+        trackName = "audio//Join//Rafa//" + lists.rafa[rand]
         return trackName
     #TOURET
     elif (id == Touret_id):
-        rand = random.randint(0, len(soundLists.touretList)-1)
-        trackName = "audio//Join//Touret//" + soundLists.touretList[rand]
+        rand = random.randint(0, len(lists.touret)-1)
+        trackName = "audio//Join//Touret//" + lists.touret[rand]
         return trackName
     #VALDEMAR
     elif (id == Valdemar_id):
-        rand = random.randint(0, len(soundLists.valdemarList)-1)
-        trackName = "audio//Join//Valdemar//" + soundLists.valdemarList[rand]
+        rand = random.randint(0, len(lists.valdemar)-1)
+        trackName = "audio//Join//Valdemar//" + lists.valdemar[rand]
         return trackName
     #VERDE
     elif (id == Verde_id):
-        rand = random.randint(0, len(soundLists.verdeList)-1)
-        trackName = "audio//Join//Verde//" + soundLists.verdeList[rand]
+        rand = random.randint(0, len(lists.verde)-1)
+        trackName = "audio//Join//Verde//" + lists.verde[rand]
         return trackName
     #WILSON
     elif (id == Wilson_id):
-        rand = random.randint(0, len(soundLists.wilsonList)-1)
-        trackName = "audio//Join//Wilson//" + soundLists.wilsonList[rand]
+        rand = random.randint(0, len(lists.wilson)-1)
+        trackName = "audio//Join//Wilson//" + lists.wilson[rand]
         return trackName
     #YUSUKE
     elif (id == Yusuke_id):
-        rand = random.randint(0, len(soundLists.yusukeList)-1)
-        trackName = "audio//Join//Yusuke//" + soundLists.yusukeList[rand]
+        rand = random.randint(0, len(lists.yusuke)-1)
+        trackName = "audio//Join//Yusuke//" + lists.yusuke[rand]
         return trackName
     #ZE
     elif (id == Ze_id):
-        rand = random.randint(0, len(soundLists.zeList)-1)
-        trackName = "audio//Join//Ze//" + soundLists.zeList[rand]
+        rand = random.randint(0, len(lists.ze)-1)
+        trackName = "audio//Join//Ze//" + lists.ze[rand]
         return trackName
     return None
 #-----------------------------------------------------------------------------------
