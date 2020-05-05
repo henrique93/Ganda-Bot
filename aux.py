@@ -240,10 +240,8 @@ async def roulette(bot, ctx, type):
         end_message = "It as been declared by highlander, that the one true fagget is: "
         num_kicks = len(members) - 1
     print(f'Users playing: {members}')
-    print(num_kicks)
     for i in range(num_kicks):
         rand = random.randint(0, len(members)-1)
-        print(rand)
         to_kick = members[rand]
         try:
             invite = await ctx.channel.create_invite(max_age = 3600, max_uses = 1)

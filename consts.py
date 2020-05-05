@@ -77,6 +77,8 @@ join_sounds_verde = ["audio//dorime.mp3", "audio//avengers.mp3"]
 
 highlander_sounds = ["audio//highlander_siren.mp3",
                      "audio//michael_buffer_lets_get_ready_to_rumble.mp3"]
+
+highlander_victory = "audio//FFVIII_victory_fanfare.mp3"
 #-----------------------------------------------------------------------------------
 
 

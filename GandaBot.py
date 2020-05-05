@@ -125,21 +125,19 @@ async def stop(ctx):
 #mute
 @bot.command(name='mute', help='Keep a member muted')
 async def mute(ctx, arg):
-    #get user from name using context
-    #addKeepMuted(arg)
-    member = getMemberFromCtxName(ctx, arg)
-    addKeepMuted(member.id)
-    await member.edit(mute=True)
-    print(f'Bot is now keeping {member.name} muted')
+    target = getMemberFromCtxName(ctx, arg)
+    addKeepMuted(target.id)
+    await target.edit(mute=True)
+    print(f'Bot is now keeping {target.name} muted')
 
 #--------------------------- UNMUTE ---------------------------
 #unmute
 @bot.command(name='unmute', help='Stops keeping a member muted')
 async def unmute(ctx, arg):
-    member = getMemberFromCtxName(ctx, arg)
-    removeKeepMuted(member.id)
-    await member.edit(mute=False)
-    print(f'Bot is no longer keeping {member.name} muted')
+    target = getMemberFromCtxName(ctx, arg)
+    removeKeepMuted(target.id)
+    await target.edit(mute=False)
+    print(f'Bot is no longer keeping {target.name} muted')
 #-----------------------------------------------------------------------------------
 
 
@@ -157,8 +155,11 @@ async def rroulette(ctx):
 @bot.command(name='highlander', help='⛔ Kick every member from its current voice channel except for one chosen at random.')
 async def highlander(ctx):
     fileName = pickFile("highlander")
-    await play_file(fileName, ctx.author.voice.channel, ctx.guild)
+    ch = ctx.author.voice.channel
+    sv = ctx.guild
+    await play_file(fileName, ch, sv)
     await roulette(bot, ctx, 2)
+    await play_file(highlander_victory, ch, sv)
     return
 #-----------------------------------------------------------------------------------
 
