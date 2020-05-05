@@ -272,7 +272,7 @@ def isBotAlone(ch):
     for m in ch.members:
         if (m.bot):
             bots += 1
-    if ((num_members == 1) or (num_members == bots):
-        return true
+    if ((num_members == 1) or (num_members == bots)):
+        return True
     return False
 #-----------------------------------------------------------------------------------
