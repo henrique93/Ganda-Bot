@@ -203,6 +203,7 @@ async def on_voice_state_update(member, before, after):
     #Disconnect bot if he's the only member on the channel
     if (voice is not None and voice.channel == before_vc and isBotAlone(before_vc)):
         await voice.disconnect()
+        voice = None
         print(f'Bot disconnected from {before_vc.name} in guild {voice.guild.name} because it was the only member connected')
     return
 #-----------------------------------------------------------------------------------
