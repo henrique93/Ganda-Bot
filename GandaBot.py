@@ -23,7 +23,7 @@ voice = None
 #on_ready
 @bot.event
 async def on_ready():
-    set_roles(bot.get_guild(sopas_de_cafe_id).roles)
+    set_roles(bot.get_guild(consts.sopas_de_cafe_id).roles)
     print(f'Logged in as {bot.user}')
     print(f'Name: {bot.user.name}')
     print(f'ID: {bot.user.id}')
@@ -219,8 +219,10 @@ async def on_voice_state_update(member, before, after):
     if (member.id in lists.muted and not after.mute):
         await member.edit(mute=True)
     #Play sound if user deafens himself
-    if (after_vc.self_deaf and not before_vc.self_deaf):
-        
+    if (after.self_deaf and not before.self_deaf):
+        await play_file(consts.self_deaf, after_vc, after_vc.guild)
+    if (before.self_deaf and not after.self_deaf):
+        await play_file(consts.self_undeaf, after_vc, after_vc.guild)
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
         fileName = pickSoundJoin(id)
