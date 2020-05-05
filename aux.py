@@ -119,7 +119,7 @@ async def give_roles(member):
 #-----------------------------------------------------------------------------------
 
 
-#getMemberIdFromCtxName
+#getMemberFromCtxName
 def getMemberFromCtxName(ctx, arg):
     members = ctx.guild.members
     for m in members:

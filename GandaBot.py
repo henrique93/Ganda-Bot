@@ -126,18 +126,34 @@ async def stop(ctx):
 @bot.command(name='mute', help='Keep a member muted')
 async def mute(ctx, arg):
     target = getMemberFromCtxName(ctx, arg)
-    addKeepMuted(target.id)
-    await target.edit(mute=True)
-    print(f'Bot is now keeping {target.name} muted')
+    print(target)
+    print(getKeepMuted())
+    if (ctx.author.top_role > target.top_role):
+        print("ola")
+        addKeepMuted(target.id)
+        await target.edit(mute=True)
+        print(f'Bot is now keeping {target.name} muted')
+        return
+    else:
+        message = "⛔ You don't have permission to mute " + target.nick + " ⛔"
+        await ctx.send(message)
+        print(f'{ctx.author.name} does not have permission to mute {target.name}')
+        return
 
 #--------------------------- UNMUTE ---------------------------
 #unmute
 @bot.command(name='unmute', help='Stops keeping a member muted')
 async def unmute(ctx, arg):
     target = getMemberFromCtxName(ctx, arg)
-    removeKeepMuted(target.id)
-    await target.edit(mute=False)
-    print(f'Bot is no longer keeping {target.name} muted')
+    if (ctx.author.top_role > target.top_role):
+        removeKeepMuted(target.id)
+        await target.edit(mute=False)
+        print(f'Bot is no longer keeping {target.name} muted')
+    else:
+        message = "⛔ You don't have permission to unmute " + target.nick + " ⛔"
+        await ctx.send(message)
+        print(f'{ctx.author.name} does not have permission to unmute {target.name}')
+    return
 #-----------------------------------------------------------------------------------
 
 
@@ -194,6 +210,7 @@ async def on_voice_state_update(member, before, after):
     id = member.id
     #Keep muting members in the keep_muted list
     if (member.id in getKeepMuted() and not after.mute):
+        print("adeus")
         await member.edit(mute=True)
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
