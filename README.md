@@ -27,6 +27,7 @@
 + When members leave a voice channel the bot plays a sound;
 + When members self deafen when in a voice channel the bot plays a sound;
 + When members self undeafen when in a voice channel the bot plays a sound;
++ When members don't have permission to performe an action plays a sound;
 + The bot automatically disconnects from the voice channel if there are no other non-bot members connected to that channel;
 + Gives specific members specific roles when they join the server;
 + Gives specific members specific nicknames when they join the server.
