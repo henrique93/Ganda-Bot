@@ -294,6 +294,9 @@ async def play_file(fileName, ch, server):
         inited = 0
         voice = get(bot.voice_clients, guild=server)
         voice = await ch.connect()
+    elif(voice.is_playing()):
+        #Implement queue
+        return
     voice.play(discord.FFmpegPCMAudio(fileName,executable='ffmpeg'))
     while(voice.is_playing()):
         await asyncio.sleep(1)
