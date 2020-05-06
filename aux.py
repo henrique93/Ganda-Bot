@@ -289,3 +289,11 @@ def isBotAlone(ch):
         return True
     return False
 #-----------------------------------------------------------------------------------
+
+#coinFlip
+def coinFlip():
+    rand = random.randint(0,1)
+    if (rand):
+        return "Heads!"
+    else:
+        return "Tails!"
