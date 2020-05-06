@@ -50,27 +50,3 @@ Warframe = [Castanheira_id, Henrique_id, Touret_id, Valdemar_id, Yusuke_id]
 #jajao
 jajao = "audio//Highlander//Play//last_surprise.mp3"
 #----------------------------------------------------------------
-
-
-#------------------------- COMMAND LIST -------------------------
-#catchFrase_list = ['legendary', 'suitup', 'himym', 'hellno', 'cena', 'usure', 'notale',
-#                  'victory', 'burn', 'diosmio', 'allalone', 'laugh', 'thisway', 'stare',
-#                  'face', 'little', 'hotteam', 'howdareyou', 'noo', 'ready', 'prank',
-#                   'strangenoises', 'ora', 'muda', 'nani⛔', 'espetaculo',
-#                   'dejavu', 'trololo', 'rushb', 'trap', 'myhorse', 'toasty', 'wololo',
-#                   'nocaralho', 'gayyy', 'quack', 'tudoputa', 'diga1', 'leroy', 'hijoputa',
-#                   'surprise', 'ding', 'inthebag', 'eheheh', 'heavylol', 'yeahboy', 'bomdia',
-#                   'rage', 'hellohuman', 'congrats', 'wtfLoud⛔', 'bbtriple',
-#                   'doit', 'uretard?', 'fufdp', 'nooo', 'shallnotpass', 'allahumix',
-#                   'conafresca', 'dropbass', 'order66', 'fuckpussy', 'caburro', 'eb',
-#                   'disaster', 'move', 'myman', 'mymanlong', 'whocares', 'shame',
-#                   'shootstars', 'tabem', 'running', 'spaghet', 'smokeweed',
-#                   'reee⛔', 'zaworld', 'desculpa', 'adoropila', 'ryuga',
-#                   'deixeacabar', 'wah', 'inquisition', 'gnome', 'mka', 'deathwing',
-#                   'womboCombo⛔', 'sayWhat', 'pickRick', 'evilMorty', 'shake', 'rmcopypasta',
-#                   'ricketyreckt', 'getSchwifty', 'wubalubadubdub', 'zaaa', 'fuckAss', 'bj',
-#                   'ww', 'theOne', 'howCouldHeavy', 'idiot', 'duel', 'fart', 'huntress', 'bingbong',
-#                   'numberone', 'dance', 'knockknock', 'daddy', 'coffin', 'dorime']
-
-#restricted_sounds = ["nani", "wtfLoud", "reee", "womboCombo"]
-#----------------------------------------------------------------
