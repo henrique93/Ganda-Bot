@@ -1,6 +1,5 @@
 # GandaBot.py
 import asyncio
-import random
 import sys
 import os
 

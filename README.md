@@ -1,4 +1,4 @@
-# Ganda-Bot
+# ![Ganda-Bot](Avatar.png)
 [Discord](https://discord.com) bot using [discord.py](https://discordpy.readthedocs.io/en/latest/)
 
 

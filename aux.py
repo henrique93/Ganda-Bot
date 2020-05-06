@@ -123,22 +123,22 @@ async def change_nickname(member):
 #pickFile
 def pickFile(name):
     if (name == 'random'):
-        rand = random.randrange(0, len(lists.sounds))
-        fileName = "audio//Sounds//" + lists.sounds[rand]
+        rand = random.choice(lists.sounds)
+        fileName = "audio//Sounds//" + rand
         return fileName
     elif (name == 'jajao' or name == 'rroulette'):
         return consts.jajao
     elif (name =='highlander'):
-        rand = random.randrange(0, len(lists.highlander))
-        fileName = "audio//Highlander//Play//" + lists.highlander[rand]
+        rand = random.choice(lists.highlander)
+        fileName = "audio//Highlander//Play//" + rand
         return fileName
     elif (name == 'highlanderv'):
-        rand = random.randrange(0, len(lists.highlanderVictory))
-        fileName = "audio//Highlander//Victory//" + lists.highlanderVictory[rand]
+        rand = random.choice(lists.highlanderVictory)
+        fileName = "audio//Highlander//Victory//" + rand
         return fileName
     elif (name == 'ariana'):
-        rand = random.randrange(0, len(lists.ariana))
-        fileName = "audio//Ariana Grande//" + lists.ariana[rand]
+        rand = random.choice(lists.ariana)
+        fileName = "audio//Ariana Grande//" + rand
         return fileName
     elif ((name + ".mp3") in lists.sounds):
         return ("audio//Sounds//" + name + ".mp3")
@@ -149,68 +149,68 @@ def pickFile(name):
 def pickSoundJoin(id):
     #DANIEL
     if (id == consts.Daniel_id):
-        rand = random.randrange(0, len(lists.daniel))
-        fileName = "audio//Join//Daniel//" + lists.daniel[rand]
+        rand = random.choice(lists.daniel)
+        fileName = "audio//Join//Daniel//" + rand
         return fileName
     #DAVID
     elif (id == consts.David_id):
-        rand = random.randrange(0, len(lists.david))
-        fileName = "audio//Join//David//" + lists.david[rand]
+        rand = random.choice(lists.david)
+        fileName = "audio//Join//David//" + rand
         return fileName
     #HENRIQUE
     elif (id == consts.Henrique_id):
-        rand = random.randrange(0, len(lists.henrique))
-        fileName = "audio//Join//Henrique//" + lists.henrique[rand]
+        rand = random.choice(lists.henrique)
+        fileName = "audio//Join//Henrique//" + rand
         return fileName
     #JOAO
     elif (id == consts.Joao_id):
-        rand = random.randrange(0, len(lists.joao))
-        fileName = "audio//Join//Joao//" + lists.joao[rand]
+        rand = random.choice(lists.joao)
+        fileName = "audio//Join//Joao//" + rand
         return fileName
     #KNIGHT
     elif (id == consts.Knight_id):
-        rand = random.randrange(0, len(lists.knight))
-        fileName = "audio//Join//Knight//" + lists.knight[rand]
+        rand = random.choice(lists.knight)
+        fileName = "audio//Join//Knight//" + rand
         return fileName
     #POSEIDON
     elif (id == consts.Poseidon_id):
-        rand = random.randrange(0, len(lists.poseidon))
-        fileName = "audio//Join//Poseidon//" + lists.poseidon[rand]
+        rand = random.choice(lists.poseidon)
+        fileName = "audio//Join//Poseidon//" + rand
         return fileName
     #RAFA
     elif (id == consts.Rafa_id):
         rand = random.randrange(0, len(lists.rafa))
-        fileName = "audio//Join//Rafa//" + lists.rafa[rand]
+        fileName = "audio//Join//Rafa//" + rand
         return fileName
     #TOURET
     elif (id == consts.Touret_id):
-        rand = random.randrange(0, len(lists.touret))
-        fileName = "audio//Join//Touret//" + lists.touret[rand]
+        rand = random.choice(lists.touret)
+        fileName = "audio//Join//Touret//" + rand
         return fileName
     #VALDEMAR
     elif (id == consts.Valdemar_id):
-        rand = random.randrange(0, len(lists.valdemar))
-        fileName = "audio//Join//Valdemar//" + lists.valdemar[rand]
+        rand = random.choice(lists.valdemar)
+        fileName = "audio//Join//Valdemar//" + rand
         return fileName
     #VERDE
     elif (id == consts.Verde_id):
-        rand = random.randrange(0, len(lists.verde))
-        fileName = "audio//Join//Verde//" + lists.verde[rand]
+        rand = random.choice(lists.verde)
+        fileName = "audio//Join//Verde//" + rand
         return fileName
     #WILSON
     elif (id == consts.Wilson_id):
-        rand = random.randrange(0, len(lists.wilson))
-        fileName = "audio//Join//Wilson//" + lists.wilson[rand]
+        rand = random.choice(lists.wilson)
+        fileName = "audio//Join//Wilson//" + rand
         return fileName
     #YUSUKE
     elif (id == consts.Yusuke_id):
-        rand = random.randrange(0, len(lists.yusuke))
-        fileName = "audio//Join//Yusuke//" + lists.yusuke[rand]
+        rand = random.choice(lists.yusuke)
+        fileName = "audio//Join//Yusuke//" + rand
         return fileName
     #ZE
     elif (id == consts.Ze_id):
-        rand = random.randrange(0, len(lists.ze))
-        fileName = "audio//Join//Ze//" + lists.ze[rand]
+        rand = random.choice(lists.ze)
+        fileName = "audio//Join//Ze//" + rand
         return fileName
     return None
 #----------------------------------------------------------------
@@ -219,16 +219,16 @@ def pickSoundJoin(id):
 def pickVoiceUpdateSound(name):
     #DANIEL
     if (name == 'leave'):
-        rand = random.randrange(0, len(lists.leave))
-        fileName = "audio//VoiceUpdate//Leave//" + lists.leave[rand]
+        rand = random.choice(lists.leave)
+        fileName = "audio//VoiceUpdate//Leave//" + rand
         return fileName
     elif (name == 'selfDeaf'):
-        rand = random.randrange(0, len(lists.selfDeaf))
-        fileName = "audio//VoiceUpdate//Self//Deafen//" + lists.selfDeaf[rand]
+        rand = random.choice(lists.selfDeaf)
+        fileName = "audio//VoiceUpdate//Self//Deafen//" + rand
         return fileName
     elif(name == 'selfUndeaf'):
-        rand = random.randrange(0, len(lists.selfUndeaf))
-        fileName = "audio//VoiceUpdate//Self//Undeafen//" + lists.selfUndeaf[rand]
+        rand = random.choice(lists.selfUndeaf)
+        fileName = "audio//VoiceUpdate//Self//Undeafen//" + rand
         return fileName
 #----------------------------------------------------------------
 
@@ -254,12 +254,11 @@ async def roulette(bot, ctx, type):
         num_kicks = len(members) - 1
     print(f'Users playing: {members}')
     for i in range(num_kicks):
-        rand = random.randrange(0, len(members))
-        to_kick = members[rand]
+        to_kick = random.choice(members)
         try:
             invite = await ctx.channel.create_invite(max_age = 3600, max_uses = 1)
             invite_msg = "You lost. Join us again bitch\n Click the link to join:" + invite.url
-            del members[rand]
+            members.remove(to_kick)
             dm_channel = await to_kick.create_dm()
             dm_message = await dm_channel.send(content=invite_msg)
             await to_kick.kick()
