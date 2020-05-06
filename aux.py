@@ -76,16 +76,6 @@ async def give_roles(member):
 #----------------------------------------------------------------
 
 
-#getMemberFromCtxName
-def getMemberFromCtxName(ctx, arg):
-    members = ctx.guild.members
-    for m in members:
-        if arg in m.name:
-            return m
-    return None
-#----------------------------------------------------------------
-
-
 #change_nickname
 async def change_nickname(member):
     id = member.id

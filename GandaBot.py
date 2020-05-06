@@ -96,56 +96,65 @@ async def destroy(ctx):
 
 #------------------------- MUTE / UNMUTE ------------------------
 #mute
-@bot.command(name='mute', help='Keep a member muted')
+@bot.command(name='mute', help='Keep a mentioned member muted (@user to mention)')
 async def mute(ctx, arg):
-    target = aux.getMemberFromCtxName(ctx, arg)
-    voiceState = ctx.author.voice
-    sv = ctx.guild
-    if (ctx.author.top_role > target.top_role):
-        lists.addMuted(target.id)
-        await target.edit(mute=True)
-        print(f'Bot is now keeping {target.name} muted')
+    mentioned = ctx.message.mentions
+    if (not mentioned):
+        message = "You have to mention the user you want to mute (eg. \"?mute @user\")"
+        await ctx.send(message)
         return
     else:
-        name = target.nick
-        if (name is None):
-            name = target.name
-        message = "⛔ You don't have permission to mute " + name + " ⛔"
-        await ctx.send(message)
-        if (voiceState is not None):
-            fileName = aux.pickFile("denied")
-            await play_file(fileName, voiceState.channel, sv)
-        print(f'{ctx.author.name} does not have permission to mute {target.name}')
-        return
+        target = mentioned[0]
+        voiceState = ctx.author.voice
+        sv = ctx.guild
+        if (ctx.author.top_role > target.top_role):
+            lists.addMuted(target.id)
+            await target.edit(mute=True)
+            print(f'Bot is now keeping {target.name} muted')
+        else:
+            name = target.nick
+            if (name is None):
+                name = target.name
+            message = "⛔ You don't have permission to mute " + name + " ⛔"
+            await ctx.send(message)
+            if (voiceState is not None):
+                fileName = aux.pickFile("denied")
+                await play_file(fileName, voiceState.channel, sv)
+            print(f'{ctx.author.name} does not have permission to mute {target.name}')
+    return
 
 #unmute
-@bot.command(name='unmute', help='Stops keeping a member muted')
+@bot.command(name='unmute', help='Stops keeping the mentioned member muted (@user to mention). Admins can use "?unmute all" to unmute everyone being kept muted')
 async def unmute(ctx, arg):
-    target = aux.getMemberFromCtxName(ctx, arg)
-    voiceState = ctx.author.voice
-    sv = ctx.guild
-    if (arg == "all" and ctx.author.guild_permissions.administrator):
+    mentioned = ctx.message.mentions
+    author = ctx.author
+    if (arg == "all" and author.guild_permissions.administrator):
         for i in lists.muted:
             lists.removeMuted(i)
             user = get(bot.get_all_members(), id=i)
             await user.edit(mute=False)
-        print("Bot is no longer keeping anyone muted")
-    elif (target is None):
-        return
-    elif (ctx.author.top_role > target.top_role):
-        lists.removeMuted(target.id)
-        await target.edit(mute=False)
-        print(f'Bot is no longer keeping {target.name} muted')
+        print('Bot is no longer keeping anyone muted')
+    elif (mentioned):
+        target = mentioned[0]
+        voiceState = author.voice
+        sv = ctx.guild
+        if (author.top_role > target.top_role):
+            lists.removeMuted(target.id)
+            await target.edit(mute=False)
+            print(f'Bot is no longer keeping {target.name} muted')
+        else:
+            name = target.nick
+            if (name is None):
+                name = target.name
+            message = "⛔ You don't have permission to unmute " + name + " ⛔"
+            await ctx.send(message)
+            if (voiceState is not None):
+                fileName = aux.pickFile("denied")
+                await play_file(fileName, voiceState.channel, sv)
+            print(f'{author.name} does not have permission to unmute {target.name}')
     else:
-        name = target.nick
-        if (name is None):
-            name = target.name
-        message = "⛔ You don't have permission to unmute " + name + " ⛔"
+        message = "You have to mention the user you want to unmute (eg. \"?unmute @user\")"
         await ctx.send(message)
-        if (voiceState is not None):
-            fileName = aux.pickFile("denied")
-            await play_file(fileName, voiceState.channel, sv)
-        print(f'{ctx.author.name} does not have permission to unmute {target.name}')
     return
 
 
