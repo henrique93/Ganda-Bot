@@ -1,6 +1,6 @@
 #consts.py
 
-#-------------------------------------- ID's ---------------------------------------
+#----------------------------- ID's -----------------------------
 #Users
 Castanheira_id = 190917034173923328
 Daniel_id = 170845221452513280
@@ -23,10 +23,10 @@ sopas_de_cafe_id = 152057225316270081
 
 #Lists
 privileged_id_list = [Daniel_id, David_id, Henrique_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
-#-------------------------------------- ROLES --------------------------------------
+#----------------------------- ROLES ----------------------------
 #Sopas de Cafe
 Mini_Boss = [Castanheira_id, Daniel_id, David_id, Henrique_id, Joao_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
 
@@ -43,16 +43,16 @@ League_of_Legends = [Daniel_id, David_id, Henrique_id, Valdemar_id, Verde_id, Yu
 Sea_of_Thieves = [Castanheira_id, Daniel_id, Henrique_id, Verde_id]
 
 Warframe = [Castanheira_id, Henrique_id, Touret_id, Valdemar_id, Yusuke_id]
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
-#------------------------------------- SOUNDS --------------------------------------
+#---------------------------- SOUNDS ----------------------------
 #jajao
 jajao = "audio//Highlander//Play//last_surprise.mp3"
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
-#---------------------------------- COMMAND LIST -----------------------------------
+#------------------------- COMMAND LIST -------------------------
 #catchFrase_list = ['legendary', 'suitup', 'himym', 'hellno', 'cena', 'usure', 'notale',
 #                  'victory', 'burn', 'diosmio', 'allalone', 'laugh', 'thisway', 'stare',
 #                  'face', 'little', 'hotteam', 'howdareyou', 'noo', 'ready', 'prank',
@@ -73,4 +73,4 @@ jajao = "audio//Highlander//Play//last_surprise.mp3"
 #                   'numberone', 'dance', 'knockknock', 'daddy', 'coffin', 'dorime']
 
 #restricted_sounds = ["nani", "wtfLoud", "reee", "womboCombo"]
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------

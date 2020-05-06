@@ -11,14 +11,14 @@ from discord.utils import get
 import aux
 import lists
 from consts import sopas_de_cafe_id
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 TOKEN = os.environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='?', description='Ganda bot mano!')
 
 voice = None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
 #////////////////////////////////////////////////////////////////
@@ -43,8 +43,30 @@ async def on_ready():
 #////////////////////////////////////////////////////////////////
 #/////////////////////////// COMMANDS ///////////////////////////
 #////////////////////////////////////////////////////////////////
+#----------------------------- FLIP -----------------------------
+#flip
+@bot.command(name='flip', help='Heads or tails? Flip a coin.')
+async def flip(ctx):
+    res = aux.coinFlip()
+    await ctx.send(res)
+    return
 
-#---------------------------- INIT ----------------------------
+
+#-------------------------- HIGHLANDER --------------------------
+#highlander
+@bot.command(name='highlander', help='⛔ Kick every member from its current voice channel except for one chosen at random.')
+async def highlander(ctx):
+    fileName = aux.pickFile("highlander")
+    VictoryFileName = aux.pickFile("highlanderv")
+    ch = ctx.author.voice.channel
+    sv = ctx.guild
+    await play_file(fileName, ch, sv)
+    await aux.roulette(bot, ctx, 2)
+    await play_file(VictoryFileName, ch, sv)
+    return
+
+
+#------------------------ INIT / DESTROY ------------------------
 #init
 @bot.command(name='init', help='Join your current voice channel and stay there.')
 async def init(ctx):
@@ -58,10 +80,7 @@ async def init(ctx):
         voice = await channel.connect()
         print(f'Bot connected to {channel} in guild {voice.guild}')
     return
-#-----------------------------------------------------------------------------------
 
-
-#-------------------------- DESTROY ---------------------------
 #destroy
 @bot.command(name='destroy', help='Disconnect from its current voice channel.')
 async def destroy(ctx):
@@ -74,10 +93,66 @@ async def destroy(ctx):
     else:
         print(f'Bot was told to disconnect but was not connected to any channel')
     return
-#-----------------------------------------------------------------------------------
 
 
-#--------------------------- SOUNDS ---------------------------
+#------------------------- MUTE / UNMUTE ------------------------
+#mute
+@bot.command(name='mute', help='Keep a member muted')
+async def mute(ctx, arg):
+    target = aux.getMemberFromCtxName(ctx, arg)
+    if (ctx.author.top_role > target.top_role):
+        lists.addMuted(target.id)
+        await target.edit(mute=True)
+        print(f'Bot is now keeping {target.name} muted')
+        return
+    else:
+        name = target.nick
+        if (name is None):
+            name = target.name
+        message = "⛔ You don't have permission to mute " + name + " ⛔"
+        await ctx.send(message)
+        print(f'{ctx.author.name} does not have permission to mute {target.name}')
+        return
+
+#unmute
+@bot.command(name='unmute', help='Stops keeping a member muted')
+async def unmute(ctx, arg):
+    target = aux.getMemberFromCtxName(ctx, arg)
+    if (arg == "all" and ctx.author.guild_permissions.administrator):
+        for i in lists.muted:
+            lists.removeMuted(i)
+            user = get(bot.get_all_members(), id=i)
+            await user.edit(mute=False)
+        print("Bot is no longer keeping anyone muted")
+    elif (target is None):
+        return
+    elif (ctx.author.top_role > target.top_role):
+        lists.removeMuted(target.id)
+        await target.edit(mute=False)
+        print(f'Bot is no longer keeping {target.name} muted')
+    else:
+        name = target.nick
+        if (name is None):
+            name = target.name
+        message = "⛔ You don't have permission to unmute " + name + " ⛔"
+        await ctx.send(message)
+        print(f'{ctx.author.name} does not have permission to unmute {target.name}')
+    return
+
+
+#----------------------- RUSSIAN ROULETTE -----------------------
+#rroulette
+@bot.command(name='rroulette', help='⛔ Kick one random member from its current voice channel.')
+async def rroulette(ctx):
+    fileName = aux.pickFile("rroulette")
+    ch = ctx.author.voice.channel
+    sv = ctx.guild
+    await play_file(fileName, ch, sv)
+    await aux.roulette(bot, ctx, 1)
+    return
+
+
+#---------------------------- SOUNDS ----------------------------
 #play
 @bot.command(name='play', help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
@@ -126,91 +201,7 @@ async def stop(ctx):
     else:
         print("Bot tried to stop playing but nothing was playing before")
     return
-#-----------------------------------------------------------------------------------
-
-
-#---------------------------- MUTE ----------------------------
-#mute
-@bot.command(name='mute', help='Keep a member muted')
-async def mute(ctx, arg):
-    target = aux.getMemberFromCtxName(ctx, arg)
-    if (ctx.author.top_role > target.top_role):
-        lists.addMuted(target.id)
-        await target.edit(mute=True)
-        print(f'Bot is now keeping {target.name} muted')
-        return
-    else:
-        name = target.nick
-        if (name is None):
-            name = target.name
-        message = "⛔ You don't have permission to mute " + name + " ⛔"
-        await ctx.send(message)
-        print(f'{ctx.author.name} does not have permission to mute {target.name}')
-        return
-
-#--------------------------- UNMUTE ---------------------------
-#unmute
-@bot.command(name='unmute', help='Stops keeping a member muted')
-async def unmute(ctx, arg):
-    target = aux.getMemberFromCtxName(ctx, arg)
-    if (arg == "all" and ctx.author.guild_permissions.administrator):
-        for i in lists.muted:
-            lists.removeMuted(i)
-            user = get(bot.get_all_members(), id=i)
-            await user.edit(mute=False)
-        print("Bot is no longer keeping anyone muted")
-    elif (target is None):
-        return
-    elif (ctx.author.top_role > target.top_role):
-        lists.removeMuted(target.id)
-        await target.edit(mute=False)
-        print(f'Bot is no longer keeping {target.name} muted')
-    else:
-        name = target.nick
-        if (name is None):
-            name = target.name
-        message = "⛔ You don't have permission to unmute " + name + " ⛔"
-        await ctx.send(message)
-        print(f'{ctx.author.name} does not have permission to unmute {target.name}')
-    return
-#-----------------------------------------------------------------------------------
-
-
-#---------------------- RUSSIAN ROULETTE ----------------------
-#rroulette
-@bot.command(name='rroulette', help='⛔ Kick one random member from its current voice channel.')
-async def rroulette(ctx):
-    fileName = aux.pickFile("rroulette")
-    ch = ctx.author.voice.channel
-    sv = ctx.guild
-    await play_file(fileName, ch, sv)
-    await aux.roulette(bot, ctx, 1)
-    return
-
-#------------------------- HIGHLANDER -------------------------
-#highlander
-@bot.command(name='highlander', help='⛔ Kick every member from its current voice channel except for one chosen at random.')
-async def highlander(ctx):
-    fileName = aux.pickFile("highlander")
-    VictoryFileName = aux.pickFile("highlanderv")
-    ch = ctx.author.voice.channel
-    sv = ctx.guild
-    await play_file(fileName, ch, sv)
-    await aux.roulette(bot, ctx, 2)
-    await play_file(VictoryFileName, ch, sv)
-    return
-#-----------------------------------------------------------------------------------
-
-
-#---------------------------- FLIP ----------------------------
-#flip
-@bot.command(name='flip', help='Heads or tails? Flip a coin.')
-async def flip(ctx):
-    res = aux.coinFlip()
-    await ctx.send(res)
-    return
-#-----------------------------------------------------------------------------------
-
+#----------------------------------------------------------------
 
 
 #////////////////////////////////////////////////////////////////
@@ -225,7 +216,7 @@ async def flip(ctx):
 #    if (msg == "?test"):
 #        dm_channel = await message.author.create_dm()
 #        await dm_channel.send("ola")
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
 #////////////////////////////////////////////////////////////////
@@ -268,7 +259,7 @@ async def on_voice_state_update(member, before, after):
         voice = None
         print(f'Bot disconnected from {before_vc.name} in guild {voice.guild.name} because it was the only member connected')
     return
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
 #////////////////////////////////////////////////////////////////
@@ -280,7 +271,7 @@ async def on_member_join(member):
     await aux.give_roles(member)
     await aux.change_nickname(member)
     return
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
 #////////////////////////////////////////////////////////////////
@@ -301,8 +292,8 @@ async def play_file(fileName, ch, server):
         await voice.disconnect()
         voice = None
     return
+#----------------------------------------------------------------
 
 
-
-
+#run bot
 bot.run(TOKEN)

@@ -1,12 +1,12 @@
 # Ganda-Bot
-Discord bot using discord.py
+[Discord](https://discord.com) bot using [discord.py](https://discordpy.readthedocs.io/en/latest/)
 
 
-Heroku buildpacks:
+[Heroku](https://www.heroku.com) buildpacks:
 
-Python - heroku/python
+[Python](heroku/python)
 
-ffmpeg - https://github.com/kitcast/buildpack-ffmpeg.git
+[ffmpeg](https://github.com/kitcast/buildpack-ffmpeg.git)
 
-libopus - https://github.com/codeinteger6/heroku-buildpack-libopus.git
+[libopus](https://github.com/codeinteger6/heroku-buildpack-libopus.git)
 

@@ -8,7 +8,7 @@ from discord.utils import get
 
 import consts
 import lists
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #Sopas_de_cafe Roles
 magician_role = None
@@ -47,7 +47,7 @@ def set_roles(roles):
     Warframe_role = discord.utils.get(roles, name = "Warframe")
     
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #getNickname
 def getNickname(ID):
@@ -70,7 +70,7 @@ def getNickname(ID):
     elif (ID == consts.Yusuke_id):
         return "Yusukeeee 🎸"
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #give_roles
 async def give_roles(member):
@@ -96,7 +96,7 @@ async def give_roles(member):
     except Exception as e:
         print(f'❗❗❗ERROR: Failed to add roles to user: {member.name} due to:\n{e}\n--------------------')
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
 #getMemberFromCtxName
@@ -106,7 +106,7 @@ def getMemberFromCtxName(ctx, arg):
         if arg in m.name:
             return m
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
 #change_nickname
@@ -118,7 +118,7 @@ async def change_nickname(member):
         except Exception as e:
             print(f'❗❗❗ERROR: Failed to change nickname on user: {member.name} due to:\n{e}\n--------------------')
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #pickFile
 def pickFile(name):
@@ -143,7 +143,7 @@ def pickFile(name):
     elif ((name + ".mp3") in lists.sounds):
         return ("audio//Sounds//" + name + ".mp3")
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #picSoundJoin
 def pickSoundJoin(id):
@@ -213,7 +213,7 @@ def pickSoundJoin(id):
         fileName = "audio//Join//Ze//" + lists.ze[rand]
         return fileName
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #pickVoiceUpdateSound
 def pickVoiceUpdateSound(name):
@@ -230,7 +230,7 @@ def pickVoiceUpdateSound(name):
         rand = random.randrange(0, len(lists.selfUndeaf))
         fileName = "audio//VoiceUpdate//Self//Undeafen//" + lists.selfUndeaf[rand]
         return fileName
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #roulette
 async def roulette(bot, ctx, type):
@@ -275,7 +275,7 @@ async def roulette(bot, ctx, type):
         end_message += members[0].name
     await ctx.send(end_message)
     return None
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 
 #isBotAlone
@@ -288,7 +288,7 @@ def isBotAlone(ch):
     if ((num_members == 1) or (num_members == bots)):
         return True
     return False
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------
 
 #coinFlip
 def coinFlip():
@@ -297,3 +297,4 @@ def coinFlip():
         return "Heads!"
     else:
         return "Tails!"
+#----------------------------------------------------------------
