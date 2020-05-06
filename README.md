@@ -1,4 +1,6 @@
-# ![Ganda-Bot](Avatar.png)
+# Ganda-Bot
+![Avatar](Avatar.png "Ganda bot avatar")
+
 [Discord](https://discord.com) bot using [discord.py](https://discordpy.readthedocs.io/en/latest/)
 
 

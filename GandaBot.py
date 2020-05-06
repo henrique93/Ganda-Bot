@@ -99,6 +99,8 @@ async def destroy(ctx):
 @bot.command(name='mute', help='Keep a member muted')
 async def mute(ctx, arg):
     target = aux.getMemberFromCtxName(ctx, arg)
+    ch = ctx.author.voice.channel
+    sv = ctx.guild
     if (ctx.author.top_role > target.top_role):
         lists.addMuted(target.id)
         await target.edit(mute=True)
@@ -110,6 +112,9 @@ async def mute(ctx, arg):
             name = target.name
         message = "⛔ You don't have permission to mute " + name + " ⛔"
         await ctx.send(message)
+        if (ch is not None):
+            fileName = aux.pickFile("denied")
+            await play_file(fileName, ch, sv)
         print(f'{ctx.author.name} does not have permission to mute {target.name}')
         return
 
@@ -117,6 +122,8 @@ async def mute(ctx, arg):
 @bot.command(name='unmute', help='Stops keeping a member muted')
 async def unmute(ctx, arg):
     target = aux.getMemberFromCtxName(ctx, arg)
+    ch = ctx.author.voice.channel
+    sv = ctx.guild
     if (arg == "all" and ctx.author.guild_permissions.administrator):
         for i in lists.muted:
             lists.removeMuted(i)
@@ -135,6 +142,9 @@ async def unmute(ctx, arg):
             name = target.name
         message = "⛔ You don't have permission to unmute " + name + " ⛔"
         await ctx.send(message)
+        if (ch is not None):
+            fileName = aux.pickFile("denied")
+            await play_file(fileName, ch, sv)
         print(f'{ctx.author.name} does not have permission to unmute {target.name}')
     return
 

@@ -122,12 +122,14 @@ async def change_nickname(member):
 
 #pickFile
 def pickFile(name):
-    if (name == 'random'):
-        rand = random.choice(lists.sounds)
-        fileName = "audio//Sounds//" + rand
+    if (name == 'ariana'):
+        rand = random.choice(lists.ariana)
+        fileName = "audio//Ariana Grande//" + rand
         return fileName
-    elif (name == 'jajao' or name == 'rroulette'):
-        return consts.jajao
+    elif (name == 'denied'):
+        rand = random.choice(lists.permissionDenied)
+        fileName = "audio//PermissionDenied//" + rand
+        return fileName
     elif (name =='highlander'):
         rand = random.choice(lists.highlander)
         fileName = "audio//Highlander//Play//" + rand
@@ -136,9 +138,11 @@ def pickFile(name):
         rand = random.choice(lists.highlanderVictory)
         fileName = "audio//Highlander//Victory//" + rand
         return fileName
-    elif (name == 'ariana'):
-        rand = random.choice(lists.ariana)
-        fileName = "audio//Ariana Grande//" + rand
+    elif (name == 'jajao' or name == 'rroulette'):
+        return consts.jajao
+    elif (name == 'random'):
+        rand = random.choice(lists.sounds)
+        fileName = "audio//Sounds//" + rand
         return fileName
     elif ((name + ".mp3") in lists.sounds):
         return ("audio//Sounds//" + name + ".mp3")
