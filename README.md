@@ -6,7 +6,7 @@
 
 [Python](heroku/python) / [ffmpeg](https://github.com/kitcast/buildpack-ffmpeg.git) / [libopus](https://github.com/codeinteger6/heroku-buildpack-libopus.git)
 
-###Features:
+### Features:
 + Flip - Flip a coin. Result heads or tails;
 + Highlander - Kick every member from the current voice channel except for one;
 + Init - Keeps the bot connected to one voice channel;
@@ -15,9 +15,9 @@
 + Unmute - Stops server muting a member;
 + Russian roulette - Kicks one member from the current voice channel;
 + Play - Plays a sound:
-- - + "Play" followed by a sound from the list plays that sound;
-- - + "Play random" - Plays a random sound from the list;
-- - + "Play ariana" - Plays a random Ariana Grande song.
+    + "Play" followed by a sound from the list plays that sound;
+    + "Play random" - Plays a random sound from the list;
+    + "Play ariana" - Plays a random Ariana Grande song.
 + Pause - Pauses the current sound;
 + Resume - Resumes the current sound;
 + Stop - Stops playing the current sound;
