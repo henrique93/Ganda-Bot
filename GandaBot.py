@@ -140,7 +140,7 @@ async def mute(ctx, arg):
         print(f'Bot is now keeping {target.name} muted')
         return
     else:
-        name = traget.nick
+        name = target.nick
         if (name is None):
             name = target.name
         message = "⛔ You don't have permission to mute " + name + " ⛔"
@@ -166,7 +166,7 @@ async def unmute(ctx, arg):
         await target.edit(mute=False)
         print(f'Bot is no longer keeping {target.name} muted')
     else:
-        name = traget.nick
+        name = target.nick
         if (name is None):
             name = target.name
         message = "⛔ You don't have permission to unmute " + name + " ⛔"
