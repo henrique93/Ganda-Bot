@@ -1,9 +1,10 @@
 # aux.py
+import asyncio
 import os
 import random
+
 import discord
 from discord.utils import get
-import asyncio
 
 import consts
 import lists
@@ -130,6 +131,10 @@ def pickFile(name):
     elif (name =='highlander'):
         rand = random.randint(0, len(lists.highlander)-1)
         trackName = "audio//Highlander//Play//" + lists.highlander[rand]
+        return trackName
+    elif (name == 'highlanderv'):
+        rand = random.randint(0, len(lists.highlanderVictory)-1)
+        trackName = "audio//Highlander//Victory//" + lists.highlanderVictory[rand]
         return trackName
     elif (name == 'ariana'):
         rand = random.randrange(0, len(lists.ariana)-1)

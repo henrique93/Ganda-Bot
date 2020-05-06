@@ -27,7 +27,7 @@ privileged_id_list = [Daniel_id, David_id, Henrique_id, Rafa_id, Touret_id, Vald
 
 
 #-------------------------------------- ROLES --------------------------------------
-#Sopas
+#Sopas de Cafe
 Mini_Boss = [Castanheira_id, Daniel_id, David_id, Henrique_id, Joao_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
 
 Magician = [David_id, Verde_id]
@@ -81,5 +81,5 @@ leave = "audio//VoiceUpdate//Leave//bah_bye.mp3"
 #                   'ww', 'theOne', 'howCouldHeavy', 'idiot', 'duel', 'fart', 'huntress', 'bingbong',
 #                   'numberone', 'dance', 'knockknock', 'daddy', 'coffin', 'dorime']
 
-restricted_sounds = ["nani", "wtfLoud", "reee", "womboCombo"]
+#restricted_sounds = ["nani", "wtfLoud", "reee", "womboCombo"]
 #-----------------------------------------------------------------------------------

@@ -1,14 +1,16 @@
 # GandaBot.py
-import os
+import asyncio
+import random
 import sys
+import os
+
 import discord
 from discord.ext import commands
 from discord.utils import get
-import asyncio
-import random
 
+import aux
 import lists
-from aux import *
+from consts import sopas_de_cafe_id
 #-----------------------------------------------------------------------------------
 
 TOKEN = os.environ['DISCORD_TOKEN']
@@ -25,7 +27,7 @@ voice = None
 #on_ready
 @bot.event
 async def on_ready():
-    set_roles(bot.get_guild(consts.sopas_de_cafe_id).roles)
+    aux.set_roles(bot.get_guild(sopas_de_cafe_id).roles)
     print(f'Logged in as {bot.user}')
     print(f'Name: {bot.user.name}')
     print(f'ID: {bot.user.id}')
@@ -80,17 +82,19 @@ async def destroy(ctx):
 @bot.command(name='play', help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
     if (arg == "random"):
-        fileName = pickFile("random")
+        fileName = aux.pickFile("random")
     elif (arg == "ariana"):
-        fileName = pickFile("ariana")
+        fileName = aux.pickFile("ariana")
     #elif (arg == "list"):
         #send sound list
     else:
-        fileName = pickFile(arg)
+        fileName = aux.pickFile(arg)
         if (fileName is None):
             #play youtube
             return
-    await play_file(fileName, ctx.author.voice.channel, ctx.guild)
+    ch = ctx.author.voice.channel
+    sv = ctx.guild
+    await play_file(fileName, ch, sv)
     return
 
 #pause
@@ -129,7 +133,7 @@ async def stop(ctx):
 #mute
 @bot.command(name='mute', help='Keep a member muted')
 async def mute(ctx, arg):
-    target = getMemberFromCtxName(ctx, arg)
+    target = aux.getMemberFromCtxName(ctx, arg)
     if (ctx.author.top_role > target.top_role):
         lists.addMuted(target.id)
         await target.edit(mute=True)
@@ -145,7 +149,7 @@ async def mute(ctx, arg):
 #unmute
 @bot.command(name='unmute', help='Stops keeping a member muted')
 async def unmute(ctx, arg):
-    target = getMemberFromCtxName(ctx, arg)
+    target = aux.getMemberFromCtxName(ctx, arg)
     if (arg == "all" and ctx.author.guild_permissions.administrator):
         for i in lists.muted:
             lists.removeMuted(i)
@@ -171,20 +175,23 @@ async def unmute(ctx, arg):
 @bot.command(name='rroulette', help='⛔ Kick one random member from its current voice channel.')
 async def rroulette(ctx):
     fileName = pickFile("rroulette")
-    await play_file(fileName, ctx.author.voice.channel, ctx.guild)
-    await roulette(bot, ctx, 1)
+    ch = ctx.author.voice.channel
+    sv = ctx.guild
+    await play_file(fileName, ch, sv)
+    await aux.roulette(bot, ctx, 1)
     return
 
 #------------------------- HIGHLANDER -------------------------
 #highlander
 @bot.command(name='highlander', help='⛔ Kick every member from its current voice channel except for one chosen at random.')
 async def highlander(ctx):
-    fileName = pickFile("highlander")
+    fileName = aux.pickFile("highlander")
+    VictoryFileName = aux.pickFile("highlanderv")
     ch = ctx.author.voice.channel
     sv = ctx.guild
     await play_file(fileName, ch, sv)
-    await roulette(bot, ctx, 2)
-    await play_file(highlander_victory, ch, sv)
+    await aux.roulette(bot, ctx, 2)
+    await play_file(VictoryFileName, ch, sv)
     return
 #-----------------------------------------------------------------------------------
 
@@ -217,25 +224,26 @@ async def on_voice_state_update(member, before, after):
     before_vc = before.channel
     after_vc = after.channel
     id = member.id
+    sv = member.guild
     #Keep muting members in the keep_muted list
     if (member.id in lists.muted and not after.mute):
         await member.edit(mute=True)
     #Play sound if user deafens himself
     if (after.self_deaf and not before.self_deaf):
-        await play_file(consts.self_deaf, after_vc, after_vc.guild)
+        await play_file(consts.self_deaf, after_vc, sv)
     #Play sound if user undeafens himself
     if (before.self_deaf and not after.self_deaf):
-        await play_file(consts.self_undeaf, after_vc, after_vc.guild)
+        await play_file(consts.self_undeaf, after_vc, sv)
     #Play sound if user leaves voice channel
     if ((before_vc != after_vc) and (after_vc is None)):
-        await play_file(consts.leave, before_vc, before_vc.guild)
+        await play_file(consts.leave, before_vc, sv)
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
-        fileName = pickSoundJoin(id)
+        fileName = aux.pickSoundJoin(id)
         if (fileName is not None):
-            await play_file(fileName, after_vc, after_vc.guild)
+            await play_file(fileName, after_vc, sv)
     #Disconnect bot if he's the only member on the channel
-    if (voice is not None and voice.channel == before_vc and isBotAlone(before_vc)):
+    if (voice is not None and voice.channel == before_vc and aux.isBotAlone(before_vc)):
         await voice.disconnect()
         voice = None
         print(f'Bot disconnected from {before_vc.name} in guild {voice.guild.name} because it was the only member connected')
@@ -249,8 +257,8 @@ async def on_voice_state_update(member, before, after):
 #on_member_join
 @bot.event
 async def on_member_join(member):
-    await give_roles(member)
-    await change_nickname(member)
+    await aux.give_roles(member)
+    await aux.change_nickname(member)
     return
 #-----------------------------------------------------------------------------------
 
