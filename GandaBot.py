@@ -180,7 +180,7 @@ async def unmute(ctx, arg):
 #rroulette
 @bot.command(name='rroulette', help='⛔ Kick one random member from its current voice channel.')
 async def rroulette(ctx):
-    fileName = pickFile("rroulette")
+    fileName = aux.pickFile("rroulette")
     ch = ctx.author.voice.channel
     sv = ctx.guild
     await play_file(fileName, ch, sv)
