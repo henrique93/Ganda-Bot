@@ -236,13 +236,16 @@ async def on_voice_state_update(member, before, after):
         await member.edit(mute=True)
     #Play sound if user deafens himself
     if (after.self_deaf and not before.self_deaf):
-        await play_file(consts.self_deaf, after_vc, sv)
+        fileName = aux.pickVoiceUpdateSound("selfDeaf")
+        await play_file(fileName, after_vc, sv)
     #Play sound if user undeafens himself
     if (before.self_deaf and not after.self_deaf):
-        await play_file(consts.self_undeaf, after_vc, sv)
+        fileName = aux.pickVoiceUpdateSound("selfUndeaf")
+        await play_file(fileName, after_vc, sv)
     #Play sound if user leaves voice channel
     if ((before_vc != after_vc) and (after_vc is None)):
-        await play_file(consts.leave, before_vc, sv)
+        fileName = aux.pickVoiceUpdateSound("leave")
+        await play_file(fileName, before_vc, sv)
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
         fileName = aux.pickSoundJoin(id)

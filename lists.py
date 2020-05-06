@@ -6,20 +6,11 @@ def initLists():
     initAriana()
     initHighlander()
     initHighlanderVictory()
+    initJoinSounds()
+    initPermissionDenied()
     initSounds()
-    initDaniel()
-    initDavid()
-    initHenrique()
-    initJoao()
-    initKnight()
-    initPoseidon()
-    initRafa()
-    initTouret()
-    initValdemar()
-    initVerde()
-    initWilson()
-    initYusuke()
-    initZe()
+    initVoiceUpdate()
+    
 
 #---------------------------------- ARIANA GRANDE ----------------------------------
 ariana = []
@@ -47,6 +38,16 @@ def initHighlanderVictory():
     highlanderVictory = os.listdir(path)
 #-----------------------------------------------------------------------------------
 
+#------------------------------- PERMISSION DENIED ---------------------------------
+#Permission denied
+permissionDenied = []
+
+def initPermissionDenied():
+    global permissionDenied
+    path = "audio//PermissionDenied//"
+    permissionDenied = os.listdir(path)
+#-----------------------------------------------------------------------------------
+
 #------------------------------------- SOUNDS --------------------------------------
 sounds = []
 
@@ -57,6 +58,22 @@ def initSounds():
 #-----------------------------------------------------------------------------------
 
 #----------------------------------- JOIN SOUNDS -----------------------------------
+#Init join sounds
+def initJoinSounds():
+    initDaniel()
+    initDavid()
+    initHenrique()
+    initJoao()
+    initKnight()
+    initPoseidon()
+    initRafa()
+    initTouret()
+    initValdemar()
+    initVerde()
+    initWilson()
+    initYusuke()
+    initZe()
+
 #Daniel
 daniel = []
 
@@ -160,6 +177,38 @@ def initZe():
     global ze
     path = "audio//Join//Ze//"
     ze = os.listdir(path)
+#-----------------------------------------------------------------------------------
+
+#---------------------------------- VOICE UPDATE -----------------------------------
+#Init voice update
+def initVoiceUpdate():
+    initLeave()
+    initSelfDeaf()
+    initSelfUndeaf()
+
+#Leave channel
+leave = []
+
+def initLeave():
+    global leave
+    path = "audio//VoiceUpdate//Leave//"
+    leave = os.listdir(path)
+
+#Self deafen
+selfDeaf = []
+
+def initSelfDeaf():
+    global selfDeaf
+    path = "audio//VoiceUpdate//Self//Deafen//"
+    selfDeaf = os.listdir(path)
+
+#Self undeafen
+selfUndeaf = []
+
+def initSelfUndeaf():
+    global selfUndeaf
+    path = "audio//VoiceUpdate//Self//Undeafen//"
+    selfUndeaf = os.listdir(path)
 #-----------------------------------------------------------------------------------
 
 
