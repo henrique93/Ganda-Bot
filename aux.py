@@ -10,71 +10,19 @@ import consts
 import lists
 #----------------------------------------------------------------
 
-#Sopas_de_cafe Roles
-magician_role = None
-mini_boss_role = None
-bot_commander_role = None
-a_team_role = None
-CS_role = None
-Dead_by_Dayilight_role = None
-Dota2_role = None
-League_of_Legends_role = None
-Sea_of_Thieves_role = None
-Warframe_role = None
 
-#set_roles
-def set_roles(roles):
-    global magician_role
-    global mini_boss_role
-    global bot_commander_role
-    global a_team_role
-    global CS_role
-    global Dead_by_Dayilight_role
-    global Dota2_role
-    global League_of_Legends_role
-    global Sea_of_Thieves_role
-    global Warframe_role
-    
-    magician_role = discord.utils.get(roles, name = "Magician")
-    mini_boss_role = discord.utils.get(roles, name = "Mini Boss")
-    bot_commander_role = discord.utils.get(roles, name = "Bot Commander")
-    a_team_role = discord.utils.get(roles, name = "A-Team")
-    CS_role = discord.utils.get(roles, name = "CS")
-    Dead_by_Dayilight_role = discord.utils.get(roles, name = "Dead by Daylight")
-    Dota2_role = discord.utils.get(roles, name = "Dota2")
-    League_of_Legends_role = discord.utils.get(roles, name = "LoL")
-    Sea_of_Thieves_role = discord.utils.get(roles, name = "Aaaargh")
-    Warframe_role = discord.utils.get(roles, name = "Warframe")
-    
-    return None
 #----------------------------------------------------------------
 
 #give_roles
 async def give_roles(member):
+    id = member.id
+    roles = lists.rolesDictionary[id]
     try:
-        if member.id in consts.Mini_Boss:
-            await member.add_roles(mini_boss_role)
-            await member.add_roles(bot_commander_role)
-            await member.add_roles(a_team_role)
-        if member.id in consts.Magician:
-            await member.add_roles(magician_role)
-        if member.id in consts.CS:
-            await member.add_roles(CS_role)
-        if member.id in consts.Dead_by_Daylight:
-            await member.add_roles(Dead_by_Dayilight_role)
-        if member.id in consts.Dota2:
-            await member.add_roles(Dota2_role)
-        if member.id in consts.League_of_Legends:
-            await member.add_roles(League_of_Legends_role)
-        if member.id in consts.Sea_of_Thieves:
-            await member.add_roles(Sea_of_Thieves_role)
-        if member.id in consts.Warframe:
-            await member.add_roles(Warframe_role)
+        member.add_roles(roles)
     except Exception as e:
         print(f'❗❗❗ERROR: Failed to add roles to user: {member.name} due to:\n{e}\n--------------------')
-    return None
+    return
 #----------------------------------------------------------------
-
 
 #change_nickname
 async def change_nickname(member):
@@ -96,8 +44,8 @@ def pickFile(name):
         return fileName
     elif (name == 'jajao' or name == 'rroulette'):
         return consts.jajao
-    elif ((name + ".mp3") in lists.sounds):
-        return ("audio//Sounds//" + name + ".mp3")
+    elif ((name + ".mp3") in lists.playDictionary["random"][1]):
+        return (lists.playDictionary["random"][0] + name + ".mp3")
     return None
 #----------------------------------------------------------------
 
@@ -154,7 +102,6 @@ async def roulette(bot, ctx, type):
     await ctx.send(end_message)
     return None
 #----------------------------------------------------------------
-
 
 #isBotAlone
 def isBotAlone(ch):

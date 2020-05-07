@@ -26,13 +26,14 @@ voice = None
 #on_ready
 @bot.event
 async def on_ready():
-    aux.set_roles(bot.get_guild(sopas_de_cafe_id).roles)
     print(f'Logged in as {bot.user}')
     print(f'Name: {bot.user.name}')
     print(f'ID: {bot.user.id}')
     servers = []
     for guild in bot.guilds:
         servers.append(guild.name)
+        if (guild.id == sopas_de_cafe_id):
+            lists.initRoles(guild)
     lists.initLists()
     print(f'connected to {len(servers)} guilds: {servers}')
     print('------')
