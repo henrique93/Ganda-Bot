@@ -1,7 +1,7 @@
  #soundLists.py
 import os
 
-#IP - [folder path, nickname, [join sound list], [roles], has priviledge (1 or 0)]
+#ID : [folder path, nickname, [join sound list], [roles], has priviledge (1 or 0)]
 idDictionary = {
     190917034173923328 : ["audio//Join//Castanheira//", "Castanheira", [], [], 1],
     170845221452513280 : ["audio//Join//Daniel//", "Maverick 🐧", [], [], 1],
@@ -19,6 +19,7 @@ idDictionary = {
     158979279592488962 : ["audio//Join//Ze/", "Ze", [], [], 1]
 }
 
+#Type : [folder path, [sound list]]
 playDictionary = {
     "ariana" : ["audio//Ariana Grande//", []],
     "denied" : ["audio//PermissionDenied//", []],
@@ -30,6 +31,7 @@ playDictionary = {
     "selfUndeaf" : ["audio//VoiceUpdate//Self//Undeafen//", []]
 }
 
+#ID : [roles]
 rolesDictionary = {}
 
 #user roles

@@ -1,10 +1,8 @@
 # aux.py
 import asyncio
-import os
 import random
 
 import discord
-from discord.utils import get
 
 import consts
 import lists
@@ -14,10 +12,11 @@ import lists
 async def give_roles(member):
     id = member.id
     roles = lists.rolesDictionary[id]
-    try:
-        member.add_roles(roles)
-    except Exception as e:
-        print(f'❗❗❗ERROR: Failed to add roles to user: {member.name} due to:\n{e}\n--------------------')
+    for r in roles:
+        try:
+            await member.add_roles(r)
+        except Exception as e:
+            print(f'❗❗❗ERROR: Failed to add role {r} to user: {member.name} due to:\n{e}\n--------------------')
     return
 #----------------------------------------------------------------
 
@@ -34,7 +33,7 @@ async def change_nickname(member):
 #----------------------------------------------------------------
 
 #pickFile
-def pickFile(name):
+def pick_file(name):
     if (name in lists.playDictionary):
         rand = random.choice(lists.playDictionary[name][1])
         fileName = lists.playDictionary[name][0] + rand
@@ -47,7 +46,7 @@ def pickFile(name):
 #----------------------------------------------------------------
 
 #picSoundJoin
-def pickSoundJoin(id):
+def pick_sound_join(id):
     if (id in lists.idDictionary):
         path = lists.idDictionary[id][0]
         rand = random.choice(lists.idDictionary[id][2])
@@ -100,7 +99,7 @@ async def roulette(bot, ctx, type):
 #----------------------------------------------------------------
 
 #isBotAlone
-def isBotAlone(ch):
+def is_bot_alone(ch):
     bots = 0
     num_members = len(ch.members)
     for m in ch.members:
@@ -112,7 +111,7 @@ def isBotAlone(ch):
 #----------------------------------------------------------------
 
 #coinFlip
-def coinFlip():
+def coin_flip():
     rand = random.randint(0,1)
     if (rand):
         return "Heads!"

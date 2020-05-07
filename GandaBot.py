@@ -12,6 +12,7 @@ import lists
 from consts import sopas_de_cafe_id
 #----------------------------------------------------------------
 
+#bot variables
 TOKEN = os.environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='?', description='Ganda bot mano!')
@@ -47,7 +48,7 @@ async def on_ready():
 #flip
 @bot.command(name='flip', help='Heads or tails? Flip a coin.')
 async def flip(ctx):
-    res = aux.coinFlip()
+    res = aux.coin_flip()
     await ctx.send(res)
     return
 
@@ -56,8 +57,8 @@ async def flip(ctx):
 #highlander
 @bot.command(name='highlander', help='⛔ Kick every member from its current voice channel except for one chosen at random.')
 async def highlander(ctx):
-    fileName = aux.pickFile("highlander")
-    VictoryFileName = aux.pickFile("highlanderv")
+    fileName = aux.pick_file("highlander")
+    VictoryFileName = aux.pick_file("highlanderv")
     ch = ctx.author.voice.channel
     sv = ctx.guild
     await play_file(fileName, ch, sv)
@@ -119,7 +120,7 @@ async def mute(ctx, arg):
             message = "⛔ You don't have permission to mute " + name + " ⛔"
             await ctx.send(message)
             if (voiceState is not None):
-                fileName = aux.pickFile("denied")
+                fileName = aux.pick_file("denied")
                 await play_file(fileName, voiceState.channel, sv)
             print(f'{ctx.author.name} does not have permission to mute {target.name}')
     return
@@ -150,7 +151,7 @@ async def unmute(ctx, arg):
             message = "⛔ You don't have permission to unmute " + name + " ⛔"
             await ctx.send(message)
             if (voiceState is not None):
-                fileName = aux.pickFile("denied")
+                fileName = aux.pick_file("denied")
                 await play_file(fileName, voiceState.channel, sv)
             print(f'{author.name} does not have permission to unmute {target.name}')
     else:
@@ -163,7 +164,7 @@ async def unmute(ctx, arg):
 #rroulette
 @bot.command(name='rroulette', help='⛔ Kick one random member from its current voice channel.')
 async def rroulette(ctx):
-    fileName = aux.pickFile("rroulette")
+    fileName = aux.pick_file("rroulette")
     ch = ctx.author.voice.channel
     sv = ctx.guild
     await play_file(fileName, ch, sv)
@@ -176,13 +177,13 @@ async def rroulette(ctx):
 @bot.command(name='play', help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
     if (arg == "random"):
-        fileName = aux.pickFile("random")
+        fileName = aux.pick_file("random")
     elif (arg == "ariana"):
-        fileName = aux.pickFile("ariana")
+        fileName = aux.pick_file("ariana")
     #elif (arg == "list"):
         #send sound list
     else:
-        fileName = aux.pickFile(arg)
+        fileName = aux.pick_file(arg)
         if (fileName is None):
             #play youtube
             return
@@ -257,23 +258,23 @@ async def on_voice_state_update(member, before, after):
         await member.edit(mute=True)
     #Play sound if user deafens himself
     if (after.self_deaf and not before.self_deaf):
-        fileName = aux.pickFile("selfDeaf")
+        fileName = aux.pick_file("selfDeaf")
         await play_file(fileName, after_vc, sv)
     #Play sound if user undeafens himself
     if (before.self_deaf and not after.self_deaf):
-        fileName = aux.pickFile("selfUndeaf")
+        fileName = aux.pick_file("selfUndeaf")
         await play_file(fileName, after_vc, sv)
     #Play sound if user leaves voice channel
     if ((before_vc != after_vc) and (after_vc is None)):
-        fileName = aux.pickFile("leave")
+        fileName = aux.pick_file("leave")
         await play_file(fileName, before_vc, sv)
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
-        fileName = aux.pickSoundJoin(id)
+        fileName = aux.pick_sound_join(id)
         if (fileName is not None):
             await play_file(fileName, after_vc, sv)
     #Disconnect bot if he's the only member on the channel
-    if (voice is not None and voice.channel == before_vc and aux.isBotAlone(before_vc)):
+    if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
         await voice.disconnect()
         voice = None
         print(f'Bot disconnected from {before_vc.name} in guild {voice.guild.name} because it was the only member connected')
