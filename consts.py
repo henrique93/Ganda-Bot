@@ -1,48 +1,8 @@
 #consts.py
 
 #----------------------------- ID's -----------------------------
-#Users
-Castanheira_id = 190917034173923328
-Daniel_id = 170845221452513280
-David_id = 150575793603477505
-Frangueiro_id = 150574233984958464
-Henrique_id = 181219804537946112
-Joao_id = 269850685497933824
-Knight_id = 269955800489918464
-Poseidon_id = 194896718570061825
-Rafa_id = 203679276309020672
-Touret_id = 178282201325109248
-Valdemar_id = 155258382557773825
-Verde_id = 231787245307297794
-Wilson_id = 181433562875035648
-Yusuke_id = 179334253002227712
-Ze_id = 158979279592488962
-
 #Servers
 sopas_de_cafe_id = 152057225316270081
-
-#Lists
-privileged_id_list = [Daniel_id, David_id, Henrique_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
-#----------------------------------------------------------------
-
-
-#----------------------------- ROLES ----------------------------
-#Sopas de Cafe
-Mini_Boss = [Castanheira_id, Daniel_id, David_id, Henrique_id, Joao_id, Rafa_id, Touret_id, Valdemar_id, Verde_id, Wilson_id, Yusuke_id, Ze_id]
-
-Magician = [David_id, Verde_id]
-
-CS = [Castanheira_id, Daniel_id, Henrique_id, Joao_id, Touret_id, Valdemar_id, Verde_id, Yusuke_id]
-
-Dead_by_Daylight = [Daniel_id, Henrique_id, Touret_id, Valdemar_id, Verde_id, Wilson_id,]
-
-Dota2 = [Henrique_id, Rafa_id, Ze_id]
-
-League_of_Legends = [Daniel_id, David_id, Henrique_id, Valdemar_id, Verde_id, Yusuke_id]
-
-Sea_of_Thieves = [Castanheira_id, Daniel_id, Henrique_id, Verde_id]
-
-Warframe = [Castanheira_id, Henrique_id, Touret_id, Valdemar_id, Yusuke_id]
 #----------------------------------------------------------------
 
 

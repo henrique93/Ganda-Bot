@@ -1,22 +1,22 @@
  #soundLists.py
 import os
 
-#IP - [folder path, nickname, [join sound list], [roles]]
+#IP - [folder path, nickname, [join sound list], [roles], has priviledge (1 or 0)]
 idDictionary = {
-    190917034173923328 : ["audio//Join//Castanheira//", "Castanheira", [], []],
-    170845221452513280 : ["audio//Join//Daniel//", "Maverick 🐧", [], []],
-    150575793603477505 : ["audio//Join//David//", "Daskdadi", [], []],
-    181219804537946112 : ["audio//Join//Henrique//", "M4ST3R 🌊", [], []],
-    269850685497933824 : ["audio//Join//Joao//", "Mr.WOLF 🐺", [], []],
-    269955800489918464 : ["audio//Join//Knight//", "Kanight", [], []],
-    194896718570061825 : ["audio//Join//Poseidon//", "Posidon", [], []],
-    203679276309020672 : ["audio//Join//Rafa//", "Rafa", [], []],
-    178282201325109248 : ["audio//Join//Touret//", "RKO 💩", [], []],
-    155258382557773825 : ["audio//Join//Valdemar//", "Like Always 🔥", [], []],
-    231787245307297794 : ["audio//Join//Verde/", "MrVerdinsky 💚", [], []],
-    181433562875035648 : ["audio//Join//Wilson//", "Will 🌈", [], []],
-    179334253002227712 : ["audio//Join//Yusuke//", "Yusukeeee 🎸", [], []],
-    158979279592488962 : ["audio//Join//Ze/", "Ze", [], []]
+    190917034173923328 : ["audio//Join//Castanheira//", "Castanheira", [], [], 1],
+    170845221452513280 : ["audio//Join//Daniel//", "Maverick 🐧", [], [], 1],
+    150575793603477505 : ["audio//Join//David//", "Daskdadi", [], [], 1],
+    181219804537946112 : ["audio//Join//Henrique//", "M4ST3R 🌊", [], [], 1],
+    269850685497933824 : ["audio//Join//Joao//", "Mr.WOLF 🐺", [], [], 1],
+    269955800489918464 : ["audio//Join//Knight//", "Kanight", [], [], 0],
+    194896718570061825 : ["audio//Join//Poseidon//", "Posidon", [], [], 0],
+    203679276309020672 : ["audio//Join//Rafa//", "Rafa", [], [], 1],
+    178282201325109248 : ["audio//Join//Touret//", "RKO 💩", [], [], 1],
+    155258382557773825 : ["audio//Join//Valdemar//", "Like Always 🔥", [], [], 1],
+    231787245307297794 : ["audio//Join//Verde/", "MrVerdinsky 💚", [], [], 1],
+    181433562875035648 : ["audio//Join//Wilson//", "Will 🌈", [], [], 1],
+    179334253002227712 : ["audio//Join//Yusuke//", "Yusukeeee 🎸", [], [], 1],
+    158979279592488962 : ["audio//Join//Ze/", "Ze", [], [], 1]
 }
 
 playDictionary = {
@@ -45,6 +45,7 @@ def initLists():
     initHighlanderVictory()
     initJoinSounds()
     initPermissionDenied()
+    initPrivilegedList()
     initSounds()
     initVoiceUpdate()
     
@@ -76,6 +77,19 @@ def initPermissionDenied():
     permissionDenied = os.listdir(path)
     playDictionary["denied"][1] = permissionDenied
 #----------------------------------------------------------------
+
+
+#----------------------- PRIVILEGED LIST ------------------------
+privilegedList = []
+
+#privileged list
+def initPrivilegedList():
+    global privilegedList
+    for id in idDictionary:
+        if (idDictionary[id][4]):
+            privilegedList.append(id)
+#----------------------------------------------------------------
+
 
 #---------------------------- SOUNDS ----------------------------
 #Sounds

@@ -10,9 +10,6 @@ import consts
 import lists
 #----------------------------------------------------------------
 
-
-#----------------------------------------------------------------
-
 #give_roles
 async def give_roles(member):
     id = member.id
@@ -64,14 +61,13 @@ async def roulette(bot, ctx, type):
     auth_id = ctx.author.id
     voice_ch = ctx.author.voice.channel
     members = voice_ch.members
-    guild = ctx.guild
-    if (auth_id in consts.privileged_id_list):
+    if (auth_id in lists.privilegedList):
         for m in members[:]:
             if (m.bot or m.top_role.name == "Immune"):
                 members.remove(m)
     else:
         for m in members[:]:
-            if (m.bot or m.top_role.name == "Immune" or m.id in consts.privileged_id_list):
+            if (m.bot or m.top_role.name == "Immune" or m.id in lists.privilegedList):
                 members.remove(m)
     if (type == 1):
         end_message = "Rip "
@@ -100,7 +96,7 @@ async def roulette(bot, ctx, type):
     else:
         end_message += members[0].name
     await ctx.send(end_message)
-    return None
+    return
 #----------------------------------------------------------------
 
 #isBotAlone
