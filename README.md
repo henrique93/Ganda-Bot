@@ -16,13 +16,15 @@
 + Mute - Keeps a member server muted;
 + Unmute - Stops server muting a member;
 + Russian roulette - Kicks one member from the current voice channel;
++ The bot has a queue for sounds
 + Play - Plays a sound:
     + "Play" followed by a sound from the list plays that sound;
     + "Play random" - Plays a random sound from the list;
     + "Play ariana" - Plays a random Ariana Grande song.
 + Pause - Pauses the current sound;
 + Resume - Resumes the current sound;
-+ Stop - Stops playing the current sound;
++ Stop - Stops playing the current sound and clears the queue;
++ Skip - Skips the current sound and plays the next one in queue;
 + When certain members join a voice chat, the bot plays a random sound assigned to them;
 + When members leave a voice channel the bot plays a sound;
 + When members self deafen when in a voice channel the bot plays a sound;
