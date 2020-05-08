@@ -60,6 +60,7 @@ async def on_command_error(ctx, error):
 async def flip(ctx):
     res = aux.coin_flip()
     await ctx.send(res)
+    print(f'Member {ctx.author.name} flipped a coin in server {ctx.guild.name}')
     return
 
 
@@ -72,6 +73,7 @@ async def highlander(ctx):
     ch = ctx.author.voice.channel
     sv = ctx.guild
     await play_file(fileName, ch, sv)
+    print(f'Member {ctx.author.name} started Highlander in server {sv.name}')
     await aux.roulette(bot, ctx, 2)
     await play_file(VictoryFileName, ch, sv)
     return
@@ -87,11 +89,11 @@ async def init(ctx):
     voice = lists.voiceStates[serverId]
     if (voice and voice.is_connected()):
         await voice.move_to(channel)
-        print(f'Bot moved to {channel} in guild {voice.guild}')
+        print(f'Bot moved to {channel.name} in server {voice.guild.name}')
     else:
         voice = await channel.connect()
         lists.voiceStates[serverId] = voice
-        print(f'Bot connected to {channel} in guild {voice.guild}')
+        print(f'Bot connected to {channel.name} in server {voice.guild.name}')
     return
 
 #destroy
@@ -105,9 +107,9 @@ async def destroy(ctx):
         await voice.disconnect()
         voice = None
         lists.voiceStates[sv.id] = voice
-        print(f'Bot disconnected from {channel} in guild {sv}')
+        print(f'Bot disconnected from {channel} in server {sv.name}')
     else:
-        print(f'Bot was told to disconnect but was not connected to any channel')
+        print(f'Bot was told to disconnect but was not connected to any channel in server {sv.name}')
     return
 
 
@@ -127,7 +129,7 @@ async def mute(ctx, arg):
         if (ctx.author.top_role > target.top_role):
             lists.addMuted(target.id)
             await target.edit(mute=True)
-            print(f'Bot is now keeping {target.name} muted')
+            print(f'Bot is now keeping {target.name} muted in server {sv.name}')
         else:
             name = target.nick
             if (name is None):
@@ -137,7 +139,7 @@ async def mute(ctx, arg):
             if (voiceState is not None):
                 fileName = aux.pick_file("denied")
                 await play_file(fileName, voiceState.channel, sv)
-            print(f'{ctx.author.name} does not have permission to mute {target.name}')
+            print(f'{ctx.author.name} does not have permission to mute {target.name} in server {sv.name}')
     return
 
 #unmute
@@ -150,7 +152,7 @@ async def unmute(ctx, arg):
             lists.removeMuted(i)
             user = get(bot.get_all_members(), id=i)
             await user.edit(mute=False)
-        print('Bot is no longer keeping anyone muted')
+        print(f'Bot is no longer keeping anyone muted in server {ctx.guild.name}')
     elif (mentioned):
         target = mentioned[0]
         voiceState = author.voice
@@ -158,7 +160,7 @@ async def unmute(ctx, arg):
         if (author.top_role > target.top_role):
             lists.removeMuted(target.id)
             await target.edit(mute=False)
-            print(f'Bot is no longer keeping {target.name} muted')
+            print(f'Bot is no longer keeping {target.name} muted in server {sv.name}')
         else:
             name = target.nick
             if (name is None):
@@ -168,7 +170,7 @@ async def unmute(ctx, arg):
             if (voiceState is not None):
                 fileName = aux.pick_file("denied")
                 await play_file(fileName, voiceState.channel, sv)
-            print(f'{author.name} does not have permission to unmute {target.name}')
+            print(f'{author.name} does not have permission to unmute {target.name} in server {sv.name}')
     else:
         message = "You have to mention the user you want to unmute (eg. \"?unmute @user\")"
         await ctx.send(message)
@@ -183,6 +185,7 @@ async def rroulette(ctx):
     ch = ctx.author.voice.channel
     sv = ctx.guild
     await play_file(fileName, ch, sv)
+    print(f'Member {ctx.author.name} started Russian Roulette in server {sv.name}')
     await aux.roulette(bot, ctx, 1)
     return
 
@@ -216,7 +219,7 @@ async def pause(ctx):
     if (voice.is_playing()):
         voice.pause()
     else:
-        print("Bot tried to pause but was not playing")
+        print(f'Bot tried to pause but was not playing in server {ctx.guild.name}')
     return
 
 #resume
@@ -227,7 +230,7 @@ async def resume(ctx):
     if (voice.is_paused()):
         voice.resume()
     else:
-        print("Bot tried to resume the sound but was not playing")
+        print(f'Bot tried to resume the sound but was not playing in server {ctx.guild.name}')
     return
 
 #stop
@@ -239,7 +242,7 @@ async def stop(ctx):
         lists.queues[ctx.guild.id] = []
         voice.stop()
     else:
-        print("Bot tried to stop playing but nothing was playing before")
+        print('Bot tried to stop playing but nothing was playing before in server {ctx.guild.name}')
     return
 
 #skip
@@ -250,7 +253,7 @@ async def skip(ctx):
     if (voice.is_playing() or voice.is_paused()):
         voice.stop()
     else:
-        print("Bot tried to skip the sound but nothing was playing before")
+        print('Bot tried to skip the sound but nothing was playing before in server {ctx.guild.name}')
     return
 #----------------------------------------------------------------
 
@@ -288,23 +291,28 @@ async def on_voice_state_update(member, before, after):
     #Keep muting members in the keep_muted list
     if (member.id in lists.muted and not after.mute):
         await member.edit(mute=True)
+        print(f'Bot muted member {member.name} in server {sv.name}')
     #Play sound if user deafens himself
     if (after.self_deaf and not before.self_deaf):
         fileName = aux.pick_file("selfDeaf")
         await play_file(fileName, after_vc, sv)
+        print(f'Member {member.name} deafened himself in server {sv.name}')
     #Play sound if user undeafens himself
     if (before.self_deaf and not after.self_deaf):
         fileName = aux.pick_file("selfUndeaf")
         await play_file(fileName, after_vc, sv)
+        print(f'Member {member.name} undeafened himself in server {sv.name}')
     #Play sound if user leaves voice channel
     if ((before_vc != after_vc) and (after_vc is None)):
         fileName = aux.pick_file("leave")
         await play_file(fileName, before_vc, sv)
+        print(f'Member {member.name} left voice channel {before_vc.name} in server {sv.name}')
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
         fileName = aux.pick_sound_join(id)
         if (fileName is not None):
             await play_file(fileName, after_vc, sv)
+            print(f'Member {member.name} joined voice channel {after_vc.name} in server {sv.name}')
     #Disconnect bot if he's the only member on the channel
     if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
         await voice.disconnect()
@@ -321,6 +329,7 @@ async def on_voice_state_update(member, before, after):
 #on_member_join
 @bot.event
 async def on_member_join(member):
+    print(f'Member {member.name} joined server {member.guild.name}')
     await aux.give_roles(member)
     await aux.change_nickname(member)
     return
@@ -330,7 +339,7 @@ async def on_member_join(member):
 #////////////////////////////////////////////////////////////////
 #////////////////////////// PLAY FILE ///////////////////////////
 #////////////////////////////////////////////////////////////////
-
+#play_file
 async def play_file(fileName, authorVc, sv):
     serverId = sv.id
     voice = lists.voiceStates[serverId]
@@ -339,20 +348,24 @@ async def play_file(fileName, authorVc, sv):
         return
     elif (voice is None):
         voice = await authorVc.connect()
+        print(f'Bot connected to voice channel {authorVc.name} in server {sv.name}')
         lists.voiceStates[serverId] = voice
     elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
         await voice.move_to(authorVc)
+        print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
     elif (voice.is_playing() or voice.is_paused()):
         sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
         lists.queues[serverId].append(sound)
-        print(f'Sound {fileName} has been queued')
+        print(f'Sound {fileName} has been queued in server {sv.name}')
         return
     sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
     voice.play(sound)
+    print(f'Bot is playing in server {sv.name}')
     while(voice.is_playing() or voice.is_paused()):
         await asyncio.sleep(1)
     await check_queue(serverId, voice)
 
+#check_queue
 async def check_queue(serverId, voice):
     if (lists.queues[serverId]):
         sound = lists.queues[serverId].pop(0)
@@ -360,6 +373,7 @@ async def check_queue(serverId, voice):
         while(voice.is_playing() or voice.is_paused()):
             await asyncio.sleep(1)
         await check_queue(serverId, voice)
+#----------------------------------------------------------------
 
 #run bot
 bot.run(TOKEN)

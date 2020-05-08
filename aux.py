@@ -15,6 +15,7 @@ async def give_roles(member):
     for r in roles:
         try:
             await member.add_roles(r)
+            print(f'Bot gave roles to {member.name} in server {member.guild.name}')
         except Exception as e:
             print(f'❗❗❗ERROR: Failed to add role {r} to user: {member.name} due to:\n{e}\n--------------------')
     return
@@ -27,6 +28,7 @@ async def change_nickname(member):
         nickname = lists.idDictionary[id][1]
         try:
             await member.edit(nick = nickname)
+            print(f'Bot changed nickname of member {member.name} in server {member.guild.name}')
         except Exception as e:
             print(f'❗❗❗ERROR: Failed to change nickname on user: {member.name} due to:\n{e}\n--------------------')
     return None
