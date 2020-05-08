@@ -33,6 +33,8 @@ async def on_ready():
     servers = []
     for guild in bot.guilds:
         servers.append(guild.name)
+        lists.players[guild.id] = None
+        lists.queues[guild.id] = []
         if (guild.id == sopas_de_cafe_id):
             lists.initRoles(guild)
     lists.initLists()
@@ -87,10 +89,11 @@ async def init(ctx):
 async def destroy(ctx):
     global voice
     channel = ctx.author.voice.channel
+    sv = voice.guild
     if (voice and voice.is_connected()):
         await voice.disconnect()
         voice = None
-        print(f'Bot disconnected from {channel} in guild {voice.guild}')
+        print(f'Bot disconnected from {channel} in guild {sv}')
     else:
         print(f'Bot was told to disconnect but was not connected to any channel')
     return
@@ -217,9 +220,20 @@ async def resume(ctx):
 async def stop(ctx):
     global voice
     if (voice.is_playing() or voice.is_paused()):
+        lists.queues[ctx.guild.id] = []
         voice.stop()
     else:
         print("Bot tried to stop playing but nothing was playing before")
+    return
+
+#skip
+@bot.command(name='skip', help='Skip the current sound')
+async def skip(ctx):
+    global voice
+    if (voice.is_playing() or voice.is_paused()):
+        voice.stop()
+    else:
+        print("Bot tried to skip the sound but nothing was playing before")
     return
 #----------------------------------------------------------------
 
@@ -275,9 +289,10 @@ async def on_voice_state_update(member, before, after):
             await play_file(fileName, after_vc, sv)
     #Disconnect bot if he's the only member on the channel
     if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
+        svName = voice.guild.name
         await voice.disconnect()
         voice = None
-        print(f'Bot disconnected from {before_vc.name} in guild {voice.guild.name} because it was the only member connected')
+        print(f'Bot disconnected from {before_vc.name} in guild {svName} because it was the only member connected')
     return
 #----------------------------------------------------------------
 
@@ -297,26 +312,37 @@ async def on_member_join(member):
 #////////////////////////////////////////////////////////////////
 #////////////////////////// PLAY FILE ///////////////////////////
 #////////////////////////////////////////////////////////////////
-#play_sound
-async def play_file(fileName, ch, server):
-    global voice
-    inited = 1
-    if (voice == None):
-        inited = 0
-        voice = get(bot.voice_clients, guild=server)
-        voice = await ch.connect()
-    elif(voice.is_playing()):
-        #Implement queue
-        return
-    voice.play(discord.FFmpegPCMAudio(fileName,executable='ffmpeg'))
-    while(voice.is_playing()):
-        await asyncio.sleep(1)
-    if (inited == 0 and not (voice.is_playing() or voice.is_paused())):
-        await voice.disconnect()
-        voice = None
-    return
-#----------------------------------------------------------------
 
+async def play_file(fileName, authorVc, sv):
+    global voice
+    serverId = sv.id
+    if (authorVc is None):
+        print('Member was not connected to any voice channel')
+        return
+    elif (voice is None):
+        voice = await authorVc.connect()
+    elif (voice.channel != authorVc):
+        await voice.move_to(authorVc)
+    elif (voice.is_playing() or voice.is_paused()):
+        player = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
+        lists.queues[serverId].append(player)
+        print(f'Sound {fileName} has been queued')
+        return
+    player = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
+    lists.players[serverId] = player
+    voice.play(player)
+    while(voice.is_playing() or voice.is_paused()):
+        await asyncio.sleep(1)
+    await check_queue(serverId, voice)
+
+async def check_queue(serverId, voice):
+    if (lists.queues[serverId]):
+        player = lists.queues[serverId].pop(0)
+        lists.players[serverId] = player
+        voice.play(player)
+        while(voice.is_playing() or voice.is_paused()):
+            await asyncio.sleep(1)
+        await check_queue(serverId, voice)
 
 #run bot
 bot.run(TOKEN)

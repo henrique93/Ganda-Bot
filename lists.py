@@ -40,6 +40,9 @@ def initRoles(sv):
     for m in members:
         rolesDictionary[m.id] = m.roles
 
+players = {}
+queues = {}
+
 #----------------------------- INIT -----------------------------
 def initLists():
     initAriana()
