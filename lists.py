@@ -40,7 +40,7 @@ def initRoles(sv):
     for m in members:
         rolesDictionary[m.id] = m.roles
 
-players = {}
+voiceStates = {}
 queues = {}
 
 #----------------------------- INIT -----------------------------

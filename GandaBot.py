@@ -33,7 +33,7 @@ async def on_ready():
     servers = []
     for guild in bot.guilds:
         servers.append(guild.name)
-        lists.players[guild.id] = None
+        lists.voiceStates[guild.id] = None
         lists.queues[guild.id] = []
         if (guild.id == sopas_de_cafe_id):
             lists.initRoles(guild)
@@ -81,28 +81,30 @@ async def highlander(ctx):
 #init
 @bot.command(name='init', help='Join your current voice channel and stay there.')
 async def init(ctx):
-    global voice
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
-    voice = get(bot.voice_clients, guild=ctx.guild)
+    serverId = ctx.guild.id
+    voice = lists.voiceStates[serverId]
     if (voice and voice.is_connected()):
         await voice.move_to(channel)
         print(f'Bot moved to {channel} in guild {voice.guild}')
     else:
         voice = await channel.connect()
+        lists.voiceStates[serverId] = voice
         print(f'Bot connected to {channel} in guild {voice.guild}')
     return
 
 #destroy
 @bot.command(name='destroy', help='Disconnect from its current voice channel.')
 async def destroy(ctx):
-    global voice
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
     sv = voice.guild
+    voice = lists.voiceStates[sv.id]
     if (voice and voice.is_connected()):
         await voice.disconnect()
         voice = None
+        lists.voiceStates[sv.id] = voice
         print(f'Bot disconnected from {channel} in guild {sv}')
     else:
         print(f'Bot was told to disconnect but was not connected to any channel')
@@ -209,8 +211,8 @@ async def play(ctx, arg):
 #pause
 @bot.command(name='pause', help='Pause the current sound')
 async def pause(ctx):
-    global voice
     await ctx.message.delete(delay=1)
+    voice = lists.voiceStates[ctx.guild.id]
     if (voice.is_playing()):
         voice.pause()
     else:
@@ -220,8 +222,8 @@ async def pause(ctx):
 #resume
 @bot.command(name='resume', help='Resume the current sound')
 async def resume(ctx):
-    global voice
     await ctx.message.delete(delay=1)
+    voice = lists.voiceStates[ctx.guild.id]
     if (voice.is_paused()):
         voice.resume()
     else:
@@ -231,8 +233,8 @@ async def resume(ctx):
 #stop
 @bot.command(name='stop', help='Stop playing the current sound')
 async def stop(ctx):
-    global voice
     await ctx.message.delete(delay=1)
+    voice = lists.voiceStates[ctx.guild.id]
     if (voice.is_playing() or voice.is_paused()):
         lists.queues[ctx.guild.id] = []
         voice.stop()
@@ -243,8 +245,8 @@ async def stop(ctx):
 #skip
 @bot.command(name='skip', help='Skip the current sound')
 async def skip(ctx):
-    global voice
     await ctx.message.delete(delay=1)
+    voice = lists.voiceStates[ctx.guild.id]
     if (voice.is_playing() or voice.is_paused()):
         voice.stop()
     else:
@@ -274,7 +276,6 @@ async def skip(ctx):
 #on_voice_state_update
 @bot.event
 async def on_voice_state_update(member, before, after):
-    global voice
     #Check if state update's origin is a bot
     if (member.bot):
         return
@@ -282,6 +283,8 @@ async def on_voice_state_update(member, before, after):
     after_vc = after.channel
     id = member.id
     sv = member.guild
+    serverId = sv.id
+    voice = lists.voiceStates[serverId]
     #Keep muting members in the keep_muted list
     if (member.id in lists.muted and not after.mute):
         await member.edit(mute=True)
@@ -304,10 +307,10 @@ async def on_voice_state_update(member, before, after):
             await play_file(fileName, after_vc, sv)
     #Disconnect bot if he's the only member on the channel
     if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
-        svName = voice.guild.name
         await voice.disconnect()
         voice = None
-        print(f'Bot disconnected from {before_vc.name} in guild {svName} because it was the only member connected')
+        lists.voiceStates[serverId] = voice
+        print(f'Bot disconnected from {before_vc.name} in guild {sv.name} because it was the only member connected')
     return
 #----------------------------------------------------------------
 
@@ -329,32 +332,31 @@ async def on_member_join(member):
 #////////////////////////////////////////////////////////////////
 
 async def play_file(fileName, authorVc, sv):
-    global voice
     serverId = sv.id
+    voice = lists.voiceStates[serverId]
     if (authorVc is None):
         print('Member was not connected to any voice channel')
         return
     elif (voice is None):
         voice = await authorVc.connect()
+        lists.voiceStates[serverId] = voice
     elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
         await voice.move_to(authorVc)
     elif (voice.is_playing() or voice.is_paused()):
-        player = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-        lists.queues[serverId].append(player)
+        sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
+        lists.queues[serverId].append(sound)
         print(f'Sound {fileName} has been queued')
         return
-    player = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-    lists.players[serverId] = player
-    voice.play(player)
+    sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
+    voice.play(sound)
     while(voice.is_playing() or voice.is_paused()):
         await asyncio.sleep(1)
     await check_queue(serverId, voice)
 
 async def check_queue(serverId, voice):
     if (lists.queues[serverId]):
-        player = lists.queues[serverId].pop(0)
-        lists.players[serverId] = player
-        voice.play(player)
+        sound = lists.queues[serverId].pop(0)
+        voice.play(sound)
         while(voice.is_playing() or voice.is_paused()):
             await asyncio.sleep(1)
         await check_queue(serverId, voice)
