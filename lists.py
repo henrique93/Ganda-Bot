@@ -231,17 +231,4 @@ def initSelfUndeaf():
 #Keep muted
 muted = []
 
-def addMuted(id):
-    global muted
-    if (id is not None):
-        muted.append(id)
-    return
-
-def removeMuted(id):
-    global muted
-    if (id is None):
-        return
-    else:
-        muted.remove(id)
-        return
 #----------------------------------------------------------------

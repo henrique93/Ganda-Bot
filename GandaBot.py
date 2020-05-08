@@ -127,7 +127,7 @@ async def mute(ctx, arg):
         voiceState = ctx.author.voice
         sv = ctx.guild
         if (ctx.author.top_role > target.top_role):
-            lists.addMuted(target.id)
+            lists.muted.append(target.id)
             await target.edit(mute=True)
             print(f'Bot is now keeping {target.name} muted in server {sv.name}')
         else:
@@ -148,9 +148,9 @@ async def unmute(ctx, arg):
     mentioned = ctx.message.mentions
     author = ctx.author
     if (arg == "all" and author.guild_permissions.administrator):
-        for i in lists.muted:
-            lists.removeMuted(i)
-            user = get(bot.get_all_members(), id=i)
+        while lists.muted:
+            id = lists.muted.pop()
+            user = get(bot.get_all_members(), id=id)
             await user.edit(mute=False)
         print(f'Bot is no longer keeping anyone muted in server {ctx.guild.name}')
     elif (mentioned):
@@ -158,7 +158,7 @@ async def unmute(ctx, arg):
         voiceState = author.voice
         sv = ctx.guild
         if (author.top_role > target.top_role):
-            lists.removeMuted(target.id)
+            lists.muted.remove(target.id)
             await target.edit(mute=False)
             print(f'Bot is no longer keeping {target.name} muted in server {sv.name}')
         else:
@@ -360,7 +360,7 @@ async def play_file(fileName, authorVc, sv):
         return
     sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
     voice.play(sound)
-    print(f'Bot is playing in server {sv.name}')
+    print(f'Bot is playing {fileName} in server {sv.name}')
     while(voice.is_playing() or voice.is_paused()):
         await asyncio.sleep(1)
     await check_queue(serverId, voice)
