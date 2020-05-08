@@ -46,6 +46,14 @@ async def on_ready():
 #////////////////////////////////////////////////////////////////
 #/////////////////////////// COMMANDS ///////////////////////////
 #////////////////////////////////////////////////////////////////
+#error
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        message = "Unfortunately Ganda bot doesn't have that feature yet :(. Use '?help' to check our existing features!"
+        await ctx.send(message)
+        return
+    raise error
 #----------------------------- FLIP -----------------------------
 #flip
 @bot.command(name='flip', help='Heads or tails? Flip a coin.')
@@ -74,6 +82,7 @@ async def highlander(ctx):
 @bot.command(name='init', help='Join your current voice channel and stay there.')
 async def init(ctx):
     global voice
+    await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
     voice = get(bot.voice_clients, guild=ctx.guild)
     if (voice and voice.is_connected()):
@@ -88,6 +97,7 @@ async def init(ctx):
 @bot.command(name='destroy', help='Disconnect from its current voice channel.')
 async def destroy(ctx):
     global voice
+    await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
     sv = voice.guild
     if (voice and voice.is_connected()):
@@ -179,6 +189,7 @@ async def rroulette(ctx):
 #play
 @bot.command(name='play', help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
+    await ctx.message.delete(delay=1)
     if (arg == "random"):
         fileName = aux.pick_file("random")
     elif (arg == "ariana"):
@@ -199,6 +210,7 @@ async def play(ctx, arg):
 @bot.command(name='pause', help='Pause the current sound')
 async def pause(ctx):
     global voice
+    await ctx.message.delete(delay=1)
     if (voice.is_playing()):
         voice.pause()
     else:
@@ -209,6 +221,7 @@ async def pause(ctx):
 @bot.command(name='resume', help='Resume the current sound')
 async def resume(ctx):
     global voice
+    await ctx.message.delete(delay=1)
     if (voice.is_paused()):
         voice.resume()
     else:
@@ -219,6 +232,7 @@ async def resume(ctx):
 @bot.command(name='stop', help='Stop playing the current sound')
 async def stop(ctx):
     global voice
+    await ctx.message.delete(delay=1)
     if (voice.is_playing() or voice.is_paused()):
         lists.queues[ctx.guild.id] = []
         voice.stop()
@@ -230,6 +244,7 @@ async def stop(ctx):
 @bot.command(name='skip', help='Skip the current sound')
 async def skip(ctx):
     global voice
+    await ctx.message.delete(delay=1)
     if (voice.is_playing() or voice.is_paused()):
         voice.stop()
     else:
@@ -321,7 +336,7 @@ async def play_file(fileName, authorVc, sv):
         return
     elif (voice is None):
         voice = await authorVc.connect()
-    elif (voice.channel != authorVc):
+    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
         await voice.move_to(authorVc)
     elif (voice.is_playing() or voice.is_paused()):
         player = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
