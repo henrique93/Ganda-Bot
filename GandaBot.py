@@ -338,7 +338,7 @@ async def on_voice_state_update(member, before, after):
             print(f'Member {member.name} joined voice channel {after_vc.name} in server {sv.name}')
     #Disconnect bot if he's the only member on the channel
     if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
-        lists.queues[ctx.guild.id] = []
+        lists.queues[serverId] = []
         await voice.disconnect()
         inited = 0
         voice = None
