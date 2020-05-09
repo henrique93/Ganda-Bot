@@ -10,3 +10,6 @@ sopas_de_cafe_id = 152057225316270081
 #jajao
 jajao = "audio//Highlander//Play//last_surprise.mp3"
 #----------------------------------------------------------------
+
+#
+joinSoundPath = "audio//Join//"

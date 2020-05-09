@@ -11,7 +11,7 @@ import lists
 #give_roles
 async def give_roles(member):
     id = member.id
-    roles = lists.rolesDictionary[id]
+    roles = lists.memberInfo[id][0]
     for r in roles:
         try:
             await member.add_roles(r)
@@ -24,14 +24,26 @@ async def give_roles(member):
 #change_nickname
 async def change_nickname(member):
     id = member.id
-    if (id in lists.idDictionary):
-        nickname = lists.idDictionary[id][1]
+    if (id in lists.memberInfo):
+        nickname = lists.memberInfo[id][1]
+        if (nickname is None):
+            return
         try:
             await member.edit(nick = nickname)
             print(f'Bot changed nickname of member {member.name} in server {member.guild.name}')
         except Exception as e:
             print(f'❗❗❗ERROR: Failed to change nickname on user: {member.name} due to:\n{e}\n--------------------')
     return None
+#----------------------------------------------------------------
+
+#check_queue
+async def check_queue(serverId, voice):
+    if (lists.queues[serverId]):
+        sound = lists.queues[serverId].pop(0)
+        voice.play(sound)
+        while(voice.is_playing() or voice.is_paused()):
+            await asyncio.sleep(1)
+        await check_queue(serverId, voice)
 #----------------------------------------------------------------
 
 #pickFile
@@ -49,9 +61,9 @@ def pick_file(name):
 
 #picSoundJoin
 def pick_sound_join(id):
-    if (id in lists.idDictionary):
-        path = lists.idDictionary[id][0]
-        rand = random.choice(lists.idDictionary[id][2])
+    if (lists.memberInfo[id][2]):
+        path = consts.joinSoundPath + str(id) + "//"
+        rand = random.choice(lists.memberInfo[id][2])
         fileName = path + rand
         return fileName
     return None
@@ -62,13 +74,13 @@ async def roulette(bot, ctx, type):
     auth_id = ctx.author.id
     voice_ch = ctx.author.voice.channel
     members = voice_ch.members
-    if (auth_id in lists.privilegedList):
+    if (ctx.author.guild_permissions.kick_members):
         for m in members[:]:
             if (m.bot or m.top_role.name == "Immune"):
                 members.remove(m)
     else:
         for m in members[:]:
-            if (m.bot or m.top_role.name == "Immune" or m.id in lists.privilegedList):
+            if (m.bot or m.top_role.name == "Immune" or m.guild_permissions.kick_members):
                 members.remove(m)
     if (type == 1):
         end_message = "Rip "
@@ -98,6 +110,20 @@ async def roulette(bot, ctx, type):
         end_message += members[0].name
     await ctx.send(end_message)
     return
+#----------------------------------------------------------------
+
+#shuffle_members
+async def shuffle_members(sv, ch):
+    channelList = sv.voice_channels
+    for m in ch.members:
+        if (m.bot):
+            continue
+        randCh = random.choice(channelList)
+        try:
+            await m.move_to(randCh)
+            print(f'Moved member {m.name} to voice channel {randCh.name} in server {sv.name}')
+        except Exception as e:
+            print(f'❗❗❗ERROR: failed to move user {m.name} to channel {randCh.name} due to:\n{e}\n\n--------------------')
 #----------------------------------------------------------------
 
 #isBotAlone

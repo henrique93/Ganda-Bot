@@ -16,6 +16,7 @@
 + Mute - Keeps a member server muted;
 + Unmute - Stops server muting a member;
 + Russian roulette - Kicks one member from the current voice channel;
++ Shuffle - Moves every member in the current voice channel to random voice channels;
 + The bot has a queue for sounds
 + Play - Plays a sound:
     + "Play" followed by a sound from the list plays that sound;

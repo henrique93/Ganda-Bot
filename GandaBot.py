@@ -18,6 +18,8 @@ TOKEN = os.environ['DISCORD_TOKEN']
 bot = commands.Bot(command_prefix='?', description='Ganda bot mano!')
 
 voice = None
+
+inited = 0
 #----------------------------------------------------------------
 
 
@@ -36,7 +38,7 @@ async def on_ready():
         lists.voiceStates[guild.id] = None
         lists.queues[guild.id] = []
         if (guild.id == sopas_de_cafe_id):
-            lists.initRoles(guild)
+            lists.initMemberInfo(guild)
     lists.initLists()
     print(f'connected to {len(servers)} guilds: {servers}')
     print('------')
@@ -83,6 +85,7 @@ async def highlander(ctx):
 #init
 @bot.command(name='init', help='Join your current voice channel and stay there.')
 async def init(ctx):
+    global inited
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
     serverId = ctx.guild.id
@@ -94,20 +97,24 @@ async def init(ctx):
         voice = await channel.connect()
         lists.voiceStates[serverId] = voice
         print(f'Bot connected to {channel.name} in server {voice.guild.name}')
+    inited = 1
     return
 
 #destroy
 @bot.command(name='destroy', help='Disconnect from its current voice channel.')
 async def destroy(ctx):
+    global inited
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
-    sv = voice.guild
+    sv = ctx.guild
     voice = lists.voiceStates[sv.id]
     if (voice and voice.is_connected()):
+        await stop(ctx)
         await voice.disconnect()
+        inited = 0
         voice = None
         lists.voiceStates[sv.id] = voice
-        print(f'Bot disconnected from {channel} in server {sv.name}')
+        print(f'Bot disconnected from {channel.name} in server {sv.name}')
     else:
         print(f'Bot was told to disconnect but was not connected to any channel in server {sv.name}')
     return
@@ -188,6 +195,21 @@ async def rroulette(ctx):
     print(f'Member {ctx.author.name} started Russian Roulette in server {sv.name}')
     await aux.roulette(bot, ctx, 1)
     return
+
+
+#--------------------------- SHUFFLE ----------------------------
+#shuffle
+@bot.command(name='shuffle', help='Send every member on your current voice channel to random voice channels')
+async def shuffle(ctx):
+    authorVcState = ctx.author.voice
+    if (not ctx.author.guild_permissions.move_members):
+        #no permission
+        return
+    elif (authorVcState is None):
+        #no channel
+        return
+    else:
+        await aux.shuffle_members(ctx.guild, authorVcState.channel)
 
 
 #---------------------------- SOUNDS ----------------------------
@@ -279,6 +301,7 @@ async def skip(ctx):
 #on_voice_state_update
 @bot.event
 async def on_voice_state_update(member, before, after):
+    global inited
     #Check if state update's origin is a bot
     if (member.bot):
         return
@@ -315,7 +338,9 @@ async def on_voice_state_update(member, before, after):
             print(f'Member {member.name} joined voice channel {after_vc.name} in server {sv.name}')
     #Disconnect bot if he's the only member on the channel
     if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
+        lists.queues[ctx.guild.id] = []
         await voice.disconnect()
+        inited = 0
         voice = None
         lists.voiceStates[serverId] = voice
         print(f'Bot disconnected from {before_vc.name} in guild {sv.name} because it was the only member connected')
@@ -350,7 +375,7 @@ async def play_file(fileName, authorVc, sv):
         voice = await authorVc.connect()
         print(f'Bot connected to voice channel {authorVc.name} in server {sv.name}')
         lists.voiceStates[serverId] = voice
-    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
+    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused()) and not inited):
         await voice.move_to(authorVc)
         print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
     elif (voice.is_playing() or voice.is_paused()):
@@ -363,16 +388,7 @@ async def play_file(fileName, authorVc, sv):
     print(f'Bot is playing {fileName} in server {sv.name}')
     while(voice.is_playing() or voice.is_paused()):
         await asyncio.sleep(1)
-    await check_queue(serverId, voice)
-
-#check_queue
-async def check_queue(serverId, voice):
-    if (lists.queues[serverId]):
-        sound = lists.queues[serverId].pop(0)
-        voice.play(sound)
-        while(voice.is_playing() or voice.is_paused()):
-            await asyncio.sleep(1)
-        await check_queue(serverId, voice)
+    await aux.check_queue(serverId, voice)
 #----------------------------------------------------------------
 
 #run bot
