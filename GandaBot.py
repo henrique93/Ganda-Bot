@@ -33,8 +33,9 @@ async def on_ready():
         servers.append(guild.name)
         lists.voiceStates[guild.id] = None
         lists.queues[guild.id] = []
-        lists.initServerMembers(guild)
-    lists.initSoundLists()
+        lists.init_server_members(guild)
+        lists.init_ytdl_options(guild.id)
+    lists.init_sound_lists()
     print(f'connected to {len(servers)} guilds: {servers}')
     print('------')
     return
@@ -210,7 +211,7 @@ async def play(ctx, arg):
     #elif (arg == "list"):
         #send sound list
     elif (arg.startswith("https://www.youtube.com/")):
-        fileName = aux.pick_yt_file(arg)
+        fileName = aux.pick_yt_file(ctx.guild.id, arg)
         if (fileName is None):
             message = "Bad url. Please provide a youtube.com url"
             await ctx.send(message)

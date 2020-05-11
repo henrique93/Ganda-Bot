@@ -35,9 +35,10 @@ async def check_queue(serverId, voice):
             await asyncio.sleep(1)
         await check_queue(serverId, voice)
     else:
-        for file in os.listdir("./"):
+        path = consts.youtubePath + str(serverId)
+        for file in os.listdir(path):
             if file.endswith(".mp3"):
-                os.remove(file)
+                os.remove(path+"/"+file)
 #----------------------------------------------------------------
 
 #coin_flip
@@ -104,7 +105,7 @@ def pick_file(name):
 def pick_sound_join(serverId, id):
     memberInfo = lists.serverMembers[serverId]
     if (memberInfo[id][2]):
-        path = consts.joinSoundPath + str(id) + "//"
+        path = consts.joinSoundPath + str(id) + "/"
         rand = random.choice(memberInfo[id][2])
         fileName = path + rand
         return fileName
@@ -112,16 +113,18 @@ def pick_sound_join(serverId, id):
 #----------------------------------------------------------------
 
 #pick_yt_file
-def pick_yt_file(url):
-    with youtube_dl.YoutubeDL(consts.ytdl_opts) as ydl:
+def pick_yt_file(serverId, url):
+    with youtube_dl.YoutubeDL(lists.ytdl_options[serverId]) as ydl:
         try:
             ydl.download([url])
         except youtube_dl.utils.DownloadError as e:
             print(f'❗❗❗ERROR: failed to download song from {url} due to:\n{e}\n\n--------------------')
             return None
-    for file in os.listdir("./"):
+    path = consts.youtubePath + str(serverId) + "/"
+    for file in os.listdir(path):
         if file.endswith(".mp3"):
-            return file
+            path += file
+            return path
 #----------------------------------------------------------------
 
 #play_file
