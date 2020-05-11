@@ -69,10 +69,10 @@ async def highlander(ctx):
     VictoryFileName = aux.pick_file("highlanderv")
     ch = ctx.author.voice.channel
     sv = ctx.guild
-    await play_file(fileName, ch, sv)
+    await aux.play_file(fileName, ch, sv)
     print(f'Member {ctx.author.name} started Highlander in server {sv.name}')
     await aux.roulette(bot, ctx, 2)
-    await play_file(VictoryFileName, ch, sv)
+    await aux.play_file(VictoryFileName, ch, sv)
     return
 
 
@@ -174,7 +174,7 @@ async def rroulette(ctx):
     fileName = aux.pick_file("rroulette")
     ch = ctx.author.voice.channel
     sv = ctx.guild
-    await play_file(fileName, ch, sv)
+    await aux.play_file(fileName, ch, sv)
     print(f'Member {ctx.author.name} started Russian Roulette in server {sv.name}')
     await aux.roulette(bot, ctx, 1)
     return
@@ -216,7 +216,7 @@ async def play(ctx, arg):
             return
     ch = ctx.author.voice.channel
     sv = ctx.guild
-    await play_file(fileName, ch, sv)
+    await aux.play_file(fileName, ch, sv)
     return
 
 #pause
@@ -303,23 +303,23 @@ async def on_voice_state_update(member, before, after):
     #Play sound if user deafens himself
     if (after.self_deaf and not before.self_deaf):
         fileName = aux.pick_file("selfDeaf")
-        await play_file(fileName, after_vc, sv)
+        await aux.play_file(fileName, after_vc, sv)
         print(f'Member {member.name} deafened himself in server {sv.name}')
     #Play sound if user undeafens himself
     if (before.self_deaf and not after.self_deaf):
         fileName = aux.pick_file("selfUndeaf")
-        await play_file(fileName, after_vc, sv)
+        await aux.play_file(fileName, after_vc, sv)
         print(f'Member {member.name} undeafened himself in server {sv.name}')
     #Play sound if user leaves voice channel
     if ((before_vc != after_vc) and (after_vc is None)):
         fileName = aux.pick_file("leave")
-        await play_file(fileName, before_vc, sv)
+        await aux.play_file(fileName, before_vc, sv)
         print(f'Member {member.name} left voice channel {before_vc.name} in server {sv.name}')
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
         fileName = aux.pick_sound_join(serverId, id)
         if (fileName is not None):
-            await play_file(fileName, after_vc, sv)
+            await aux.play_file(fileName, after_vc, sv)
             print(f'Member {member.name} joined voice channel {after_vc.name} in server {sv.name}')
     #Disconnect bot if he's the only member on the channel
     if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
@@ -346,42 +346,7 @@ async def on_member_join(member):
 #----------------------------------------------------------------
 
 
-#////////////////////////////////////////////////////////////////
-#////////////////////////// PLAY FILE ///////////////////////////
-#////////////////////////////////////////////////////////////////
-#play_file
-async def play_file(fileName, authorVc, sv):
-    serverId = sv.id
-    voice = lists.voiceStates[serverId]
-    if (authorVc is None):
-        print('Member was not connected to any voice channel')
-        return
-    elif (voice is None):
-        voice = await authorVc.connect()
-        print(f'Bot connected to voice channel {authorVc.name} in server {sv.name}')
-        lists.voiceStates[serverId] = voice
-    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
-        await voice.move_to(authorVc)
-        print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
-    elif (voice.is_playing() or voice.is_paused()):
-        sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-        lists.queues[serverId].append(sound)
-        print(f'Sound {fileName} has been queued in server {sv.name}')
-        return
-    sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-    try:
-        voice.play(sound)
-    except discord.errors.ClientException as e:
-        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issues:\n{e}\n--------------------')
-        lists.voiceStates[serverId] = None
-        await play_file(fileName, authorVc, sv)
-    except Exception as e:
-        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to:\n{e}\n--------------------')
-    print(f'Bot is playing {fileName} in server {sv.name}')
-    while(voice.is_playing() or voice.is_paused()):
-        await asyncio.sleep(1)
-    await aux.check_queue(serverId, voice)
-#----------------------------------------------------------------
+
 
 #run bot
 bot.run(TOKEN)
