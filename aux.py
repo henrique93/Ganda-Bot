@@ -35,12 +35,11 @@ async def check_queue(serverId, voice):
             await asyncio.sleep(1)
         await check_queue(serverId, voice)
     else:
-        if (os.listdir(consts.youtubePath)):
-            path = consts.youtubePath + str(serverId)
+        path = consts.youtubePath + str(serverId)
+        if (os.path.isdir(path)):
             files = os.listdir(path)
-            if (files):
-                for file in os.listdir(path):
-                    os.remove(path+"/"+file)
+            for file in os.listdir(path):
+                os.remove(path+"/"+file)
 #----------------------------------------------------------------
 
 #coin_flip
