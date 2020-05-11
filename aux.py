@@ -69,6 +69,18 @@ def is_bot_alone(ch):
     return False
 #----------------------------------------------------------------
 
+#permission_denied
+async def permission_denied(ctx, message):
+    sv = ctx.guild
+    voiceState = lists.voiceStates[sv.id]
+    await ctx.send(message)
+    if (voiceState is not None):
+        fileName = pick_file("denied")
+        await play_file(fileName, voiceState.channel, sv)
+    print(f'{ctx.author.name} does not have permission shuffle in server {sv.name}')
+    return
+#----------------------------------------------------------------
+
 #pickFile
 def pick_file(name):
     if (name in lists.playDictionary):
@@ -91,6 +103,40 @@ def pick_sound_join(serverId, id):
         fileName = path + rand
         return fileName
     return None
+#----------------------------------------------------------------
+
+#play_file
+async def play_file(fileName, authorVc, sv):
+    serverId = sv.id
+    voice = lists.voiceStates[serverId]
+    if (authorVc is None):
+        print('Member was not connected to any voice channel')
+        return
+    elif (voice is None):
+        voice = await authorVc.connect()
+        print(f'Bot connected to voice channel {authorVc.name} in server {sv.name}')
+        lists.voiceStates[serverId] = voice
+    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
+        await voice.move_to(authorVc)
+        print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
+    elif (voice.is_playing() or voice.is_paused()):
+        sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
+        lists.queues[serverId].append(sound)
+        print(f'Sound {fileName} has been queued in server {sv.name}')
+        return
+    sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
+    try:
+        voice.play(sound)
+    except discord.errors.ClientException as e:
+        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issues:\n{e}\n--------------------')
+        lists.voiceStates[serverId] = None
+        await play_file(fileName, authorVc, sv)
+    except Exception as e:
+        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to:\n{e}\n--------------------')
+    print(f'Bot is playing {fileName} in server {sv.name}')
+    while(voice.is_playing() or voice.is_paused()):
+        await asyncio.sleep(1)
+    await check_queue(serverId, voice)
 #----------------------------------------------------------------
 
 #roulette
@@ -148,54 +194,4 @@ async def shuffle_members(sv, ch):
             print(f'Moved member {m.name} to voice channel {randCh.name} in server {sv.name}')
         except Exception as e:
             print(f'❗❗❗ERROR: failed to move user {m.name} to channel {randCh.name} due to:\n{e}\n\n--------------------')
-#----------------------------------------------------------------
-
-
-#////////////////////////////////////////////////////////////////
-#////////////////////////// PLAY FILE ///////////////////////////
-#////////////////////////////////////////////////////////////////
-#play_file
-async def play_file(fileName, authorVc, sv):
-    serverId = sv.id
-    voice = lists.voiceStates[serverId]
-    if (authorVc is None):
-        print('Member was not connected to any voice channel')
-        return
-    elif (voice is None):
-        voice = await authorVc.connect()
-        print(f'Bot connected to voice channel {authorVc.name} in server {sv.name}')
-        lists.voiceStates[serverId] = voice
-    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
-        await voice.move_to(authorVc)
-        print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
-    elif (voice.is_playing() or voice.is_paused()):
-        sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-        lists.queues[serverId].append(sound)
-        print(f'Sound {fileName} has been queued in server {sv.name}')
-        return
-    sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-    try:
-        voice.play(sound)
-    except discord.errors.ClientException as e:
-        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issues:\n{e}\n--------------------')
-        lists.voiceStates[serverId] = None
-        await play_file(fileName, authorVc, sv)
-    except Exception as e:
-        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to:\n{e}\n--------------------')
-    print(f'Bot is playing {fileName} in server {sv.name}')
-    while(voice.is_playing() or voice.is_paused()):
-        await asyncio.sleep(1)
-    await check_queue(serverId, voice)
-#----------------------------------------------------------------
-
-#permission_denied
-async def permission_denied(ctx, message):
-    sv = ctx.guild
-    voiceState = lists.voiceStates[sv.id]
-    await ctx.send(message)
-    if (voiceState is not None):
-        fileName = pick_file("denied")
-        await play_file(fileName, voiceState.channel, sv)
-    print(f'{ctx.author.name} does not have permission shuffle in server {sv.name}')
-    return
 #----------------------------------------------------------------
