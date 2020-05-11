@@ -378,7 +378,7 @@ async def play_file(fileName, authorVc, sv):
     try:
         voice.play(sound)
     except discord.errors.ClientException as e:
-        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issus:\n{e}\n--------------------')
+        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issues:\n{e}\n--------------------')
         lists.voiceStates[serverId] = None
         await play_file(fileName, authorVc, sv)
     except Exception as e:
