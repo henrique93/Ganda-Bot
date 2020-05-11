@@ -134,7 +134,7 @@ async def mute(ctx, arg):
             if (name is None):
                 name = target.name
             message = "⛔ You don't have permission to mute " + name + " ⛔"
-            aux.permission_denied(ctx, message)
+            await aux.permission_denied(ctx, message)
     return
 
 #unmute
@@ -161,7 +161,7 @@ async def unmute(ctx, arg):
             if (name is None):
                 name = target.name
             message = "⛔ You don't have permission to unmute " + name + " ⛔"
-            aux.permission_denied(ctx, message)
+            await aux.permission_denied(ctx, message)
     else:
         message = "You have to mention the user you want to unmute (eg. \"?unmute @user\")"
         await ctx.send(message)
@@ -190,7 +190,7 @@ async def shuffle(ctx):
     sv = ctx.guild
     if (not ctx.author.guild_permissions.move_members):
         message = "⛔ You don't have permission to shuffle ⛔"
-        aux.permission_denied(ctx, message)
+        await aux.permission_denied(ctx, message)
     elif (authorVcState is None):
         message = "You have to be connected to a voice channel"
         await ctx.send(message)
