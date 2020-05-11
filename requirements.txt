@@ -1,3 +1,4 @@
 discord[voice]
 asyncio
 PyNaCl
+youtube_dl
