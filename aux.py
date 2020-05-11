@@ -8,20 +8,6 @@ import consts
 import lists
 #----------------------------------------------------------------
 
-#give_roles
-async def give_roles(serverId, member):
-    id = member.id
-    memberInfo = lists.serverMembers[serverId]
-    roles = memberInfo[id][0]
-    for r in roles:
-        try:
-            await member.add_roles(r)
-            print(f'Bot gave roles to {member.name} in server {member.guild.name}')
-        except Exception as e:
-            print(f'❗❗❗ERROR: Failed to add role {r} to user: {member.name} due to:\n{e}\n--------------------')
-    return
-#----------------------------------------------------------------
-
 #change_nickname
 async def change_nickname(serverId, member):
     id = member.id
@@ -48,6 +34,54 @@ async def check_queue(serverId, voice):
         await check_queue(serverId, voice)
 #----------------------------------------------------------------
 
+#coinFlip
+def coin_flip():
+    rand = random.randint(0,1)
+    if (rand):
+        return "Heads!"
+    else:
+        return "Tails!"
+#----------------------------------------------------------------
+
+#give_roles
+async def give_roles(serverId, member):
+    id = member.id
+    memberInfo = lists.serverMembers[serverId]
+    roles = memberInfo[id][0]
+    for r in roles:
+        try:
+            await member.add_roles(r)
+            print(f'Bot gave roles to {member.name} in server {member.guild.name}')
+        except Exception as e:
+            print(f'❗❗❗ERROR: Failed to add role {r} to user: {member.name} due to:\n{e}\n--------------------')
+    return
+#----------------------------------------------------------------
+
+#isBotAlone
+def is_bot_alone(ch):
+    bots = 0
+    num_members = len(ch.members)
+    for m in ch.members:
+        if (m.bot):
+            bots += 1
+    if ((num_members == 1) or (num_members == bots)):
+        return True
+    return False
+#----------------------------------------------------------------
+
+#permission_denied
+def permission_denied(ctx, message):
+    sv = ctx.guild
+    voiceState = lists.voiceStates[sv.id]
+    await ctx.send(message)
+    if (voiceState is not None):
+        fileName = aux.pick_file("denied")
+        await play_file(fileName, voiceState.channel, sv)
+    print(f'{ctx.author.name} does not have permission shuffle in server {sv.name}')
+    return
+#----------------------------------------------------------------
+
+
 #pickFile
 def pick_file(name):
     if (name in lists.playDictionary):
@@ -61,7 +95,7 @@ def pick_file(name):
     return None
 #----------------------------------------------------------------
 
-#picSoundJoin
+#pickSoundJoin
 def pick_sound_join(serverId, id):
     memberInfo = lists.serverMembers[serverId]
     if (memberInfo[id][2]):
@@ -127,25 +161,4 @@ async def shuffle_members(sv, ch):
             print(f'Moved member {m.name} to voice channel {randCh.name} in server {sv.name}')
         except Exception as e:
             print(f'❗❗❗ERROR: failed to move user {m.name} to channel {randCh.name} due to:\n{e}\n\n--------------------')
-#----------------------------------------------------------------
-
-#isBotAlone
-def is_bot_alone(ch):
-    bots = 0
-    num_members = len(ch.members)
-    for m in ch.members:
-        if (m.bot):
-            bots += 1
-    if ((num_members == 1) or (num_members == bots)):
-        return True
-    return False
-#----------------------------------------------------------------
-
-#coinFlip
-def coin_flip():
-    rand = random.randint(0,1)
-    if (rand):
-        return "Heads!"
-    else:
-        return "Tails!"
 #----------------------------------------------------------------

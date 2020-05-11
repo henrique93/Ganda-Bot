@@ -48,11 +48,11 @@ def initMemberInfo(sv):
         memberInfo[m.id] = info
     return memberInfo
 
-#serverID : voice state
-voiceStates = {}
-
 #serverID : [sounds to play]
 queues = {}
+
+#serverID : voice state
+voiceStates = {}
 
 
 #---------------------------- MUTED -----------------------------

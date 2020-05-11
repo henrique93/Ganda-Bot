@@ -1,6 +1,5 @@
 # GandaBot.py
 import asyncio
-import sys
 import os
 
 import discord
@@ -134,11 +133,7 @@ async def mute(ctx, arg):
             if (name is None):
                 name = target.name
             message = "⛔ You don't have permission to mute " + name + " ⛔"
-            await ctx.send(message)
-            if (voiceState is not None):
-                fileName = aux.pick_file("denied")
-                await play_file(fileName, voiceState.channel, sv)
-            print(f'{ctx.author.name} does not have permission to mute {target.name} in server {sv.name}')
+            aux.permission_denied(ctx, message)
     return
 
 #unmute
@@ -165,11 +160,7 @@ async def unmute(ctx, arg):
             if (name is None):
                 name = target.name
             message = "⛔ You don't have permission to unmute " + name + " ⛔"
-            await ctx.send(message)
-            if (voiceState is not None):
-                fileName = aux.pick_file("denied")
-                await play_file(fileName, voiceState.channel, sv)
-            print(f'{author.name} does not have permission to unmute {target.name} in server {sv.name}')
+            aux.permission_denied(ctx, message)
     else:
         message = "You have to mention the user you want to unmute (eg. \"?unmute @user\")"
         await ctx.send(message)
@@ -194,14 +185,17 @@ async def rroulette(ctx):
 @bot.command(name='shuffle', help='Send every member on your current voice channel to random voice channels')
 async def shuffle(ctx):
     authorVcState = ctx.author.voice
+    voiceState = lists.voiceStates[ctx.guild.id]
+    sv = ctx.guild
     if (not ctx.author.guild_permissions.move_members):
-        #no permission
-        return
+        message = "⛔ You don't have permission to shuffle ⛔"
+        aux.permission_denied(ctx, message)
     elif (authorVcState is None):
-        #no channel
+        message = "You have to be connected to a voice channel"
+        await ctx.send(message)
         return
     else:
-        await aux.shuffle_members(ctx.guild, authorVcState.channel)
+        await aux.shuffle_members(sv, authorVcState.channel)
 
 
 #---------------------------- SOUNDS ----------------------------
