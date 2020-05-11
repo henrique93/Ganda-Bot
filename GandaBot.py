@@ -53,7 +53,7 @@ async def on_command_error(ctx, error):
     raise error
 #----------------------------- FLIP -----------------------------
 #flip
-@bot.command(name='flip', help='Heads or tails? Flip a coin.')
+@bot.command(name='flip', aliases = ['Flip', 'FLIP'], help='Heads or tails? Flip a coin.')
 async def flip(ctx):
     res = aux.coin_flip()
     await ctx.send(res)
@@ -63,7 +63,7 @@ async def flip(ctx):
 
 #-------------------------- HIGHLANDER --------------------------
 #highlander
-@bot.command(name='highlander', help='⛔ Kick every member from its current voice channel except for one chosen at random.')
+@bot.command(name='highlander', aliases = ['Highlander', 'HIGHLANDER'], help='⛔ Kick every member from its current voice channel except for one chosen at random.')
 async def highlander(ctx):
     fileName = aux.pick_file("highlander")
     VictoryFileName = aux.pick_file("highlanderv")
@@ -78,7 +78,7 @@ async def highlander(ctx):
 
 #------------------------ INIT / DESTROY ------------------------
 #init
-@bot.command(name='init', help='Join your current voice channel and stay there.')
+@bot.command(name='init', aliases = ['Init', 'INIT'], help='Join your current voice channel and stay there.')
 async def init(ctx):
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
@@ -94,7 +94,7 @@ async def init(ctx):
     return
 
 #destroy
-@bot.command(name='destroy', help='Disconnect from its current voice channel.')
+@bot.command(name='destroy', aliases = ['Destroy', 'DESTROY'], help='Disconnect from its current voice channel.')
 async def destroy(ctx):
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
@@ -113,7 +113,7 @@ async def destroy(ctx):
 
 #------------------------- MUTE / UNMUTE ------------------------
 #mute
-@bot.command(name='mute', help='Keep a mentioned member muted (@user to mention)')
+@bot.command(name='mute', aliases = ['Mute', 'MUTE'], help='Keep a mentioned member muted (@user to mention)')
 async def mute(ctx, arg):
     mentioned = ctx.message.mentions
     if (not mentioned):
@@ -137,7 +137,7 @@ async def mute(ctx, arg):
     return
 
 #unmute
-@bot.command(name='unmute', help='Stops keeping the mentioned member muted (@user to mention). Admins can use "?unmute all" to unmute everyone being kept muted')
+@bot.command(name='unmute', aliases = ['Unmute', 'UnMute', 'UNMUTE'], help='Stops keeping the mentioned member muted (@user to mention). Admins can use "?unmute all" to unmute everyone being kept muted')
 async def unmute(ctx, arg):
     mentioned = ctx.message.mentions
     author = ctx.author
@@ -169,7 +169,7 @@ async def unmute(ctx, arg):
 
 #----------------------- RUSSIAN ROULETTE -----------------------
 #rroulette
-@bot.command(name='rroulette', help='⛔ Kick one random member from its current voice channel.')
+@bot.command(name='rroulette', aliases = ['Rroulette', 'RRoulette', 'RROULETTE'], help='⛔ Kick one random member from its current voice channel.')
 async def rroulette(ctx):
     fileName = aux.pick_file("rroulette")
     ch = ctx.author.voice.channel
@@ -182,7 +182,7 @@ async def rroulette(ctx):
 
 #--------------------------- SHUFFLE ----------------------------
 #shuffle
-@bot.command(name='shuffle', help='Send every member on your current voice channel to random voice channels')
+@bot.command(name='shuffle', aliases = ['Shuffle', 'SHUFFLE'], help='Send every member on your current voice channel to random voice channels')
 async def shuffle(ctx):
     authorVcState = ctx.author.voice
     voiceState = lists.voiceStates[ctx.guild.id]
@@ -200,7 +200,7 @@ async def shuffle(ctx):
 
 #---------------------------- SOUNDS ----------------------------
 #play
-@bot.command(name='play', help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
+@bot.command(name='play', aliases = ['Play', 'PLAY'], help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
     await ctx.message.delete(delay=1)
     if (arg == "random"):
@@ -220,7 +220,7 @@ async def play(ctx, arg):
     return
 
 #pause
-@bot.command(name='pause', help='Pause the current sound')
+@bot.command(name='pause', aliases = ['Pause', 'PAUSE'], help='Pause the current sound')
 async def pause(ctx):
     await ctx.message.delete(delay=1)
     voice = lists.voiceStates[ctx.guild.id]
@@ -231,7 +231,7 @@ async def pause(ctx):
     return
 
 #resume
-@bot.command(name='resume', help='Resume the current sound')
+@bot.command(name='resume', aliases = ['Resume', 'RESUME'], help='Resume the current sound')
 async def resume(ctx):
     await ctx.message.delete(delay=1)
     voice = lists.voiceStates[ctx.guild.id]
@@ -242,7 +242,7 @@ async def resume(ctx):
     return
 
 #stop
-@bot.command(name='stop', help='Stop playing the current sound')
+@bot.command(name='stop', aliases = ['Stop', 'STOP'], help='Stop playing the current sound')
 async def stop(ctx):
     await ctx.message.delete(delay=1)
     voice = lists.voiceStates[ctx.guild.id]
@@ -254,7 +254,7 @@ async def stop(ctx):
     return
 
 #skip
-@bot.command(name='skip', help='Skip the current sound')
+@bot.command(name='skip', aliases = ['Skip', 'SKIP'], help='Skip the current sound')
 async def skip(ctx):
     await ctx.message.delete(delay=1)
     voice = lists.voiceStates[ctx.guild.id]
