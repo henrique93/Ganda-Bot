@@ -37,8 +37,9 @@ async def check_queue(serverId, voice):
     else:
         if (os.listdir(consts.youtubePath)):
             path = consts.youtubePath + str(serverId)
-            for file in os.listdir(path):
-                if file.endswith(".mp3"):
+            files = os.listdir(path)
+            if (files):
+                for file in os.listdir(path):
                     os.remove(path+"/"+file)
 #----------------------------------------------------------------
 
