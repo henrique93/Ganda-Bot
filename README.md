@@ -20,6 +20,7 @@
 + The bot has a queue for sounds
 + Play - Plays a sound:
     + "Play" followed by a sound from the list plays that sound;
+    + "Play" followed by a youtube URL plays it's audio;
     + "Play random" - Plays a random sound from the list;
     + "Play ariana" - Plays a random Ariana Grande song.
 + Pause - Pauses the current sound;

@@ -1,8 +1,10 @@
 # aux.py
 import asyncio
 import random
+import os
 
 import discord
+import youtube_dl
 
 import consts
 import lists
@@ -32,9 +34,13 @@ async def check_queue(serverId, voice):
         while(voice.is_playing() or voice.is_paused()):
             await asyncio.sleep(1)
         await check_queue(serverId, voice)
+    else:
+        for file in os.listdir("./"):
+            if file.endswith(".mp3"):
+                os.remove(file)
 #----------------------------------------------------------------
 
-#coinFlip
+#coin_flip
 def coin_flip():
     rand = random.randint(0,1)
     if (rand):
@@ -57,7 +63,7 @@ async def give_roles(serverId, member):
     return
 #----------------------------------------------------------------
 
-#isBotAlone
+#is_bot_alone
 def is_bot_alone(ch):
     bots = 0
     num_members = len(ch.members)
@@ -81,7 +87,7 @@ async def permission_denied(ctx, message):
     return
 #----------------------------------------------------------------
 
-#pickFile
+#pick_file
 def pick_file(name):
     if (name in lists.playDictionary):
         rand = random.choice(lists.playDictionary[name][1])
@@ -94,7 +100,7 @@ def pick_file(name):
     return None
 #----------------------------------------------------------------
 
-#pickSoundJoin
+#pick_sound_join
 def pick_sound_join(serverId, id):
     memberInfo = lists.serverMembers[serverId]
     if (memberInfo[id][2]):
@@ -103,6 +109,19 @@ def pick_sound_join(serverId, id):
         fileName = path + rand
         return fileName
     return None
+#----------------------------------------------------------------
+
+#pick_yt_file
+def pick_yt_file(url):
+    with youtube_dl.YoutubeDL(consts.ytdl_opts) as ydl:
+        try:
+            ydl.download([url])
+        except youtube_dl.utils.DownloadError as e:
+            print(f'❗❗❗ERROR: failed to download song from {url} due to:\n{e}\n\n--------------------')
+            return None
+    for file in os.listdir("./"):
+        if file.endswith(".mp3"):
+            return file
 #----------------------------------------------------------------
 
 #play_file

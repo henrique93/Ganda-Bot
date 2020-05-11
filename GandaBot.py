@@ -200,7 +200,7 @@ async def shuffle(ctx):
 
 #---------------------------- SOUNDS ----------------------------
 #play
-@bot.command(name='play', aliases = ['Play', 'PLAY'], help='Play a sound. Follow by the sound name to play a specific sound, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
+@bot.command(name='play', aliases = ['Play', 'PLAY'], help='Play a sound. Follow by the sound name to play a specific sound, a youtube URL to play that audio, "list" to get the list of sounds, "random" to play a random sound or "ariana" to play a random Ariana Grande song')
 async def play(ctx, arg):
     await ctx.message.delete(delay=1)
     if (arg == "random"):
@@ -209,10 +209,17 @@ async def play(ctx, arg):
         fileName = aux.pick_file("ariana")
     #elif (arg == "list"):
         #send sound list
+    elif (arg.startswith("https://www.youtube.com/")):
+        fileName = aux.pick_yt_file(arg)
+        if (fileName is None):
+            message = "Bad url. Please provide a youtube.com url"
+            await ctx.send(message)
+            return
     else:
         fileName = aux.pick_file(arg)
         if (fileName is None):
-            #play youtube
+            message = "Ganda bot can't play \"" + arg + "\""
+            await ctx.send(message)
             return
     ch = ctx.author.voice.channel
     sv = ctx.guild
@@ -344,8 +351,6 @@ async def on_member_join(member):
     await aux.change_nickname(serverId, member)
     return
 #----------------------------------------------------------------
-
-
 
 
 #run bot
