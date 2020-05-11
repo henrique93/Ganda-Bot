@@ -9,7 +9,6 @@ from discord.utils import get
 
 import aux
 import lists
-from consts import sopas_de_cafe_id
 #----------------------------------------------------------------
 
 #bot variables
@@ -18,8 +17,6 @@ TOKEN = os.environ['DISCORD_TOKEN']
 bot = commands.Bot(command_prefix='?', description='Ganda bot mano!')
 
 voice = None
-
-inited = 0
 #----------------------------------------------------------------
 
 
@@ -37,9 +34,8 @@ async def on_ready():
         servers.append(guild.name)
         lists.voiceStates[guild.id] = None
         lists.queues[guild.id] = []
-        if (guild.id == sopas_de_cafe_id):
-            lists.initMemberInfo(guild)
-    lists.initLists()
+        lists.initServerMembers(guild)
+    lists.initSoundLists()
     print(f'connected to {len(servers)} guilds: {servers}')
     print('------')
     return
@@ -85,7 +81,6 @@ async def highlander(ctx):
 #init
 @bot.command(name='init', help='Join your current voice channel and stay there.')
 async def init(ctx):
-    global inited
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
     serverId = ctx.guild.id
@@ -97,13 +92,11 @@ async def init(ctx):
         voice = await channel.connect()
         lists.voiceStates[serverId] = voice
         print(f'Bot connected to {channel.name} in server {voice.guild.name}')
-    inited = 1
     return
 
 #destroy
 @bot.command(name='destroy', help='Disconnect from its current voice channel.')
 async def destroy(ctx):
-    global inited
     await ctx.message.delete(delay=1)
     channel = ctx.author.voice.channel
     sv = ctx.guild
@@ -111,7 +104,6 @@ async def destroy(ctx):
     if (voice and voice.is_connected()):
         await stop(ctx)
         await voice.disconnect()
-        inited = 0
         voice = None
         lists.voiceStates[sv.id] = voice
         print(f'Bot disconnected from {channel.name} in server {sv.name}')
@@ -301,7 +293,6 @@ async def skip(ctx):
 #on_voice_state_update
 @bot.event
 async def on_voice_state_update(member, before, after):
-    global inited
     #Check if state update's origin is a bot
     if (member.bot):
         return
@@ -332,7 +323,7 @@ async def on_voice_state_update(member, before, after):
         print(f'Member {member.name} left voice channel {before_vc.name} in server {sv.name}')
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
-        fileName = aux.pick_sound_join(id)
+        fileName = aux.pick_sound_join(serverId, id)
         if (fileName is not None):
             await play_file(fileName, after_vc, sv)
             print(f'Member {member.name} joined voice channel {after_vc.name} in server {sv.name}')
@@ -340,7 +331,6 @@ async def on_voice_state_update(member, before, after):
     if (voice is not None and voice.channel == before_vc and aux.is_bot_alone(before_vc)):
         lists.queues[serverId] = []
         await voice.disconnect()
-        inited = 0
         voice = None
         lists.voiceStates[serverId] = voice
         print(f'Bot disconnected from {before_vc.name} in guild {sv.name} because it was the only member connected')
@@ -355,8 +345,9 @@ async def on_voice_state_update(member, before, after):
 @bot.event
 async def on_member_join(member):
     print(f'Member {member.name} joined server {member.guild.name}')
-    await aux.give_roles(member)
-    await aux.change_nickname(member)
+    serverId = member.guild.id
+    await aux.give_roles(serverId, member)
+    await aux.change_nickname(serverId, member)
     return
 #----------------------------------------------------------------
 
@@ -375,7 +366,7 @@ async def play_file(fileName, authorVc, sv):
         voice = await authorVc.connect()
         print(f'Bot connected to voice channel {authorVc.name} in server {sv.name}')
         lists.voiceStates[serverId] = voice
-    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused()) and not inited):
+    elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
         await voice.move_to(authorVc)
         print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
     elif (voice.is_playing() or voice.is_paused()):
@@ -384,7 +375,14 @@ async def play_file(fileName, authorVc, sv):
         print(f'Sound {fileName} has been queued in server {sv.name}')
         return
     sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-    voice.play(sound)
+    try:
+        voice.play(sound)
+    except discord.errors.ClientException as e:
+        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issus:\n{e}\n--------------------')
+        lists.voiceStates[serverId] = None
+        await play_file(fileName, authorVc, sv)
+    except Exception as e:
+        print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to:\n{e}\n--------------------')
     print(f'Bot is playing {fileName} in server {sv.name}')
     while(voice.is_playing() or voice.is_paused()):
         await asyncio.sleep(1)

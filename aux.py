@@ -9,9 +9,10 @@ import lists
 #----------------------------------------------------------------
 
 #give_roles
-async def give_roles(member):
+async def give_roles(serverId, member):
     id = member.id
-    roles = lists.memberInfo[id][0]
+    memberInfo = lists.serverMembers[serverId]
+    roles = memberInfo[id][0]
     for r in roles:
         try:
             await member.add_roles(r)
@@ -22,10 +23,11 @@ async def give_roles(member):
 #----------------------------------------------------------------
 
 #change_nickname
-async def change_nickname(member):
+async def change_nickname(serverId, member):
     id = member.id
-    if (id in lists.memberInfo):
-        nickname = lists.memberInfo[id][1]
+    memberInfo = lists.serverMembers[serverId]
+    if (id in memberInfo):
+        nickname = memberInfo[id][1]
         if (nickname is None):
             return
         try:
@@ -60,10 +62,11 @@ def pick_file(name):
 #----------------------------------------------------------------
 
 #picSoundJoin
-def pick_sound_join(id):
-    if (lists.memberInfo[id][2]):
+def pick_sound_join(serverId, id):
+    memberInfo = lists.serverMembers[serverId]
+    if (memberInfo[id][2]):
         path = consts.joinSoundPath + str(id) + "//"
-        rand = random.choice(lists.memberInfo[id][2])
+        rand = random.choice(memberInfo[id][2])
         fileName = path + rand
         return fileName
     return None
