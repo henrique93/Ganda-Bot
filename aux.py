@@ -35,10 +35,11 @@ async def check_queue(serverId, voice):
             await asyncio.sleep(1)
         await check_queue(serverId, voice)
     else:
-        path = consts.youtubePath + str(serverId)
-        for file in os.listdir(path):
-            if file.endswith(".mp3"):
-                os.remove(path+"/"+file)
+        if (os.listdir(consts.youtubePath)):
+            path = consts.youtubePath + str(serverId)
+            for file in os.listdir(path):
+                if file.endswith(".mp3"):
+                    os.remove(path+"/"+file)
 #----------------------------------------------------------------
 
 #coin_flip
@@ -83,8 +84,9 @@ async def permission_denied(ctx, message):
     await ctx.send(message)
     if (voiceState is not None):
         fileName = pick_file("denied")
-        await play_file(fileName, voiceState.channel, sv)
-    print(f'{ctx.author.name} does not have permission shuffle in server {sv.name}')
+        print(fileName)
+        await play_file(fileName, ctx.author.voice.channel, sv)
+    print(f'{ctx.author.name} does not have permission to perform this action in server {sv.name}')
     return
 #----------------------------------------------------------------
 
