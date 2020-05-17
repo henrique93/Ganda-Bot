@@ -1,7 +1,7 @@
 # Ganda-Bot
 ![Avatar](Avatar.png "Ganda bot avatar")
 
-[Discord](https://discord.com) bot using [discord.py](https://discordpy.readthedocs.io/en/latest/) created by @henrique93
+[Discord](https://discord.com) bot using [discord.py](https://discordpy.readthedocs.io/en/latest/) created by [Henrique Lourenço](https://github.com/henrique93/)
 
 [Heroku](https://www.heroku.com) buildpacks:
 
