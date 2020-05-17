@@ -1,8 +1,7 @@
 # Ganda-Bot
 ![Avatar](Avatar.png "Ganda bot avatar")
 
-[Discord](https://discord.com) bot using [discord.py](https://discordpy.readthedocs.io/en/latest/)
-
+[Discord](https://discord.com) bot using [discord.py](https://discordpy.readthedocs.io/en/latest/) created by @henrique93
 
 [Heroku](https://www.heroku.com) buildpacks:
 
@@ -36,3 +35,11 @@
 + The bot automatically disconnects from the voice channel if there are no other non-bot members connected to that channel;
 + Gives specific members specific roles when they join the server;
 + Gives specific members specific nicknames when they join the server.
+
+### Adding join sounds:
+1. Get the user's discord ID
+2. Create a new folder at audio/Join/ with the user's ID (e.g. "audio/Join/181219804537946112")
+3. Move the .mp3 file to the folder created in step 2
+
+### Adding other sounds:
+Just move the .mp3 file to the desired folder in audio/ (e.g. if you want to add a new  permission denied sound move the .mp3 file to "audio/PermissionDenied/")
