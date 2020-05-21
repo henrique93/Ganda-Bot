@@ -10,10 +10,12 @@ import aux
 import lists
 #----------------------------------------------------------------
 
-#bot variables
-TOKEN = os.environ['DISCORD_TOKEN']
-
 bot = commands.Bot(command_prefix='?', case_insensitive=True, description='Ganda bot mano!')
+
+#----------------------------- MAIN -----------------------------
+def main():
+    TOKEN = os.environ['DISCORD_TOKEN']
+    bot.run(TOKEN)
 #----------------------------------------------------------------
 
 
@@ -358,6 +360,5 @@ async def on_member_join(member):
     return
 #----------------------------------------------------------------
 
-
-#run bot
-bot.run(TOKEN)
+if __name__ == "__main__":
+    main()
