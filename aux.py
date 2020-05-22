@@ -80,7 +80,7 @@ def is_bot_alone(ch):
 #permission_denied
 async def permission_denied(ctx, message):
     sv = ctx.guild
-    voiceState = lists.voiceStates[sv.id]
+    voiceState = sv.voice_client
     await ctx.send(message)
     if (voiceState is not None):
         fileName = pick_file("denied")
@@ -132,14 +132,13 @@ def pick_yt_file(serverId, url):
 #play_file
 async def play_file(fileName, authorVc, sv):
     serverId = sv.id
-    voice = lists.voiceStates[serverId]
+    voice = sv.voice_client
     if (authorVc is None):
         print('Member was not connected to any voice channel')
         return
     elif (voice is None):
         voice = await authorVc.connect()
         print(f'Bot connected to voice channel {authorVc.name} in server {sv.name}')
-        lists.voiceStates[serverId] = voice
     elif (voice.channel != authorVc and not (voice.is_playing() or voice.is_paused())):
         await voice.move_to(authorVc)
         print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
@@ -153,7 +152,6 @@ async def play_file(fileName, authorVc, sv):
         voice.play(sound)
     except discord.errors.ClientException as e:
         print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issues:\n{e}\n--------------------')
-        lists.voiceStates[serverId] = None
         await play_file(fileName, authorVc, sv)
     except Exception as e:
         print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to:\n{e}\n--------------------')

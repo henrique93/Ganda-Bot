@@ -32,7 +32,6 @@ async def on_ready():
     for guild in bot.guilds:
         id = guild.id
         servers.append(guild.name)
-        lists.voiceStates[id] = None
         lists.queues[id] = []
         lists.init_server_members(guild)
         lists.init_ytdl_options(id)
@@ -87,13 +86,12 @@ async def init(ctx):
     await ctx.message.delete(delay=1)
     ch = ctx.author.voice.channel
     sv = ctx.guild
-    voice = lists.voiceStates[sv.id]
+    voice = ctx.voice_client
     if (voice and voice.is_connected()):
         await voice.move_to(ch)
         print(f'Bot moved to {ch.name} in server {sv.name}')
     else:
         voice = await ch.connect()
-        lists.voiceStates[sv.id] = voice
         print(f'Bot connected to {ch.name} in server {sv.name}')
     return
 
@@ -102,13 +100,12 @@ async def init(ctx):
 async def destroy(ctx):
     await ctx.message.delete(delay=1)
     sv = ctx.guild
-    voice = lists.voiceStates[sv.id]
+    voice = ctx.voice_client
     if (voice and voice.is_connected()):
         ch = voice.channel
         await stop(ctx)
         await voice.disconnect()
         voice = None
-        lists.voiceStates[sv.id] = voice
         print(f'Bot disconnected from {ch.name} in server {sv.name}')
     else:
         print(f'Bot was told to disconnect but was not connected to any channel in server {sv.name}')
@@ -188,7 +185,7 @@ async def rroulette(ctx):
 @bot.command(name='shuffle', aliases = ['Shuff'], help='Send every member on your current voice channel to random voice channels')
 async def shuffle(ctx):
     authorVcState = ctx.author.voice
-    voiceState = lists.voiceStates[ctx.guild.id]
+    voiceState = ctx.voice_client
     sv = ctx.guild
     if (not ctx.author.guild_permissions.move_members):
         message = "⛔ You don't have permission to shuffle ⛔"
@@ -238,7 +235,7 @@ async def play(ctx, arg):
 @bot.command(name='pause', help='Pause the current sound')
 async def pause(ctx):
     await ctx.message.delete(delay=1)
-    voice = lists.voiceStates[ctx.guild.id]
+    voice = ctx.voice_client
     if (voice.is_playing()):
         voice.pause()
     else:
@@ -249,7 +246,7 @@ async def pause(ctx):
 @bot.command(name='resume', help='Resume the current sound')
 async def resume(ctx):
     await ctx.message.delete(delay=1)
-    voice = lists.voiceStates[ctx.guild.id]
+    voice = ctx.voice_client
     if (voice.is_paused()):
         voice.resume()
     else:
@@ -260,7 +257,7 @@ async def resume(ctx):
 @bot.command(name='stop', help='Stop playing the current sound')
 async def stop(ctx):
     await ctx.message.delete(delay=1)
-    voice = lists.voiceStates[ctx.guild.id]
+    voice = ctx.voice_client
     if (voice.is_playing() or voice.is_paused()):
         lists.queues[ctx.guild.id] = []
         voice.stop()
@@ -272,7 +269,7 @@ async def stop(ctx):
 @bot.command(name='skip', help='Skip the current sound')
 async def skip(ctx):
     await ctx.message.delete(delay=1)
-    voice = lists.voiceStates[ctx.guild.id]
+    voice = ctx.voice_client
     if (voice.is_playing() or voice.is_paused()):
         voice.stop()
     else:
@@ -310,7 +307,7 @@ async def on_voice_state_update(member, before, after):
     id = member.id
     sv = member.guild
     serverId = sv.id
-    voice = lists.voiceStates[serverId]
+    voice = sv.voice_client
     #Keep muting members in the keep_muted list
     if (member.id in lists.muted and not after.mute):
         await member.edit(mute=True)
@@ -341,7 +338,6 @@ async def on_voice_state_update(member, before, after):
         lists.queues[serverId] = []
         await voice.disconnect()
         voice = None
-        lists.voiceStates[serverId] = voice
         print(f'Bot disconnected from {before_vc.name} in guild {sv.name} because it was the only member connected')
     return
 #----------------------------------------------------------------
@@ -359,6 +355,7 @@ async def on_member_join(member):
     await aux.change_nickname(serverId, member)
     return
 #----------------------------------------------------------------
+
 
 if __name__ == "__main__":
     main()

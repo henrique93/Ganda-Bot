@@ -52,9 +52,6 @@ def init_member_info(sv):
 #serverID : [sounds to play]
 queues = {}
 
-#serverID : voice state
-voiceStates = {}
-
 
 #---------------------------- MUTED -----------------------------
 #Keep muted
