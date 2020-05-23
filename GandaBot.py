@@ -167,9 +167,18 @@ async def unmute(ctx, arg):
     return
 
 
+#---------------------------- QUEUE -----------------------------
+#queue
+@bot.command(name='queue', aliases=['q'], help='Check what sounds are in queue, if any.')
+async def queue(ctx):
+    await ctx.message.delete(delay=1)
+    message = aux.queue(ctx.guild.id)
+    await ctx.send(message)
+
+
 #----------------------- RUSSIAN ROULETTE -----------------------
 #rroulette
-@bot.command(name='rroulette', aliases = ['russian roulette', 'rroulete', 'rroullete'], help='⛔ Kick one random member from its current voice channel.')
+@bot.command(name='rroulette', aliases=['russian roulette', 'rroulete', 'rroullete'], help='⛔ Kick one random member from its current voice channel.')
 async def rroulette(ctx):
     fileName = aux.pick_file("rroulette")
     ch = ctx.author.voice.channel
@@ -322,7 +331,7 @@ async def on_voice_state_update(member, before, after):
         fileName = aux.pick_file("selfUndeaf")
         await aux.play_file(fileName, after_vc, sv)
         print(f'Member {member.name} undeafened himself in server {sv.name}')
-    #Play sound if user leaves voice channel
+    #Play sound if user leaves voice channel and there is someone left in that channel
     if ((before_vc != after_vc) and (after_vc is None)):
         if (not aux.is_bot_alone(before_vc)):
             fileName = aux.pick_file("leave")

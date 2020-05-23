@@ -30,7 +30,7 @@ async def change_nickname(serverId, member):
 async def check_queue(serverId, voice):
     if (lists.queues[serverId]):
         sound = lists.queues[serverId].pop(0)
-        voice.play(sound)
+        voice.play(sound[0])
         while(voice.is_playing() or voice.is_paused()):
             await asyncio.sleep(1)
         await check_queue(serverId, voice)
@@ -140,7 +140,7 @@ async def play_file(fileName, authorVc, sv):
         print(f'Bot moved to voice channel {authorVc.name} in server {sv.name}')
     elif (voice.is_playing() or voice.is_paused()):
         sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
-        lists.queues[serverId].append(sound)
+        lists.queues[serverId].append((sound, fileName))
         print(f'Sound {fileName} has been queued in server {sv.name}')
         return
     sound = discord.FFmpegPCMAudio(fileName,executable='ffmpeg')
@@ -155,6 +155,23 @@ async def play_file(fileName, authorVc, sv):
     while(voice.is_playing() or voice.is_paused()):
         await asyncio.sleep(1)
     await check_queue(serverId, voice)
+#----------------------------------------------------------------
+#queue
+def queue(serverId):
+    songList = []
+    for s in lists.queues[serverId]:
+        songList.append(s[1])
+    message = "There are no sounds queued"
+    if (songList):
+        message = "These are the sounds in queue:\n"
+        separator = "  | |  "
+        for path in songList:
+            removedExtension = path.replace(".mp3", "")
+            removedSlash = removedExtension.split("/")
+            name = removedSlash[-1]
+            message += name + separator
+        message = message[:-len(separator)]
+    return message
 #----------------------------------------------------------------
 
 #roulette

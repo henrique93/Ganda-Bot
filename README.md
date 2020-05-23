@@ -26,6 +26,7 @@
 + Resume - Resumes the current sound;
 + Stop - Stops playing the current sound and clears the queue;
 + Skip - Skips the current sound and plays the next one in queue;
++ Queue - Shows what sounds are in queue, if any.
 + The bot removes user messages commanding him to play/pause/skip/stop/resume sounds to avoid spam in channels
 + When certain members join a voice chat, the bot plays a random sound assigned to them;
 + When members leave a voice channel the bot plays a sound;
