@@ -324,9 +324,10 @@ async def on_voice_state_update(member, before, after):
         print(f'Member {member.name} undeafened himself in server {sv.name}')
     #Play sound if user leaves voice channel
     if ((before_vc != after_vc) and (after_vc is None)):
-        fileName = aux.pick_file("leave")
-        await aux.play_file(fileName, before_vc, sv)
-        print(f'Member {member.name} left voice channel {before_vc.name} in server {sv.name}')
+        if (not aux.is_bot_alone(before_vc)):
+            fileName = aux.pick_file("leave")
+            await aux.play_file(fileName, before_vc, sv)
+            print(f'Member {member.name} left voice channel {before_vc.name} in server {sv.name}')
     #Play join sound if member has one
     if ((after_vc is not None) and (before_vc != after_vc)):
         fileName = aux.pick_sound_join(serverId, id)

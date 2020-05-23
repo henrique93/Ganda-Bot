@@ -67,14 +67,10 @@ async def give_roles(serverId, member):
 
 #is_bot_alone
 def is_bot_alone(ch):
-    bots = 0
-    num_members = len(ch.members)
     for m in ch.members:
-        if (m.bot):
-            bots += 1
-    if ((num_members == 1) or (num_members == bots)):
-        return True
-    return False
+        if (not m.bot):
+            return False
+    return True
 #----------------------------------------------------------------
 
 #permission_denied
