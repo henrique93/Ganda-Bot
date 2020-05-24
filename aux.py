@@ -148,7 +148,7 @@ async def play_file(fileName, authorVc, sv):
         voice.play(sound)
     except discord.errors.ClientException as e:
         print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to: voice connection issues:\n{e}\n--------------------')
-        await play_file(fileName, authorVc, sv)
+        #await play_file(fileName, authorVc, sv)
     except Exception as e:
         print(f'❗❗❗ERROR: Failed to play sound in server {sv.name} due to:\n{e}\n--------------------')
     print(f'Bot is playing {fileName} in server {sv.name}')
@@ -167,8 +167,15 @@ def queue(serverId):
         separator = "  | |  "
         for path in songList:
             removedExtension = path.replace(".mp3", "")
+            print(f"1 {removedExtension}")
+            if ("Youtube" in path):
+                #remove youtube video id
+                removedExtension = removedExtension[:-12]
+                print(f"2 {removedExtension}")
             removedSlash = removedExtension.split("/")
+            print(f"3 {removedSlash}")
             name = removedSlash[-1]
+            print(f"4 {name}")
             message += name + separator
         message = message[:-len(separator)]
     return message
