@@ -9,8 +9,8 @@ from discord.utils import get
 import aux
 import lists
 #----------------------------------------------------------------
-
-bot = commands.Bot(command_prefix='?', case_insensitive=True, description='Ganda bot mano!')
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix='?', intents=intents, case_insensitive=True, description='Ganda bot mano!')
 
 #----------------------------- MAIN -----------------------------
 def main():
