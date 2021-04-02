@@ -36,6 +36,7 @@ def init_member_info(sv):
     #ID : [[roles], nickname, [join sounds]]
     memberInfo = {}
     members = sv.members
+    print(members)
     for m in members:
         info = []
         info.append(m.roles)
