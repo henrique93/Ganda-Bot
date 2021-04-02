@@ -102,7 +102,6 @@ def pick_file(name):
 #pick_sound_join
 def pick_sound_join(serverId, id):
     memberInfo = lists.serverMembers[serverId]
-    print(memberInfo)
     if (memberInfo[id][2]):
         path = consts.joinSoundPath + str(id) + "/"
         rand = random.choice(memberInfo[id][2])
