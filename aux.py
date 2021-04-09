@@ -93,7 +93,7 @@ def play_list():
     playList.sort()
     for name in playList:
         name = name.split(".")[0]
-        message += name
+        message += name + ", "
     message = message[:-1]
     return message
 #----------------------------------------------------------------
