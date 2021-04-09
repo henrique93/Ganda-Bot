@@ -222,7 +222,7 @@ async def play(ctx, arg):
         fileName = aux.pick_file("random")
     elif (arg == "ariana"):
         fileName = aux.pick_file("ariana")
-    #elif (arg == "list"):
+    elif (arg == "list"):
         #send sound list
         message = lists.playDictionary["random"][1]
         ctx.send(message)
