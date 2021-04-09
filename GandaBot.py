@@ -225,7 +225,8 @@ async def play(ctx, arg):
     elif (arg == "list"):
         #send sound list
         message = lists.playDictionary["random"][1]
-        ctx.send(message)
+        await ctx.send(message)
+        return
     elif (arg.startswith("https://www.youtube.com/")):
         fileName = aux.pick_yt_file(sv.id, arg)
         if (fileName is None):
