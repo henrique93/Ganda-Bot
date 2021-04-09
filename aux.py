@@ -87,8 +87,14 @@ async def permission_denied(ctx, message):
 #----------------------------------------------------------------
 
 #play_list
-#def play_list():
-#    for name in lists.playDictionary["random"][1]
+def play_list():
+    message = ''
+    playList = lists.playDictionary["random"][1].sort()
+    for name in playList:
+        name = name.split(".")[0]
+        message += name
+    message = message[:-1]
+    return message
 #----------------------------------------------------------------
 
 #pick_file
