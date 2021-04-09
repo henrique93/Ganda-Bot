@@ -224,6 +224,8 @@ async def play(ctx, arg):
         fileName = aux.pick_file("ariana")
     #elif (arg == "list"):
         #send sound list
+        message = lists.playDictionary["random"][1]
+        ctx.send(message)
     elif (arg.startswith("https://www.youtube.com/")):
         fileName = aux.pick_yt_file(sv.id, arg)
         if (fileName is None):

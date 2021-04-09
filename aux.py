@@ -86,6 +86,11 @@ async def permission_denied(ctx, message):
     return
 #----------------------------------------------------------------
 
+#play_list
+#def play_list():
+#    for name in lists.playDictionary["random"][1]
+#----------------------------------------------------------------
+
 #pick_file
 def pick_file(name):
     if (name in lists.playDictionary):
